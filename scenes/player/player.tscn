@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://pdahs317ljur"]
+
+[ext_resource type="Texture2D" uid="uid://lqlchfa1pk6y" path="res://scenes/player/player.png" id="1_bftvy"]
+
+[sub_resource type="GDScript" id="GDScript_4kpq3"]
+script/source = "extends CharacterBody2D
+
+@onready var event_bus: Node = get_node(\"/root/EventBus\")
+
+const SPEED = 300.0
+
+func _ready():
+	event_bus.ready_player(self)
+
+func _physics_process(delta):
+	var direction_x: float = Input.get_axis(\"move_left\", \"move_right\")
+	var direction_y: float = Input.get_axis(\"move_up\", \"move_down\")
+	var direction: Vector2 = Vector2(direction_x, direction_y).normalized()
+	
+	if direction.length() > 0:
+		velocity = direction * SPEED
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, SPEED)
+
+	move_and_slide()
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ncfpm"]
+radius = 24.0
+height = 124.0
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = SubResource("GDScript_4kpq3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_bftvy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 0)
+shape = SubResource("CapsuleShape2D_ncfpm")

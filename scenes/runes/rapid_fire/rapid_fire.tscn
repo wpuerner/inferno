@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://drn72cu2ncene"]
+
+[ext_resource type="Texture2D" uid="uid://dxanw34iblju1" path="res://scenes/runes/rapid_fire/rapid_fire.png" id="1_0otus"]
+
+[sub_resource type="GDScript" id="GDScript_2w1hf"]
+script/source = "extends Rune
+
+@onready var bullet_handler: Node = get_node(\"/root/BulletHandler\")
+
+func activate():
+	bullet_handler.automatic_fire = true
+	bullet_handler.fire_rate *= 2
+"
+
+[node name="RapidFire" type="Node"]
+script = SubResource("GDScript_2w1hf")
+texture = ExtResource("1_0otus")

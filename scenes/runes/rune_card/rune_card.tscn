@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7ivjbpb6yng8"]
+
+[ext_resource type="Texture2D" uid="uid://cf3unrbs2h5i2" path="res://scenes/runes/rune_card/rune_card.png" id="1_24nby"]
+
+[sub_resource type="GDScript" id="GDScript_ag2pn"]
+script/source = "extends TextureButton
+
+@onready var deck_handler: Node = get_node(\"/root/DeckHandler\")
+
+var default_position: Vector2
+var default_modulate: Color
+var tween: Tween
+var rune: Rune:
+	set(value):
+		rune = value
+		$TextureRect.texture = value.texture
+
+func _on_mouse_entered():
+	if !default_position: default_position = position
+	if tween: tween.kill()
+	tween = create_tween()
+	tween.tween_property(self, \"position\", Vector2(default_position.x, default_position.y - 15), 0.1)
+	
+func _on_mouse_exited():
+	if tween: tween.kill()
+	tween = create_tween()
+	tween.tween_property(self, \"position\", Vector2(default_position.x, default_position.y), 0.1)
+
+func _on_toggled(button_pressed):
+	deck_handler.change_rune_selection_state(rune, button_pressed)
+	if !default_modulate: default_modulate = modulate
+	if tween: tween.kill()
+	tween = create_tween()
+	tween.tween_property(self, \"modulate\", Color.SKY_BLUE if button_pressed else default_modulate, 0.1)
+"
+
+[node name="RuneCard" type="TextureButton"]
+offset_top = -50.0
+offset_right = 256.0
+offset_bottom = 206.0
+toggle_mode = true
+texture_normal = ExtResource("1_24nby")
+script = SubResource("GDScript_ag2pn")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="toggled" from="." to="." method="_on_toggled"]

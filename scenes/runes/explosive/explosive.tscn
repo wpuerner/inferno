@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsaoofryqsgo8"]
+
+[ext_resource type="Texture2D" uid="uid://nagfs5iiix31" path="res://scenes/runes/explosive/explosive.png" id="1_wml4o"]
+
+[sub_resource type="GDScript" id="GDScript_fe6ew"]
+script/source = "extends Rune
+
+func activate():
+	pass
+"
+
+[node name="Explosive" type="Node"]
+script = SubResource("GDScript_fe6ew")
+texture = ExtResource("1_wml4o")

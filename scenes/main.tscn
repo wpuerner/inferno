@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://bl5h7px3w3u8b"]
+
+[ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
+
+[sub_resource type="GDScript" id="GDScript_sn1df"]
+script/source = "extends Node
+
+@onready var hand_control: Control = get_node(\"HandContainer/HandControl\")
+
+func _ready():
+	hand_control.open_hand()
+"
+
+[sub_resource type="GDScript" id="GDScript_twox6"]
+script/source = "extends VBoxContainer
+
+signal runes_selected(runes: Array)
+
+@onready var deck_handler: Node = get_node(\"/root/DeckHandler\")
+@onready var sub_container: HBoxContainer = $HBoxContainer
+
+func open_hand():
+	var hand: Array = deck_handler.get_hand()
+	for rune in hand:
+		var rune_card = preload(\"res://scenes/runes/rune_card/rune_card.tscn\").instantiate()
+		sub_container.add_child(rune_card)
+		rune_card.rune = rune
+	visible = true
+
+func _on_button_pressed():
+	deck_handler.activate_hand()
+	visible = false
+"
+
+[node name="Main" type="Node"]
+script = SubResource("GDScript_sn1df")
+
+[node name="Level" parent="." instance=ExtResource("1_ddhtq")]
+
+[node name="HandContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HandControl" type="VBoxContainer" parent="HandContainer"]
+layout_mode = 2
+script = SubResource("GDScript_twox6")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HandContainer/HandControl"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HandContainer/HandControl"]
+layout_mode = 2
+text = "READY"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 407.0
+offset_bottom = 47.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="ManaBar" type="ProgressBar" parent="MarginContainer"]
+layout_mode = 2
+max_value = 1000.0
+step = 1.0
+value = 1000.0
+rounded = true
+
+[connection signal="pressed" from="HandContainer/HandControl/Button" to="HandContainer/HandControl" method="_on_button_pressed"]
