@@ -7,3 +7,7 @@ func ready_player(player: Node2D):
 signal level_reset()
 func reset_level():
 	level_reset.emit()
+	
+signal level_started()
+func start_level():
+	level_started.emit()

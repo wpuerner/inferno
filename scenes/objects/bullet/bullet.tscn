@@ -3,21 +3,27 @@
 [ext_resource type="Texture2D" uid="uid://cyiogf8t40p6s" path="res://scenes/objects/bullet/bullet.png" id="1_g3l6f"]
 
 [sub_resource type="GDScript" id="GDScript_slh0c"]
-script/source = "extends RigidBody2D
+script/source = "extends Area2D
 
 var bounds: Rect2
+var speed: float = 600
 
 func _ready():
 	bounds = get_viewport_rect().grow(20)
 
-func _physics_process(_delta):
+func _physics_process(delta: float):
 	if !bounds.has_point(global_position): queue_free()
+	global_position += delta * Vector2(speed, 0).rotated(global_rotation)
+
+func _on_body_entered(body):
+	if body.health_attribute: body.health_attribute.apply_damage(20)
+	queue_free()
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jtiw3"]
 radius = 11.0
 
-[node name="Bullet" type="RigidBody2D"]
+[node name="Bullet" type="Area2D"]
 collision_layer = 0
 collision_mask = 2
 script = SubResource("GDScript_slh0c")
@@ -27,3 +33,5 @@ texture = ExtResource("1_g3l6f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_jtiw3")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

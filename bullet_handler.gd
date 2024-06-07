@@ -4,7 +4,6 @@ extends Node
 @onready var mana_handler: Node = get_node("/root/ManaHandler")
 @onready var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
-var bullet_speed: float
 var fire_rate: float  #shots per minute
 var automatic_fire: bool
 var spread_angle: float  #degrees
@@ -40,11 +39,9 @@ func _fire_bullet():
 	add_child(bullet)
 	bullet.global_position = player.global_position
 	var angle = rng.randf_range(-spread_angle / 2, spread_angle / 2)
-	var direction = (get_viewport().get_mouse_position() - player.global_position).normalized().rotated(deg_to_rad(angle))
-	bullet.linear_velocity = bullet_speed * direction
+	bullet.global_rotation = player.global_position.angle_to_point(get_viewport().get_mouse_position()) + deg_to_rad(angle)
 
 func _reset():
-	bullet_speed = 600
 	fire_rate = 60
 	automatic_fire = false
 	spread_angle = 0
