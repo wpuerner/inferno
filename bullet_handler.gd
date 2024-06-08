@@ -16,7 +16,7 @@ var timer: Timer
 func _ready():
 	_reset()
 	event_bus.player_ready.connect(_register_player)
-	event_bus.level_reset.connect(_reset)
+	event_bus.level_loaded.connect(_reset)
 	timer = Timer.new()
 	add_child(timer)
 	timer.one_shot = true

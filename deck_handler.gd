@@ -28,6 +28,7 @@ func _shuffle():
 
 func get_hand() -> Array:
 	for i in 5:
+		if deck.is_empty(): _shuffle()
 		hand.append(deck.pop_back())
 	return hand
 
@@ -35,6 +36,7 @@ func activate_hand():
 	for rune in selected_runes:
 		rune.activate()
 	selected_runes.clear()
+	discard.append_array(hand)
 	hand.clear()
 	
 func change_rune_selection_state(rune: Node, selected: bool):

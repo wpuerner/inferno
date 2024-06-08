@@ -21,6 +21,7 @@ EventBus="*res://event_bus.gd"
 BulletHandler="*res://bullet_handler.gd"
 DeckHandler="*res://deck_handler.gd"
 ManaHandler="*res://mana_handler.gd"
+EnemyHandler="*res://enemy_handler.gd"
 
 [display]
 

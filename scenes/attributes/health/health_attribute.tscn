@@ -8,9 +8,6 @@ script/source = "extends Node
 		health = value
 		if health <= 0:
 			get_parent().queue_free()
-
-func apply_damage(amount: int):
-	health = health - amount
 "
 
 [node name="HealthAttribute" type="Node"]

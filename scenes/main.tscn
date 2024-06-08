@@ -1,14 +1,45 @@
-[gd_scene load_steps=6 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=7 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
+[ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
 script/source = "extends Node
 
+@onready var event_bus: Node = get_node(\"/root/EventBus\")
 @onready var hand_control: Control = get_node(\"HandContainer/HandControl\")
+@onready var player: Node2D = $Player
+
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var level_number: int = 1
+var exit_position: Vector2 = Vector2.ZERO
 
 func _ready():
-	hand_control.open_hand()
+	_load_level()
+
+func _load_level():
+	find_child(\"LevelNumberLabel\").text = str(level_number)
+	event_bus.load_level()
+	player.global_position = exit_position
+	_start_pre_level()
+
+func _start_pre_level():
+	event_bus.start_pre_level()
+	
+func start_gameplay():
+	event_bus.start_gameplay()
+	
+func open_exit():
+	event_bus.open_exit()
+	exit_position = Vector2(rng.randf_range(50, get_viewport().get_visible_rect().end.x - 50), rng.randf_range(50, get_viewport().get_visible_rect().end.y - 50))
+	var hole = preload(\"res://scenes/environment/hole/hole.tscn\").instantiate()
+	hole.player_entered.connect(_switch_levels)
+	add_child(hole)
+	hole.global_position = exit_position
+	
+func _switch_levels():
+	level_number += 1
+	_load_level()
 "
 
 [sub_resource type="Curve2D" id="Curve2D_0pryu"]
@@ -20,27 +51,10 @@ point_count = 5
 [sub_resource type="GDScript" id="GDScript_4tqpj"]
 script/source = "extends PathFollow2D
 
-@onready var timer: Timer = $Timer
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-
-var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var speed: float = 500
-
-func _ready():
-	event_bus.level_started.connect(_start_spawning)
-	timer.timeout.connect(_spawn)
 
 func _physics_process(delta: float):
 	progress += speed * delta
-
-func _start_spawning():
-	timer.start(rng.randf_range(0.5, 3.0))
-	
-func _spawn():
-	var skull = preload(\"res://scenes/mobs/skull/skull.tscn\").instantiate()
-	get_node(\"/root/Main\").add_child(skull)
-	skull.global_position = global_position
-	timer.start(rng.randf_range(0.5, 3.0))
 "
 
 [sub_resource type="GDScript" id="GDScript_twox6"]
@@ -51,8 +65,12 @@ signal runes_selected(runes: Array)
 @onready var deck_handler: Node = get_node(\"/root/DeckHandler\")
 @onready var sub_container: HBoxContainer = $HBoxContainer
 @onready var event_bus: Node = get_node(\"/root/EventBus\")
+@onready var main: Node = get_node(\"/root/Main\")
 
-func open_hand():
+func _ready():
+	event_bus.pre_level_started.connect(_open_hand)
+
+func _open_hand():
 	var hand: Array = deck_handler.get_hand()
 	for rune in hand:
 		var rune_card = preload(\"res://scenes/runes/rune_card/rune_card.tscn\").instantiate()
@@ -63,11 +81,15 @@ func open_hand():
 func _on_button_pressed():
 	deck_handler.activate_hand()
 	visible = false
-	event_bus.start_level()
+	for child in sub_container.get_children():
+		child.queue_free()
+	main.start_gameplay()
 "
 
 [node name="Main" type="Node"]
 script = SubResource("GDScript_sn1df")
+
+[node name="Player" parent="." instance=ExtResource("1_tjb1v")]
 
 [node name="Level" parent="." instance=ExtResource("1_ddhtq")]
 
@@ -78,9 +100,6 @@ curve = SubResource("Curve2D_0pryu")
 position = Vector2(-55, -53)
 rotation = 0.00196174
 script = SubResource("GDScript_4tqpj")
-
-[node name="Timer" type="Timer" parent="SkullSpawnerPath2D/SkullSpawner"]
-one_shot = true
 
 [node name="HandContainer" type="CenterContainer" parent="."]
 anchors_preset = 15
@@ -112,5 +131,18 @@ max_value = 1000.0
 step = 1.0
 value = 1000.0
 rounded = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="LevelNumberLabel" type="Label" parent="MarginContainer2"]
+layout_mode = 2
 
 [connection signal="pressed" from="HandContainer/HandControl/Button" to="HandContainer/HandControl" method="_on_button_pressed"]
