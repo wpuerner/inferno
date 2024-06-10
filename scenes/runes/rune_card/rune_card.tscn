@@ -5,7 +5,7 @@
 [sub_resource type="GDScript" id="GDScript_ag2pn"]
 script/source = "extends TextureButton
 
-@onready var deck_handler: Node = get_node(\"/root/DeckHandler\")
+signal selection_state_changed(rune: Rune, selected: bool)
 
 var default_position: Vector2
 var default_modulate: Color
@@ -27,7 +27,7 @@ func _on_mouse_exited():
 	tween.tween_property(self, \"position\", Vector2(default_position.x, default_position.y), 0.1)
 
 func _on_toggled(button_pressed):
-	deck_handler.change_rune_selection_state(rune, button_pressed)
+	selection_state_changed.emit(rune, button_pressed)
 	if !default_modulate: default_modulate = modulate
 	if tween: tween.kill()
 	tween = create_tween()

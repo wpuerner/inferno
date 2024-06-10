@@ -1,28 +1,26 @@
 extends Node
 
 @onready var event_bus: Node = get_node("/root/EventBus")
-@onready var mana_handler: Node = get_node("/root/ManaHandler")
+@onready var mana_handler: Node = get_node("/root/Main/ManaHandler")
 @onready var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+@onready var player: Node2D = get_node("/root/Main").find_child("Player")
 
 var fire_rate: float  #shots per minute
 var automatic_fire: bool
 var spread_angle: float  #degrees
 var num_bullets: int
 var mana_cost: int
-
-var player: Node2D
 var timer: Timer
 
 func _ready():
 	_reset()
-	event_bus.player_ready.connect(_register_player)
 	event_bus.level_loaded.connect(_reset)
+	event_bus.level_loaded.connect(func(): set_physics_process(false))
+	event_bus.player_killed.connect(func(): set_physics_process(false))
+	event_bus.gameplay_started.connect(func(): set_physics_process(true))
 	timer = Timer.new()
 	add_child(timer)
 	timer.one_shot = true
-
-func _register_player(player: Node2D):
-	self.player = player
 		
 func _physics_process(_delta):
 	if (timer.time_left > 0): return

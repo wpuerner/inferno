@@ -6,7 +6,7 @@
 script/source = "extends Rune
 
 func activate():
-	var bullet_handler = get_node(\"/root/BulletHandler\")
+	var bullet_handler = get_node(\"/root/Main/BulletHandler\")
 	bullet_handler.spread_angle += 15
 	bullet_handler.num_bullets += 2
 "

@@ -5,7 +5,7 @@
 [sub_resource type="GDScript" id="GDScript_2w1hf"]
 script/source = "extends Rune
 
-@onready var bullet_handler: Node = get_node(\"/root/BulletHandler\")
+@onready var bullet_handler: Node = get_node(\"/root/Main/BulletHandler\")
 
 func activate():
 	bullet_handler.automatic_fire = true

@@ -1,6 +1,7 @@
 extends Node
 
 @onready var mana_bar: ProgressBar = get_node("/root/Main").find_child("ManaBar")
+@onready var event_bus: Node = get_node("/root/EventBus")
 
 var mana_gain_rate: int  #mana per second
 
@@ -11,7 +12,7 @@ var mana: int:
 var timer: Timer
 
 func _ready():
-	_reset()
+	event_bus.level_loaded.connect(_reset)
 	timer = Timer.new()
 	add_child(timer)
 	timer.one_shot = false

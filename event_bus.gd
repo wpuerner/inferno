@@ -1,9 +1,5 @@
 extends Node
 
-signal player_ready(player: Node2D)
-func ready_player(player: Node2D):
-	player_ready.emit(player)
-
 signal level_loaded
 func load_level():
 	level_loaded.emit()
@@ -19,3 +15,11 @@ func start_gameplay():
 signal exit_opened
 func open_exit():
 	exit_opened.emit()
+	
+signal player_killed
+func kill_player():
+	player_killed.emit()
+	
+signal game_restarted
+func restart_game():
+	game_restarted.emit()

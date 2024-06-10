@@ -1,12 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=10 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
-[ext_resource type="Script" path="res://scenes/handlers/mana_handler.gd" id="3_vxcn8"]
-[ext_resource type="Script" path="res://scenes/handlers/bullet_handler.gd" id="4_6fohk"]
-[ext_resource type="Script" path="res://scenes/handlers/deck_handler.gd" id="5_jnbq5"]
-[ext_resource type="Script" path="res://scenes/handlers/enemy_handler.gd" id="6_8s2jp"]
-[ext_resource type="Script" path="res://scenes/handlers/health_handler.gd" id="7_gre6j"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
 script/source = "extends Node
@@ -68,6 +63,35 @@ func _physics_process(delta: float):
 	progress += speed * delta
 "
 
+[sub_resource type="GDScript" id="GDScript_twox6"]
+script/source = "extends VBoxContainer
+
+signal runes_selected(runes: Array)
+
+@onready var deck_handler: Node = get_node(\"/root/DeckHandler\")
+@onready var sub_container: HBoxContainer = $HBoxContainer
+@onready var event_bus: Node = get_node(\"/root/EventBus\")
+@onready var main: Node = get_node(\"/root/Main\")
+
+func _ready():
+	event_bus.pre_level_started.connect(_open_hand)
+
+func _open_hand():
+	var hand: Array = deck_handler.get_hand()
+	for rune in hand:
+		var rune_card = preload(\"res://scenes/runes/rune_card/rune_card.tscn\").instantiate()
+		sub_container.add_child(rune_card)
+		rune_card.rune = rune
+	visible = true
+
+func _on_button_pressed():
+	deck_handler.activate_hand()
+	visible = false
+	for child in sub_container.get_children():
+		child.queue_free()
+	main.start_gameplay()
+"
+
 [sub_resource type="GDScript" id="GDScript_6s5x2"]
 script/source = "extends CenterContainer
 
@@ -98,18 +122,16 @@ func _input(event: InputEvent):
 		_pause()
 		
 func _unpause():
-	get_tree().paused = false
 	event_bus.change_pause_state(false)
 	visible = false
 	
 func _pause():
-	get_tree().paused = true
 	event_bus.change_pause_state(true)
 	visible = true
 
 func _go_to_menu():
-	get_tree().paused = false
-	menu_handler.activate_menu()
+	menu_handler.
+
 
 func _on_resume_button_pressed():
 	_unpause()
@@ -149,6 +171,24 @@ curve = SubResource("Curve2D_0pryu")
 position = Vector2(-55, -53)
 rotation = 0.00196174
 script = SubResource("GDScript_4tqpj")
+
+[node name="HandContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HandControl" type="VBoxContainer" parent="HandContainer"]
+layout_mode = 2
+script = SubResource("GDScript_twox6")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HandContainer/HandControl"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HandContainer/HandControl"]
+layout_mode = 2
+text = "READY"
 
 [node name="ManaBarContainer" type="MarginContainer" parent="."]
 offset_right = 407.0
@@ -214,42 +254,7 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Restart"
 
-[node name="ManaHandler" type="Node" parent="."]
-script = ExtResource("3_vxcn8")
-
-[node name="BulletHandler" type="Node" parent="."]
-script = ExtResource("4_6fohk")
-
-[node name="DeckHandler" type="Node" parent="."]
-script = ExtResource("5_jnbq5")
-
-[node name="HandContainer" type="CenterContainer" parent="DeckHandler"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="DeckHandler/HandContainer"]
-layout_mode = 2
-
-[node name="Hand" type="HBoxContainer" parent="DeckHandler/HandContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="DeckHandler/HandContainer/VBoxContainer"]
-layout_mode = 2
-text = "READY"
-
-[node name="EnemyHandler" type="Node" parent="."]
-script = ExtResource("6_8s2jp")
-
-[node name="HealthHandler" type="Node" parent="."]
-script = ExtResource("7_gre6j")
-
 [node name="PauseMenu" type="ColorRect" parent="."]
-process_mode = 3
-visible = false
-z_index = 100
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -280,18 +285,16 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="ResumeButton" type="Button" parent="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
-process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Resume"
 
 [node name="MenuButton" type="Button" parent="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
-process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Menu"
 
+[connection signal="pressed" from="HandContainer/HandControl/Button" to="HandContainer/HandControl" method="_on_button_pressed"]
 [connection signal="pressed" from="GameOverContainer/VBoxContainer/GameOverButton" to="GameOverContainer" method="_on_game_over_button_pressed"]
-[connection signal="pressed" from="DeckHandler/HandContainer/VBoxContainer/Button" to="DeckHandler" method="_on_button_pressed"]
 [connection signal="pressed" from="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="PauseMenu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="PauseMenu" method="_on_menu_button_pressed"]
