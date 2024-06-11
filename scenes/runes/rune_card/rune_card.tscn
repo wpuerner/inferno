@@ -1,55 +1,84 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7ivjbpb6yng8"]
+[gd_scene load_steps=4 format=3 uid="uid://b7ivjbpb6yng8"]
 
-[ext_resource type="Texture2D" uid="uid://cf3unrbs2h5i2" path="res://scenes/runes/rune_card/rune_card.png" id="1_24nby"]
+[ext_resource type="StyleBox" uid="uid://cpvkdstgptn5i" path="res://scenes/runes/rune_card/rune_card_panel_style.tres" id="1_6kmqc"]
+[ext_resource type="Texture2D" uid="uid://nagfs5iiix31" path="res://scenes/runes/explosive/explosive.png" id="1_c4kq1"]
 
 [sub_resource type="GDScript" id="GDScript_ag2pn"]
-script/source = "extends TextureButton
+script/source = "extends PanelContainer
 
 signal selection_state_changed(rune: Rune, selected: bool)
 
+@onready var display_name_label: Label = find_child(\"DisplayNameLabel\")
+@onready var rune_texture: TextureRect = find_child(\"TextureRect\")
+@onready var vbox_container: VBoxContainer = find_child(\"VBoxContainer\")
+
+var is_hovered: bool = false
+var is_selected: bool = false
 var default_position: Vector2
 var default_modulate: Color
 var tween: Tween
 var rune: Rune:
 	set(value):
 		rune = value
-		$TextureRect.texture = value.texture
+		_generate(rune)
 
 func _on_mouse_entered():
+	is_hovered = true
 	if !default_position: default_position = position
 	if tween: tween.kill()
 	tween = create_tween()
 	tween.tween_property(self, \"position\", Vector2(default_position.x, default_position.y - 15), 0.1)
 	
 func _on_mouse_exited():
+	is_hovered = false
 	if tween: tween.kill()
 	tween = create_tween()
 	tween.tween_property(self, \"position\", Vector2(default_position.x, default_position.y), 0.1)
 
-func _on_toggled(button_pressed):
-	selection_state_changed.emit(rune, button_pressed)
+func _input(event: InputEvent):
+	if !event.is_action_pressed(\"primary\"): return
+	if is_hovered: _toggle_selection_state()
+
+func _toggle_selection_state():
+	is_selected = !is_selected
+	selection_state_changed.emit(rune, is_selected)
 	if !default_modulate: default_modulate = modulate
 	if tween: tween.kill()
 	tween = create_tween()
-	tween.tween_property(self, \"modulate\", Color.SKY_BLUE if button_pressed else default_modulate, 0.1)
+	tween.tween_property(self, \"modulate\", Color.SKY_BLUE if is_selected else default_modulate, 0.1)
+
+func _generate(rune: Rune):
+	display_name_label.text = rune.display_name
+	rune_texture.texture = rune.texture
+	for display_name in rune.get_modifier_display_names():
+		var modifier_label = preload(\"res://scenes/runes/rune_card/modifier_label.tscn\").instantiate()
+		vbox_container.add_child(modifier_label)
+		modifier_label.text = display_name
 "
 
-[node name="RuneCard" type="TextureButton"]
-offset_top = -50.0
-offset_right = 256.0
-offset_bottom = 206.0
-toggle_mode = true
-texture_normal = ExtResource("1_24nby")
+[node name="RuneCard" type="PanelContainer"]
+custom_minimum_size = Vector2(40, 50)
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 266.0
+offset_bottom = 307.0
+theme_override_styles/panel = ExtResource("1_6kmqc")
 script = SubResource("GDScript_ag2pn")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="DisplayNameLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "DISPLAY NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_c4kq1")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="toggled" from="." to="." method="_on_toggled"]

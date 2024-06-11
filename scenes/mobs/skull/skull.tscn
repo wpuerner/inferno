@@ -8,7 +8,7 @@ script/source = "extends Area2D
 
 @export var health_attribute: HealthAttribute
 
-@onready var health_handler: Node = get_node(\"/root/HealthHandler\")
+@onready var health_handler: Node = get_node(\"/root/Main/HealthHandler\")
 
 const speed: float = 150
 var player: CharacterBody2D

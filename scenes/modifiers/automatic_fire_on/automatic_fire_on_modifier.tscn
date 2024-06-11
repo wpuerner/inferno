@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://deo6qs55asttj"]
+
+[ext_resource type="Resource" uid="uid://yvstek8jsq1s" path="res://scenes/attributes/automatic_fire/automatic_fire_attribute.tres" id="1_vqlgn"]
+
+[sub_resource type="GDScript" id="GDScript_ejh7e"]
+script/source = "extends Modifier
+
+@export var automatic_fire_attribute: Attribute
+
+func activate():
+	automatic_fire_attribute.set_value(true)
+"
+
+[node name="AutomaticFireOnModifier" type="Node"]
+script = SubResource("GDScript_ejh7e")
+automatic_fire_attribute = ExtResource("1_vqlgn")
+display_name = "Automatic Fire On"

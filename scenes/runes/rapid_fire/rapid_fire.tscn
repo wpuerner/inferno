@@ -1,17 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://drn72cu2ncene"]
+[gd_scene load_steps=5 format=3 uid="uid://drn72cu2ncene"]
 
 [ext_resource type="Texture2D" uid="uid://dxanw34iblju1" path="res://scenes/runes/rapid_fire/rapid_fire.png" id="1_0otus"]
-
-[sub_resource type="GDScript" id="GDScript_2w1hf"]
-script/source = "extends Rune
-
-@onready var bullet_handler: Node = get_node(\"/root/Main/BulletHandler\")
-
-func activate():
-	bullet_handler.automatic_fire = true
-	bullet_handler.fire_rate *= 2
-"
+[ext_resource type="Script" path="res://scenes/runes/rune.gd" id="1_ju18h"]
+[ext_resource type="PackedScene" uid="uid://cf0wc2u7c5m17" path="res://scenes/modifiers/fire_rate_up/fire_rate_up_modifier.tscn" id="2_2s5hw"]
+[ext_resource type="PackedScene" uid="uid://deo6qs55asttj" path="res://scenes/modifiers/automatic_fire_on/automatic_fire_on_modifier.tscn" id="4_3fcec"]
 
 [node name="RapidFire" type="Node"]
-script = SubResource("GDScript_2w1hf")
+script = ExtResource("1_ju18h")
+display_name = "Rapid Fire"
 texture = ExtResource("1_0otus")
+
+[node name="FireRateUpModifier" parent="." instance=ExtResource("2_2s5hw")]
+
+[node name="AutomaticFireOnModifier" parent="." instance=ExtResource("4_3fcec")]

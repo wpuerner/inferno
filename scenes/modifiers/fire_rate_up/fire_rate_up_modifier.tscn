@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf0wc2u7c5m17"]
+
+[ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate/fire_rate_attribute.tres" id="1_xgt48"]
+
+[sub_resource type="GDScript" id="GDScript_grsgl"]
+script/source = "extends Modifier
+
+@export var fire_rate_attribute: Attribute
+
+func activate():
+	fire_rate_attribute.set_value(fire_rate_attribute.get_value() * 1.5)
+"
+
+[node name="FireRateUpModifier" type="Node"]
+script = SubResource("GDScript_grsgl")
+fire_rate_attribute = ExtResource("1_xgt48")
+display_name = "Fire Rate Up"

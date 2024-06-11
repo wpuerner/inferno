@@ -1,12 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=17 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 [ext_resource type="Script" path="res://scenes/handlers/mana_handler.gd" id="3_vxcn8"]
 [ext_resource type="Script" path="res://scenes/handlers/bullet_handler.gd" id="4_6fohk"]
+[ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate/fire_rate_attribute.tres" id="5_cej1e"]
 [ext_resource type="Script" path="res://scenes/handlers/deck_handler.gd" id="5_jnbq5"]
+[ext_resource type="Resource" uid="uid://yvstek8jsq1s" path="res://scenes/attributes/automatic_fire/automatic_fire_attribute.tres" id="6_4q5i8"]
 [ext_resource type="Script" path="res://scenes/handlers/enemy_handler.gd" id="6_8s2jp"]
 [ext_resource type="Script" path="res://scenes/handlers/health_handler.gd" id="7_gre6j"]
+[ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="8_eheqx"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
 script/source = "extends Node
@@ -219,6 +222,8 @@ script = ExtResource("3_vxcn8")
 
 [node name="BulletHandler" type="Node" parent="."]
 script = ExtResource("4_6fohk")
+fire_rate_attribute = ExtResource("5_cej1e")
+automatic_fire_attribute = ExtResource("6_4q5i8")
 
 [node name="DeckHandler" type="Node" parent="."]
 script = ExtResource("5_jnbq5")
@@ -245,6 +250,10 @@ script = ExtResource("6_8s2jp")
 
 [node name="HealthHandler" type="Node" parent="."]
 script = ExtResource("7_gre6j")
+
+[node name="AttributeHandler" type="Node" parent="."]
+script = ExtResource("8_eheqx")
+attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e")])
 
 [node name="PauseMenu" type="ColorRect" parent="."]
 process_mode = 3
