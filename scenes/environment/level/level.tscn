@@ -1,8 +1,102 @@
-[gd_scene load_steps=2 format=3 uid="uid://b54f042muojun"]
+[gd_scene load_steps=7 format=3 uid="uid://b54f042muojun"]
+
+[ext_resource type="Texture2D" uid="uid://ctwmwau6q0h2" path="res://scenes/environment/wall/wall.png" id="1_iyq7q"]
+[ext_resource type="Texture2D" uid="uid://td7rb13l2h5x" path="res://scenes/environment/floor/floor.png" id="1_pw3xs"]
 
 [sub_resource type="GDScript" id="GDScript_erxrp"]
 script/source = "extends Node
+
+signal level_generated(player_coords: Vector2)
+
+@onready var tile_map: TileMap = $TileMap
+
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var grid: Array = []
+
+func generate():
+	rng.randomize()
+	_generate_grid()
+	_paint_floor()
+	_place_walls()
+	_set_tile_map()
+	level_generated.emit(tile_map.to_global(tile_map.map_to_local(Vector2i(1, 1))))
+	
+func _generate_grid():
+	var grid_side_length: int = 100
+	grid.resize(grid_side_length)
+	for i in grid.size():
+		grid[i] = PackedInt32Array()
+		grid[i].resize(grid_side_length)
+		grid[i].fill(0)
+
+func _paint_floor():
+	var length_x: int = grid.size()
+	var length_y: int = grid[0].size()
+	var center_x: int = length_x / 2
+	var center_y: int = length_y / 2
+	
+	var walker: Vector2i = Vector2i(1, 1)
+	grid[walker.x][walker.y] = 1
+	
+	var iterations = 100
+	var itr = 0
+	while itr < iterations:
+		var direction: Vector2i = _get_random_direction()
+		if (walker.x + direction.x > 0 and 
+			walker.x + direction.x < length_x - 1 and
+			walker.y + direction.y > 0 and
+			walker.y + direction.y < length_y - 1):
+			walker += direction
+			grid[walker.x][walker.y] = 1
+			itr += 1
+
+func _get_random_direction() -> Vector2i:
+	var directions = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+	var direction = directions[rng.randi() % 4]
+	return Vector2i(direction[0], direction[1])
+
+func _place_walls():
+	for x in grid.size() - 1:
+		for y in grid[x].size() - 1:
+			if grid[x][y] == 0 and _is_adjacent_to_floor(x, y):
+				grid[x][y] = 2
+				
+func _is_adjacent_to_floor(x: int, y: int):
+	return grid[x+1][y] == 1 or grid[x-1][y] == 1 or grid[x][y+1] == 1 or grid[x][y-1] == 1 or grid[x+1][y+1] == 1 or grid[x-1][y+1] == 1 or grid[x+1][y-1] == 1 or grid[x-1][y-1] == 1
+
+func _set_tile_map():
+	for x in grid.size() - 1:
+		for y in grid[x].size():
+			tile_map.set_cell(0, Vector2i(x, y), grid[x][y], Vector2i(0, 0))
 "
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kfp3a"]
+texture = ExtResource("1_pw3xs")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pe5dn"]
+resource_name = "wall"
+texture = ExtResource("1_iyq7q")
+texture_region_size = Vector2i(128, 128)
+use_texture_padding = false
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[sub_resource type="TileSet" id="TileSet_67fqo"]
+tile_size = Vector2i(128, 128)
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_kfp3a")
+sources/2 = SubResource("TileSetAtlasSource_pe5dn")
 
 [node name="Level" type="Node"]
 script = SubResource("GDScript_erxrp")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_67fqo")
+format = 2
+layer_0/name = "terrain"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=18 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
@@ -16,24 +16,25 @@ script/source = "extends Node
 
 @onready var event_bus: Node = get_node(\"/root/EventBus\")
 @onready var player: Node2D = $Player
+@onready var level: Node = $Level
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var level_number: int = 1
 var exit_position: Vector2
 
 func _ready():
-	exit_position = Vector2(get_viewport().get_visible_rect().size.x / 2, get_viewport().get_visible_rect().size.y / 2)
-	_load_level()
+	level.level_generated.connect(_start_pre_level)
 	event_bus.game_restarted.connect(_restart_game)
+	_load_level()
 
 func _load_level():
 	find_child(\"LevelNumberLabel\").text = str(level_number)
 	event_bus.load_level()
-	player.global_position = exit_position
-	_start_pre_level()
+	level.generate()
 
-func _start_pre_level():
+func _start_pre_level(player_coords: Vector2):
 	event_bus.start_pre_level()
+	player.global_position = player_coords
 	
 func start_gameplay():
 	event_bus.start_gameplay()
@@ -54,6 +55,15 @@ func _restart_game():
 	level_number = 1
 	exit_position = Vector2(get_viewport().get_visible_rect().size.x / 2, get_viewport().get_visible_rect().size.y / 2)
 	_load_level()
+"
+
+[sub_resource type="GDScript" id="GDScript_dnsev"]
+script/source = "extends Camera2D
+
+@onready var player: Node2D = get_parent().find_child(\"Player\")
+
+func _process(_delta):
+	global_position = player.global_position
 "
 
 [sub_resource type="Curve2D" id="Curve2D_0pryu"]
@@ -141,9 +151,12 @@ expand_margin_bottom = 20.0
 [node name="Main" type="Node"]
 script = SubResource("GDScript_sn1df")
 
-[node name="Player" parent="." instance=ExtResource("1_tjb1v")]
+[node name="Camera2D" type="Camera2D" parent="."]
+script = SubResource("GDScript_dnsev")
 
 [node name="Level" parent="." instance=ExtResource("1_ddhtq")]
+
+[node name="Player" parent="." instance=ExtResource("1_tjb1v")]
 
 [node name="SkullSpawnerPath2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_0pryu")
