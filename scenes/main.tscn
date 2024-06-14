@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=17 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
@@ -7,7 +7,6 @@
 [ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate/fire_rate_attribute.tres" id="5_cej1e"]
 [ext_resource type="Script" path="res://scenes/handlers/deck_handler.gd" id="5_jnbq5"]
 [ext_resource type="Resource" uid="uid://yvstek8jsq1s" path="res://scenes/attributes/automatic_fire/automatic_fire_attribute.tres" id="6_4q5i8"]
-[ext_resource type="Script" path="res://scenes/handlers/enemy_handler.gd" id="6_8s2jp"]
 [ext_resource type="Script" path="res://scenes/handlers/health_handler.gd" id="7_gre6j"]
 [ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="8_eheqx"]
 
@@ -20,32 +19,23 @@ script/source = "extends Node
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var level_number: int = 1
-var exit_position: Vector2
 
 func _ready():
-	level.level_generated.connect(_start_pre_level)
 	event_bus.game_restarted.connect(_restart_game)
+	event_bus.level_cleared.connect(_switch_levels)
 	_load_level()
 
 func _load_level():
 	find_child(\"LevelNumberLabel\").text = str(level_number)
 	event_bus.load_level()
-	level.generate()
+	_start_pre_level(level.generate(level_number))
 
-func _start_pre_level(player_coords: Vector2):
+func _start_pre_level(starting_position: Vector2):
 	event_bus.start_pre_level()
-	player.global_position = player_coords
+	player.global_position = starting_position
 	
 func start_gameplay():
 	event_bus.start_gameplay()
-	
-func open_exit():
-	event_bus.open_exit()
-	exit_position = Vector2(rng.randf_range(50, get_viewport().get_visible_rect().end.x - 50), rng.randf_range(50, get_viewport().get_visible_rect().end.y - 50))
-	var hole = preload(\"res://scenes/environment/hole/hole.tscn\").instantiate()
-	hole.player_entered.connect(_switch_levels)
-	add_child(hole)
-	hole.global_position = exit_position
 	
 func _switch_levels():
 	level_number += 1
@@ -53,17 +43,7 @@ func _switch_levels():
 
 func _restart_game():
 	level_number = 1
-	exit_position = Vector2(get_viewport().get_visible_rect().size.x / 2, get_viewport().get_visible_rect().size.y / 2)
 	_load_level()
-"
-
-[sub_resource type="GDScript" id="GDScript_dnsev"]
-script/source = "extends Camera2D
-
-@onready var player: Node2D = get_parent().find_child(\"Player\")
-
-func _process(_delta):
-	global_position = player.global_position
 "
 
 [sub_resource type="Curve2D" id="Curve2D_0pryu"]
@@ -148,11 +128,17 @@ expand_margin_top = 20.0
 expand_margin_right = 20.0
 expand_margin_bottom = 20.0
 
+[sub_resource type="GDScript" id="GDScript_dnsev"]
+script/source = "extends Camera2D
+
+@onready var player: Node2D = get_parent().find_child(\"Player\")
+
+func _process(_delta):
+	global_position = player.global_position
+"
+
 [node name="Main" type="Node"]
 script = SubResource("GDScript_sn1df")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-script = SubResource("GDScript_dnsev")
 
 [node name="Level" parent="." instance=ExtResource("1_ddhtq")]
 
@@ -166,70 +152,6 @@ position = Vector2(-55, -53)
 rotation = 0.00196174
 script = SubResource("GDScript_4tqpj")
 
-[node name="ManaBarContainer" type="MarginContainer" parent="."]
-offset_right = 407.0
-offset_bottom = 47.0
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-
-[node name="ManaBar" type="ProgressBar" parent="ManaBarContainer"]
-layout_mode = 2
-max_value = 1000.0
-step = 1.0
-value = 1000.0
-rounded = true
-
-[node name="LevelNumberContainer" type="MarginContainer" parent="."]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-
-[node name="LevelNumberLabel" type="Label" parent="LevelNumberContainer"]
-layout_mode = 2
-
-[node name="HealthBarContainer" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(1000, 0)
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 47.0
-grow_horizontal = 2
-theme_override_constants/margin_top = 20
-
-[node name="HealthBar" type="ProgressBar" parent="HealthBarContainer"]
-layout_mode = 2
-step = 1.0
-value = 100.0
-
-[node name="GameOverContainer" type="CenterContainer" parent="."]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = SubResource("GDScript_6s5x2")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GameOverContainer"]
-layout_mode = 2
-
-[node name="GameOverLabel" type="Label" parent="GameOverContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Game Over"
-horizontal_alignment = 1
-
-[node name="GameOverButton" type="Button" parent="GameOverContainer/VBoxContainer"]
-layout_mode = 2
-text = "Restart"
-
 [node name="ManaHandler" type="Node" parent="."]
 script = ExtResource("3_vxcn8")
 
@@ -241,26 +163,6 @@ automatic_fire_attribute = ExtResource("6_4q5i8")
 [node name="DeckHandler" type="Node" parent="."]
 script = ExtResource("5_jnbq5")
 
-[node name="HandContainer" type="CenterContainer" parent="DeckHandler"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="DeckHandler/HandContainer"]
-layout_mode = 2
-
-[node name="Hand" type="HBoxContainer" parent="DeckHandler/HandContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="DeckHandler/HandContainer/VBoxContainer"]
-layout_mode = 2
-text = "READY"
-
-[node name="EnemyHandler" type="Node" parent="."]
-script = ExtResource("6_8s2jp")
-
 [node name="HealthHandler" type="Node" parent="."]
 script = ExtResource("7_gre6j")
 
@@ -268,7 +170,81 @@ script = ExtResource("7_gre6j")
 script = ExtResource("8_eheqx")
 attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e")])
 
-[node name="PauseMenu" type="ColorRect" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOverContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 272.0
+offset_bottom = 107.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_6s5x2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverContainer"]
+layout_mode = 2
+
+[node name="GameOverLabel" type="Label" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="GameOverButton" type="Button" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
+layout_mode = 2
+text = "Restart"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 41.0
+offset_bottom = 51.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="ManaBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 1000.0
+step = 1.0
+value = 1000.0
+rounded = true
+
+[node name="LevelNumberLabel" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+step = 1.0
+value = 100.0
+
+[node name="HandContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 59.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HandContainer"]
+layout_mode = 2
+
+[node name="Hand" type="HBoxContainer" parent="CanvasLayer/HandContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/HandContainer/VBoxContainer"]
+layout_mode = 2
+text = "READY"
+
+[node name="PauseMenu" type="ColorRect" parent="CanvasLayer"]
 process_mode = 3
 visible = false
 z_index = 100
@@ -280,7 +256,7 @@ grow_vertical = 2
 color = Color(1, 1, 1, 0.14902)
 script = SubResource("GDScript_wr0e6")
 
-[node name="PanelContainer" type="PanelContainer" parent="PauseMenu"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PauseMenu"]
 layout_mode = 2
 offset_left = 881.0
 offset_top = 491.0
@@ -288,32 +264,35 @@ offset_right = 1039.0
 offset_bottom = 588.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pvm7y")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseMenu/PanelContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PauseMenu/PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "PAUSED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PauseMenu/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ResumeButton" type="Button" parent="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
 process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Resume"
 
-[node name="MenuButton" type="Button" parent="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="MenuButton" type="Button" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
 process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Menu"
 
-[connection signal="pressed" from="GameOverContainer/VBoxContainer/GameOverButton" to="GameOverContainer" method="_on_game_over_button_pressed"]
-[connection signal="pressed" from="DeckHandler/HandContainer/VBoxContainer/Button" to="DeckHandler" method="_on_button_pressed"]
-[connection signal="pressed" from="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="PauseMenu" method="_on_resume_button_pressed"]
-[connection signal="pressed" from="PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="PauseMenu" method="_on_menu_button_pressed"]
+[node name="Camera2D" type="Camera2D" parent="."]
+script = SubResource("GDScript_dnsev")
+
+[connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/GameOverButton" to="CanvasLayer/GameOverContainer" method="_on_game_over_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/HandContainer/VBoxContainer/Button" to="DeckHandler" method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PauseMenu" method="_on_resume_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="CanvasLayer/PauseMenu" method="_on_menu_button_pressed"]

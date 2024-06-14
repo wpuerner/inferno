@@ -1,25 +1,32 @@
-[gd_scene load_steps=7 format=3 uid="uid://b54f042muojun"]
+[gd_scene load_steps=8 format=3 uid="uid://b54f042muojun"]
 
 [ext_resource type="Texture2D" uid="uid://ctwmwau6q0h2" path="res://scenes/environment/wall/wall.png" id="1_iyq7q"]
 [ext_resource type="Texture2D" uid="uid://td7rb13l2h5x" path="res://scenes/environment/floor/floor.png" id="1_pw3xs"]
+[ext_resource type="Script" path="res://scenes/environment/level/enemy_spawner.gd" id="3_jlef0"]
 
 [sub_resource type="GDScript" id="GDScript_erxrp"]
 script/source = "extends Node
 
-signal level_generated(player_coords: Vector2)
-
 @onready var tile_map: TileMap = $TileMap
+@onready var enemy_spawner: Node = $EnemySpawner
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var starting_position: Vector2i
 var grid: Array = []
+var spawn_positions: PackedVector2Array = []
 
-func generate():
+func _ready():
+	generate(1)  # Debugging
+
+func generate(level_number: int) -> Vector2:
 	rng.randomize()
 	_generate_grid()
 	_paint_floor()
 	_place_walls()
 	_set_tile_map()
-	level_generated.emit(tile_map.to_global(tile_map.map_to_local(Vector2i(1, 1))))
+	_generate_spawn_positions()
+	enemy_spawner.spawn(spawn_positions, level_number * 10)
+	return tile_map.to_global(tile_map.map_to_local(starting_position))
 	
 func _generate_grid():
 	var grid_side_length: int = 100
@@ -32,13 +39,12 @@ func _generate_grid():
 func _paint_floor():
 	var length_x: int = grid.size()
 	var length_y: int = grid[0].size()
-	var center_x: int = length_x / 2
-	var center_y: int = length_y / 2
 	
-	var walker: Vector2i = Vector2i(1, 1)
+	starting_position = Vector2i(grid.size() / 2, grid[0].size() / 2)
+	var walker: Vector2i = starting_position
 	grid[walker.x][walker.y] = 1
 	
-	var iterations = 100
+	var iterations = 200
 	var itr = 0
 	while itr < iterations:
 		var direction: Vector2i = _get_random_direction()
@@ -60,7 +66,7 @@ func _place_walls():
 		for y in grid[x].size() - 1:
 			if grid[x][y] == 0 and _is_adjacent_to_floor(x, y):
 				grid[x][y] = 2
-				
+
 func _is_adjacent_to_floor(x: int, y: int):
 	return grid[x+1][y] == 1 or grid[x-1][y] == 1 or grid[x][y+1] == 1 or grid[x][y-1] == 1 or grid[x+1][y+1] == 1 or grid[x-1][y+1] == 1 or grid[x+1][y-1] == 1 or grid[x-1][y-1] == 1
 
@@ -68,6 +74,12 @@ func _set_tile_map():
 	for x in grid.size() - 1:
 		for y in grid[x].size():
 			tile_map.set_cell(0, Vector2i(x, y), grid[x][y], Vector2i(0, 0))
+
+func _generate_spawn_positions():
+	for x in grid.size():
+		for y in grid[x].size():
+			if grid[x][y] == 1 and Vector2i(x - starting_position.x, y - starting_position.y).abs().length() > 5:
+				spawn_positions.append(tile_map.to_global(tile_map.map_to_local(Vector2(x, y))))
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kfp3a"]
@@ -100,3 +112,6 @@ script = SubResource("GDScript_erxrp")
 tile_set = SubResource("TileSet_67fqo")
 format = 2
 layer_0/name = "terrain"
+
+[node name="EnemySpawner" type="Node" parent="."]
+script = ExtResource("3_jlef0")

@@ -12,9 +12,9 @@ signal gameplay_started
 func start_gameplay():
 	gameplay_started.emit()
 
-signal exit_opened
-func open_exit():
-	exit_opened.emit()
+signal level_cleared
+func clear_level():
+	level_cleared.emit()
 	
 signal player_killed
 func kill_player():

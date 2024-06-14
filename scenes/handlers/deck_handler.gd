@@ -2,8 +2,8 @@ extends Node
 
 @onready var event_bus: Node = get_node("/root/EventBus")
 @onready var main: Node = get_node("/root/Main")
-@onready var hand_control: Control = find_child("Hand")
-@onready var hand_container: Control = find_child("HandContainer")
+@onready var hand_control: Control = main.find_child("Hand")
+@onready var hand_container: Control = main.find_child("HandContainer")
 
 var rune_scene_paths: PackedStringArray = [
 	"res://scenes/runes/scatter_shot/scatter_shot.tscn",
