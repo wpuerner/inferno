@@ -5,22 +5,21 @@
 [sub_resource type="GDScript" id="GDScript_slh0c"]
 script/source = "extends Area2D
 
-var bounds: Rect2
 var speed: float = 600
 
-func _ready():
-	bounds = get_viewport_rect().grow(20)
+func init(position: Vector2):
+	global_position = position
+	global_rotation = global_position.angle_to_point(get_global_mouse_position())
 
 func _physics_process(delta: float):
-	if !bounds.has_point(global_position): queue_free()
 	global_position += delta * Vector2(speed, 0).rotated(global_rotation)
 
 func _on_body_entered(body):
-	if body.health_attribute: body.health_attribute.apply_damage(20)
+	if \"health_attribute\" in body: body.health_attribute.apply_damage(20)
 	queue_free()
 
 func _on_area_entered(area):
-	if area.health_attribute: area.health_attribute.apply_damage(20)
+	if \"health_attribute\" in area: area.health_attribute.apply_damage(20)
 	queue_free()
 "
 
@@ -29,7 +28,7 @@ radius = 11.0
 
 [node name="Bullet" type="Area2D"]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 6
 script = SubResource("GDScript_slh0c")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

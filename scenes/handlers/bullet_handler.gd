@@ -36,10 +36,8 @@ func _fire_bullet():
 	mana_handler.decrease_mana(mana_cost)
 	var bullet = preload("res://scenes/objects/bullet/bullet.tscn").instantiate()
 	add_child(bullet)
-	bullet.global_position = player.global_position
-	var angle = rng.randf_range(-spread_angle / 2, spread_angle / 2)
-	bullet.global_rotation = player.global_position.angle_to_point(get_viewport().get_mouse_position()) + deg_to_rad(angle)
-
+	bullet.init(player.global_position)
+	
 func _reset():
 	spread_angle = 0
 	num_bullets = 1
