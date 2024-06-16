@@ -1,16 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://v55nyikrr6u6"]
+[gd_scene load_steps=5 format=3 uid="uid://v55nyikrr6u6"]
 
+[ext_resource type="Script" path="res://scenes/runes/rune.gd" id="1_77t4u"]
 [ext_resource type="Texture2D" uid="uid://dq60mih5gtp40" path="res://scenes/runes/scatter_shot/scatter_shot.png" id="1_r3fvv"]
-
-[sub_resource type="GDScript" id="GDScript_bld8i"]
-script/source = "extends Rune
-
-func activate():
-	var bullet_handler = get_node(\"/root/Main/BulletHandler\")
-	bullet_handler.spread_angle += 15
-	bullet_handler.num_bullets += 2
-"
+[ext_resource type="PackedScene" uid="uid://c7c1ltjxfrbc3" path="res://scenes/modifiers/num_bullets_up/num_bullets_up.tscn" id="2_uyrms"]
+[ext_resource type="PackedScene" uid="uid://onldtuo6sjwy" path="res://scenes/modifiers/spread_angle_up/spread_angle_up.tscn" id="3_m7wa6"]
 
 [node name="ScatterShot" type="Node"]
-script = SubResource("GDScript_bld8i")
+script = ExtResource("1_77t4u")
+display_name = "Scatter Shot"
 texture = ExtResource("1_r3fvv")
+
+[node name="NumBulletsUp" parent="." instance=ExtResource("2_uyrms")]
+
+[node name="SpreadAngleUp" parent="." instance=ExtResource("3_m7wa6")]

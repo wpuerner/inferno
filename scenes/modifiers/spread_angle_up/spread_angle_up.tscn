@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://onldtuo6sjwy"]
+
+[ext_resource type="Script" path="res://scenes/modifiers/spread_angle_up/spread_angle_up.gd" id="1_fs13k"]
+[ext_resource type="Resource" uid="uid://l35nc4pia1xa" path="res://scenes/attributes/spread_angle/spread_angle_attribute.tres" id="2_dc3bp"]
+
+[node name="SpreadAngleUp" type="Node"]
+script = ExtResource("1_fs13k")
+spread_angle_attribute = ExtResource("2_dc3bp")
+display_name = "Spread Angle Up"

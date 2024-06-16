@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=19 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
@@ -9,6 +9,8 @@
 [ext_resource type="Resource" uid="uid://yvstek8jsq1s" path="res://scenes/attributes/automatic_fire/automatic_fire_attribute.tres" id="6_4q5i8"]
 [ext_resource type="Script" path="res://scenes/handlers/health_handler.gd" id="7_gre6j"]
 [ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="8_eheqx"]
+[ext_resource type="Resource" uid="uid://l35nc4pia1xa" path="res://scenes/attributes/spread_angle/spread_angle_attribute.tres" id="10_wwfku"]
+[ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
 script/source = "extends Node
@@ -92,12 +94,10 @@ func _input(event: InputEvent):
 		
 func _unpause():
 	get_tree().paused = false
-	event_bus.change_pause_state(false)
 	visible = false
 	
 func _pause():
 	get_tree().paused = true
-	event_bus.change_pause_state(true)
 	visible = true
 
 func _go_to_menu():
@@ -159,6 +159,7 @@ script = ExtResource("3_vxcn8")
 script = ExtResource("4_6fohk")
 fire_rate_attribute = ExtResource("5_cej1e")
 automatic_fire_attribute = ExtResource("6_4q5i8")
+num_bullets_attribute = ExtResource("11_s3s50")
 
 [node name="DeckHandler" type="Node" parent="."]
 script = ExtResource("5_jnbq5")
@@ -168,7 +169,7 @@ script = ExtResource("7_gre6j")
 
 [node name="AttributeHandler" type="Node" parent="."]
 script = ExtResource("8_eheqx")
-attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e")])
+attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

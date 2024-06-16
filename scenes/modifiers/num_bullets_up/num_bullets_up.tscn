@@ -1,3 +1,19 @@
-[gd_scene format=3 uid="uid://c7c1ltjxfrbc3"]
+[gd_scene load_steps=3 format=3 uid="uid://c7c1ltjxfrbc3"]
+
+[ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="1_um00p"]
+
+[sub_resource type="GDScript" id="GDScript_4g7ab"]
+script/source = "extends Modifier
+
+@export var num_bullets_attribute: Attribute
+@export var amount: int
+
+func activate():
+	num_bullets_attribute.set_value(num_bullets_attribute.get_value() + amount)
+"
 
 [node name="NumBulletsUp" type="Node"]
+script = SubResource("GDScript_4g7ab")
+num_bullets_attribute = ExtResource("1_um00p")
+amount = 2
+display_name = "Num Bullets Up"

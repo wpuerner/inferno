@@ -1,7 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://cy6fljp2cby66"]
 
-[sub_resource type="GDScript" id="GDScript_7qfbk"]
-script/source = "extends Attribute"
+[ext_resource type="Script" path="res://scenes/attributes/num_bullets/num_bullets_attribute.gd" id="1_jwj7l"]
 
 [resource]
-script = SubResource("GDScript_7qfbk")
+script = ExtResource("1_jwj7l")

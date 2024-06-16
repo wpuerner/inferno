@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://l35nc4pia1xa"]
+
+[ext_resource type="Script" path="res://scenes/attributes/spread_angle/spread_angle_attribute.gd" id="1_021tm"]
+
+[resource]
+script = ExtResource("1_021tm")

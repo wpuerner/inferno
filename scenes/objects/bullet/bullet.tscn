@@ -1,15 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5cqaq647tjxm"]
+[gd_scene load_steps=5 format=3 uid="uid://c5cqaq647tjxm"]
 
 [ext_resource type="Texture2D" uid="uid://cyiogf8t40p6s" path="res://scenes/objects/bullet/bullet.png" id="1_g3l6f"]
+[ext_resource type="Resource" uid="uid://l35nc4pia1xa" path="res://scenes/attributes/spread_angle/spread_angle_attribute.tres" id="1_hwnee"]
 
 [sub_resource type="GDScript" id="GDScript_slh0c"]
 script/source = "extends Area2D
 
+@export var spread_angle_attribute: Attribute
+
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var speed: float = 600
 
 func init(position: Vector2):
 	global_position = position
-	global_rotation = global_position.angle_to_point(get_global_mouse_position())
+	rng.randomize()
+	var spread_angle = spread_angle_attribute.get_value()
+	var angle = rng.randf_range(-spread_angle / 2, spread_angle / 2)
+	global_rotation = global_position.angle_to_point(get_global_mouse_position()) + deg_to_rad(angle)
 
 func _physics_process(delta: float):
 	global_position += delta * Vector2(speed, 0).rotated(global_rotation)
@@ -30,6 +37,7 @@ radius = 11.0
 collision_layer = 0
 collision_mask = 6
 script = SubResource("GDScript_slh0c")
+spread_angle_attribute = ExtResource("1_hwnee")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_g3l6f")
