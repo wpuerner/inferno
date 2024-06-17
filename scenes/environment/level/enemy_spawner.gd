@@ -22,3 +22,9 @@ func spawn(spawn_positions: PackedVector2Array, energy: int):
 		enemy.global_position = spawn_positions[position_index]
 		spawn_positions.remove_at(position_index)
 		energy -= data["energy"]
+
+func _on_child_exiting_tree(node):
+	if get_child_count() <= 1:
+		var hole = preload("res://scenes/environment/hole/hole.tscn").instantiate()
+		add_sibling(hole)
+		hole.global_position = node.global_position
