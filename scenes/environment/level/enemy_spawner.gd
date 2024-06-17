@@ -9,8 +9,6 @@ var enemy_data: Array = [
 	}
 ]
 
-var energy: int
-
 func spawn(spawn_positions: PackedVector2Array, energy: int):
 	rng.randomize()
 	while energy >= 0:

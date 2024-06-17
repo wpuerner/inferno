@@ -7,8 +7,8 @@ script/source = "extends Area2D
 
 @onready var event_bus: Node = get_node(\"/root/EventBus\")
 
-func _on_body_entered(body):
-	event_bus.clear_level()
+func _on_body_entered(_body):
+	event_bus.call_deferred(\"clear_level\")
 	queue_free()
 "
 

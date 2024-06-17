@@ -16,6 +16,6 @@ func get_modifier_display_names() -> PackedStringArray:
 	return modifiers.map(func(modifier): return modifier.display_name)
 
 func _get_modifiers() -> Array[Modifier]:
-	var modifiers: Array[Modifier]
-	get_children().map(func(child): modifiers.append(child))
-	return modifiers
+	var mods: Array[Modifier] = []
+	get_children().map(func(child): mods.append(child))
+	return mods
