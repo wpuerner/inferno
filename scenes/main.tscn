@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=21 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
@@ -48,21 +48,6 @@ func _restart_game():
 	_load_level()
 "
 
-[sub_resource type="Curve2D" id="Curve2D_0pryu"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -55, -53, 0, 0, 0, 0, 1984, -49, 0, 0, 0, 0, 1962, 1117, 0, 0, 0, 0, -42, 1104, 0, 0, 0, 0, -51, -51)
-}
-point_count = 5
-
-[sub_resource type="GDScript" id="GDScript_4tqpj"]
-script/source = "extends PathFollow2D
-
-var speed: float = 500
-
-func _physics_process(delta: float):
-	progress += speed * delta
-"
-
 [sub_resource type="GDScript" id="GDScript_6s5x2"]
 script/source = "extends CenterContainer
 
@@ -78,6 +63,50 @@ func _on_game_over_button_pressed():
 	visible = false
 	event_bus.restart_game()
 "
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qirpa"]
+bg_color = Color(0.977937, 0.977937, 0.977937, 1)
+border_color = Color(0.977937, 0.977937, 0.977937, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hccur"]
+bg_color = Color(0.729412, 0.211765, 0.231373, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.977937, 0.977937, 0.977937, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhenx"]
+bg_color = Color(0.976471, 0.976471, 0.976471, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0453671, 0.0424668, 0.0405312, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6a6hw"]
+bg_color = Color(0.054902, 0.443137, 0.627451, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0470588, 0.0431373, 0.0392157, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="GDScript" id="GDScript_wr0e6"]
 script/source = "extends ColorRect
@@ -144,14 +173,6 @@ script = SubResource("GDScript_sn1df")
 
 [node name="Player" parent="." instance=ExtResource("1_tjb1v")]
 
-[node name="SkullSpawnerPath2D" type="Path2D" parent="."]
-curve = SubResource("Curve2D_0pryu")
-
-[node name="SkullSpawner" type="PathFollow2D" parent="SkullSpawnerPath2D"]
-position = Vector2(-55, -53)
-rotation = 0.00196174
-script = SubResource("GDScript_4tqpj")
-
 [node name="ManaHandler" type="Node" parent="."]
 script = ExtResource("3_vxcn8")
 
@@ -198,11 +219,11 @@ layout_mode = 2
 text = "Restart"
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_right = 41.0
-offset_bottom = 51.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
@@ -210,9 +231,33 @@ theme_override_constants/margin_bottom = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 0
 
-[node name="ManaBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Health: "
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_qirpa")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hccur")
+step = 1.0
+value = 100.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Mana: "
+
+[node name="ManaBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_rhenx")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6a6hw")
 max_value = 1000.0
 step = 1.0
 value = 1000.0
@@ -220,11 +265,11 @@ rounded = true
 
 [node name="LevelNumberLabel" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer"]
 layout_mode = 2
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-step = 1.0
-value = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 2.73
+text = "0"
+horizontal_alignment = 2
 
 [node name="HandContainer" type="CenterContainer" parent="CanvasLayer"]
 anchors_preset = 15
