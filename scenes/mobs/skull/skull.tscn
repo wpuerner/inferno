@@ -4,21 +4,31 @@
 [ext_resource type="Texture2D" uid="uid://wcqneepn6llo" path="res://scenes/mobs/skull/skull.png" id="1_gx06k"]
 
 [sub_resource type="GDScript" id="GDScript_68qq3"]
-script/source = "extends Area2D
+script/source = "extends CharacterBody2D
 
 @export var health_attribute: HealthAttribute
 
+@onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
+@onready var event_bus: Node = get_node(\"/root/EventBus\")
+
 const speed: float = 150
 
-#func _physics_process(delta: float):
-#	var velocity = global_position.direction_to(player.global_position) * speed
-#	global_position += velocity * delta
+func _ready():
+	set_physics_process(false)
+	event_bus.gameplay_started.connect(_start)
+	
+func _start():
+	set_physics_process(true)
+
+func _physics_process(delta: float):
+	velocity = global_position.direction_to(navigation_agent_2d.get_next_path_position()) * speed
+	move_and_slide()
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3jx18"]
 radius = 41.3038
 
-[node name="Skull" type="Area2D"]
+[node name="Skull" type="CharacterBody2D"]
 collision_layer = 2
 script = SubResource("GDScript_68qq3")
 health_attribute = ExtResource("1_4g3au")
@@ -29,3 +39,5 @@ texture = ExtResource("1_gx06k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_3jx18")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
