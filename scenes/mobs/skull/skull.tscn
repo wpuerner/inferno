@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://co6cm7h26680f"]
+[gd_scene load_steps=6 format=3 uid="uid://co6cm7h26680f"]
 
 [ext_resource type="Resource" uid="uid://d0faysq8skc1l" path="res://scenes/attributes/health/health_attribute.tres" id="1_4g3au"]
 [ext_resource type="Texture2D" uid="uid://wcqneepn6llo" path="res://scenes/mobs/skull/skull.png" id="1_gx06k"]
+[ext_resource type="PackedScene" uid="uid://c7li5an7dl5t6" path="res://scenes/parts/player_detector/player_detector.tscn" id="3_cvj6l"]
 
 [sub_resource type="GDScript" id="GDScript_68qq3"]
 script/source = "extends CharacterBody2D
@@ -11,18 +12,25 @@ script/source = "extends CharacterBody2D
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 @onready var event_bus: Node = get_node(\"/root/EventBus\")
 
-const speed: float = 150
+const speed: float = 1000
+var player: Node2D
 
 func _ready():
 	set_physics_process(false)
-	event_bus.gameplay_started.connect(_start)
 	
-func _start():
-	set_physics_process(true)
-
 func _physics_process(delta: float):
-	velocity = global_position.direction_to(navigation_agent_2d.get_next_path_position()) * speed
+	velocity *= 0.90
 	move_and_slide()
+
+func _on_player_detector_player_detected(player: Node2D):
+	self.player = player
+	set_physics_process(true)
+	$Timer.start(1)
+
+func _charge_at_player():
+	navigation_agent_2d.target_position = player.global_position
+	velocity = global_position.direction_to(navigation_agent_2d.get_next_path_position()) * speed
+	$Timer.start(1)
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3jx18"]
@@ -41,3 +49,11 @@ texture = ExtResource("1_gx06k")
 shape = SubResource("CircleShape2D_3jx18")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="PlayerDetector" parent="." instance=ExtResource("3_cvj6l")]
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="player_detected" from="PlayerDetector" to="." method="_on_player_detector_player_detected"]
+[connection signal="timeout" from="Timer" to="." method="_charge_at_player"]
