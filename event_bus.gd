@@ -23,3 +23,7 @@ func kill_player():
 signal game_restarted
 func restart_game():
 	game_restarted.emit()
+
+signal player_health_updated(amount: int)
+func update_player_health(amount: int):
+	player_health_updated.emit(amount)
