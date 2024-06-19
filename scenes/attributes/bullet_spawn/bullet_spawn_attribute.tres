@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://x35ji78kslr2"]
+
+[ext_resource type="Script" path="res://scenes/attributes/bullet_spawn/bullet_spawn_attribute.gd" id="1_038he"]
+
+[resource]
+script = ExtResource("1_038he")

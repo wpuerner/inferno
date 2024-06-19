@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://enkfdgmssh0s"]
+
+[ext_resource type="Script" path="res://scenes/modifiers/bullet_spawn_explosion/bullet_spawn_explosion.gd" id="1_hcfb8"]
+
+[node name="BulletSpawnExplosion" type="Node"]
+script = ExtResource("1_hcfb8")
+display_name = "Explosive Bullets"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=22 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="8_eheqx"]
 [ext_resource type="Resource" uid="uid://l35nc4pia1xa" path="res://scenes/attributes/spread_angle/spread_angle_attribute.tres" id="10_wwfku"]
 [ext_resource type="Script" path="res://scenes/interface/health_bar.gd" id="11_b53u8"]
+[ext_resource type="Resource" uid="uid://x35ji78kslr2" path="res://scenes/attributes/bullet_spawn/bullet_spawn_attribute.tres" id="11_ndstk"]
 [ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
@@ -187,7 +188,7 @@ script = ExtResource("5_jnbq5")
 
 [node name="AttributeHandler" type="Node" parent="."]
 script = ExtResource("8_eheqx")
-attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50")])
+attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50"), ExtResource("11_ndstk")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
