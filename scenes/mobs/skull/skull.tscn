@@ -38,6 +38,7 @@ func _charge_at_player():
 radius = 41.3038
 
 [node name="Skull" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
 collision_layer = 2
 collision_mask = 0
 script = SubResource("GDScript_68qq3")

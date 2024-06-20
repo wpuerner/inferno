@@ -14,7 +14,7 @@
 [ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
-script/source = "extends Node
+script/source = "extends Node2D
 
 @onready var event_bus: Node = get_node(\"/root/EventBus\")
 @onready var player: Node2D = $Player
@@ -167,7 +167,8 @@ func _process(_delta):
 	global_position = player.global_position
 "
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node2D"]
+y_sort_enabled = true
 script = SubResource("GDScript_sn1df")
 
 [node name="Level" parent="." instance=ExtResource("1_ddhtq")]

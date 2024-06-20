@@ -3,5 +3,5 @@
 [ext_resource type="Script" path="res://scenes/debug/debug_camera.gd" id="1_0y66w"]
 
 [node name="DebugCamera" type="Camera2D"]
-zoom = Vector2(0.32, 0.32)
+zoom = Vector2(0.965, 0.965)
 script = ExtResource("1_0y66w")
