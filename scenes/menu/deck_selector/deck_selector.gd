@@ -47,4 +47,11 @@ func _update_rune_count_label(count: int):
 	rune_count_label.text = str(count) + " / " + str(max_rune_count)
 
 func _on_back_button_pressed():
-	menu_handler.activate_menu()
+	if deck_control.get_child_count() < max_rune_count:
+		for i in 3:
+			rune_count_label.add_theme_constant_override("outline_size", 8)
+			await get_tree().create_timer(0.5).timeout
+			rune_count_label.remove_theme_constant_override("outline_size")
+			await get_tree().create_timer(0.5).timeout
+	else:
+		menu_handler.activate_menu()
