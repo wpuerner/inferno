@@ -5,6 +5,8 @@ class_name Rune extends Node
 
 @onready var modifiers: Array[Modifier] = _get_modifiers()
 
+var is_in_deck: bool = false
+
 func activate():
 	if modifiers.size() == 0:
 		push_error("Activate not implemented for a Rune!")

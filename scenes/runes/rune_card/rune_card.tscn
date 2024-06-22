@@ -13,14 +13,16 @@ signal selection_state_changed(rune: Rune, selected: bool)
 @onready var vbox_container: VBoxContainer = find_child(\"VBoxContainer\")
 
 var is_hovered: bool = false
-var is_selected: bool = false
-var default_position: Vector2
-var default_modulate: Color
-var tween: Tween
-var rune: Rune:
+var is_selected: bool = false:
 	set(value):
-		rune = value
-		_generate()
+		is_selected = value
+		modulate = Color.SKY_BLUE if is_selected else Color.WHITE
+var default_position: Vector2
+var tween: Tween
+var rune: Rune
+
+func _ready():
+	_generate()
 
 func _on_mouse_entered():
 	is_hovered = true
@@ -42,10 +44,6 @@ func _input(event: InputEvent):
 func _toggle_selection_state():
 	is_selected = !is_selected
 	selection_state_changed.emit(rune, is_selected)
-	if !default_modulate: default_modulate = modulate
-	if tween: tween.kill()
-	tween = create_tween()
-	tween.tween_property(self, \"modulate\", Color.SKY_BLUE if is_selected else default_modulate, 0.1)
 
 func _generate():
 	display_name_label.text = rune.display_name
@@ -54,14 +52,14 @@ func _generate():
 		var modifier_label = preload(\"res://scenes/runes/rune_card/modifier_label.tscn\").instantiate()
 		vbox_container.add_child(modifier_label)
 		modifier_label.text = display_name
+	modulate = Color.SKY_BLUE if is_selected else Color.WHITE
 "
 
 [node name="RuneCard" type="PanelContainer"]
-custom_minimum_size = Vector2(40, 50)
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 266.0
-offset_bottom = 307.0
+clip_contents = true
+custom_minimum_size = Vector2(180, 50)
+offset_right = 220.0
+offset_bottom = 314.0
 theme_override_styles/panel = ExtResource("1_6kmqc")
 script = SubResource("GDScript_ag2pn")
 
@@ -71,14 +69,16 @@ layout_mode = 2
 [node name="DisplayNameLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 18
 text = "DISPLAY NAME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+clip_contents = true
 layout_mode = 2
 texture = ExtResource("1_c4kq1")
+expand_mode = 4
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

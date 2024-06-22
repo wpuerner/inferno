@@ -626,7 +626,7 @@ layer_0/navigation_enabled = false
 layer_1/name = "floors"
 layer_1/z_index = -1
 layer_1/navigation_enabled = false
-layer_1/tile_data = PackedInt32Array(393219, 2, 1, 458756, 131074, 3, 458757, 131074, 3, 458758, 131074, 3, 458759, 131074, 3, 458760, 131074, 3, 458761, 131074, 3, 458762, 131074, 3, 458763, 131074, 3, 458764, 196610, 2, 458755, 65538, 2, 393228, 2, 1, 327692, 2, 1, 262156, 2, 1, 196620, 2, 1, 131084, 196610, 0, 131083, 131074, 3, 131082, 131074, 3, 131081, 131074, 3, 131080, 131074, 3, 131079, 131074, 3, 131078, 131074, 3, 131077, 131074, 3, 131076, 131074, 3, 131075, 65538, 0, 196611, 2, 1, 262147, 2, 1, 327683, 2, 1)
+layer_1/tile_data = PackedInt32Array()
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_lxs8k")
