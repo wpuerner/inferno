@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cor4v0lch1y7b"]
+
+[ext_resource type="Script" path="res://scenes/attributes/projectile/projectile_attribute.gd" id="1_uri6i"]
+
+[resource]
+script = ExtResource("1_uri6i")

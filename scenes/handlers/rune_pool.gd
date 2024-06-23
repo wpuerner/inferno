@@ -3,7 +3,8 @@ extends Node
 var rune_scene_paths: PackedStringArray = [
 	"res://scenes/runes/scatter_shot/scatter_shot.tscn",
 	"res://scenes/runes/rapid_fire/rapid_fire.tscn",
-	"res://scenes/runes/explosive/explosive.tscn"
+	"res://scenes/runes/explosive/explosive.tscn",
+	"res://scenes/runes/worms/worms.tscn"
 ]
 
 func _ready():
@@ -11,7 +12,7 @@ func _ready():
 
 func _generate_rune_pool():
 	for i in 15:
-		var rune_scene_path = rune_scene_paths[i % 3]
+		var rune_scene_path = rune_scene_paths[i % rune_scene_paths.size()]
 		var rune = load(rune_scene_path).instantiate()
 		if get_child_count() < 8: rune.is_in_deck = true
 		add_child(rune)

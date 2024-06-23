@@ -3,6 +3,7 @@ extends Node
 @export var fire_rate_attribute: Attribute
 @export var automatic_fire_attribute: Attribute
 @export var num_bullets_attribute: Attribute
+@export var projectile_attribute: Attribute = preload("res://scenes/attributes/projectile/projectile_attribute.tres")
 
 @onready var event_bus: Node = get_node("/root/EventBus")
 @onready var mana_handler: Node = get_node("/root/Main/ManaHandler")
@@ -33,9 +34,10 @@ func _physics_process(_delta):
 func _fire_bullet():
 	if !mana_handler.has_enough_mana(mana_cost): return
 	mana_handler.decrease_mana(mana_cost)
-	var bullet = preload("res://scenes/objects/bullet/bullet.tscn").instantiate()
+	var bullet = projectile_attribute.get_value().instantiate()
+	bullet.global_position = player.global_position
 	add_child(bullet)
-	bullet.init(player.global_position)
+	if bullet.has_method("init"): bullet.init()
 	
 func _reset():
 	mana_cost = 10

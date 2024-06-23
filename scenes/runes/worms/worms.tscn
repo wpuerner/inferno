@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://banoqqqiycy83"]
+
+[ext_resource type="Script" path="res://scenes/runes/worms/worms.gd" id="1_cc4jf"]
+[ext_resource type="Texture2D" uid="uid://cqx4v3t17pivr" path="res://scenes/runes/worms/worms.png" id="2_qsqq1"]
+
+[node name="Worms" type="Node"]
+script = ExtResource("1_cc4jf")
+display_name = "Worms"
+texture = ExtResource("2_qsqq1")
+description_strings = PackedStringArray("Shoots worms instead of bullets")
