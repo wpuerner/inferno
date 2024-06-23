@@ -25,7 +25,6 @@ func _ready():
 		
 func _physics_process(_delta):
 	if (timer.time_left > 0): return
-	
 	if (automatic_fire_attribute.get_value() and Input.is_action_pressed("primary")) or (!automatic_fire_attribute.get_value() and Input.is_action_just_pressed("primary")):
 		for i in num_bullets_attribute.get_value():
 			_fire_bullet()

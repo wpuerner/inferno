@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cgsmmomfuu8kb"]
+[gd_scene load_steps=11 format=3 uid="uid://cgsmmomfuu8kb"]
 
 [ext_resource type="Texture2D" uid="uid://bohsqd5txsgx3" path="res://scenes/mobs/worm/worm.png" id="1_dnbwd"]
 [ext_resource type="Script" path="res://scenes/mobs/worm/worm.gd" id="1_llyeq"]
@@ -40,23 +40,25 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_he6ty"]
-radius = 169.003
+radius = 623.029
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wl2ly"]
 radius = 3.0
 height = 18.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_kmtbk"]
+radius = 13.0
+
 [node name="Worm" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 2
+collision_mask = 4
 script = ExtResource("1_llyeq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_wgpib")
-frame_progress = 0.14139
+frame_progress = 0.493051
 
 [node name="DetectionArea" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -72,4 +74,14 @@ shape = SubResource("CapsuleShape2D_wl2ly")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 0.1
 
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea"]
+shape = SubResource("CircleShape2D_kmtbk")
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="TriggerArea" to="." method="_on_trigger_area_body_entered"]
+[connection signal="body_exited" from="TriggerArea" to="." method="_on_trigger_area_body_exited"]
