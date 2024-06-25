@@ -14,6 +14,7 @@ var discard: Array[Rune]
 func _ready():
 	event_bus.game_restarted.connect(_shuffle)
 	event_bus.pre_level_started.connect(_open_hand)
+	event_bus.player_picked_up_room_rune.connect(func(rune): discard.append(rune))
 	deck = rune_pool.get_deck()
 	_shuffle()
 

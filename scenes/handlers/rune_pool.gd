@@ -1,6 +1,6 @@
 extends Node
 
-var rune_scene_paths: PackedStringArray = [
+var rune_scene_paths: Array[String] = [
 	"res://scenes/runes/scatter_shot/scatter_shot.tscn",
 	"res://scenes/runes/rapid_fire/rapid_fire.tscn",
 	"res://scenes/runes/explosive/explosive.tscn",
@@ -26,3 +26,6 @@ func get_deck() -> Array[Rune]:
 	
 func get_runes():
 	return get_children()
+
+func get_random_rune() -> Rune:
+	return load(rune_scene_paths.pick_random()).instantiate()

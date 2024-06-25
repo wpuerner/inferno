@@ -13,6 +13,7 @@ const SPEED = 300.0
 
 func _ready():
 	event_bus.pre_level_started.connect(func(): set_physics_process(false))
+	event_bus.player_picked_up_room_rune.connect(func(_rune): set_physics_process(false))
 	event_bus.gameplay_started.connect(func(): set_physics_process(true))
 
 func _physics_process(_delta):

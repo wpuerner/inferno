@@ -27,3 +27,11 @@ func restart_game():
 signal player_health_updated(amount: int)
 func update_player_health(amount: int):
 	player_health_updated.emit(amount)
+	
+signal player_picked_up_room_rune(rune: Rune)
+func pick_up_room_rune(rune: Rune):
+	player_picked_up_room_rune.emit(rune)
+	
+signal player_requested_next_level()
+func request_next_level():
+	player_requested_next_level.emit()

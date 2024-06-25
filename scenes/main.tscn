@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=24 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://x35ji78kslr2" path="res://scenes/attributes/bullet_spawn/bullet_spawn_attribute.tres" id="11_ndstk"]
 [ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
 [ext_resource type="Resource" uid="uid://cor4v0lch1y7b" path="res://scenes/attributes/projectile/projectile_attribute.tres" id="12_y82au"]
+[ext_resource type="Script" path="res://scenes/main/room_complete_control.gd" id="14_d0s16"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
 script/source = "extends Node2D
@@ -26,7 +27,7 @@ var level_number: int = 1
 
 func _ready():
 	event_bus.game_restarted.connect(_restart_game)
-	event_bus.level_cleared.connect(_switch_levels)
+	event_bus.player_requested_next_level.connect(_switch_levels)
 	_load_level()
 
 func _load_level():
@@ -288,7 +289,9 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Button" type="Button" parent="CanvasLayer/HandContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 46.23)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "READY"
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer"]
@@ -336,6 +339,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Menu"
 
+[node name="RoomCompleteContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_d0s16")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/RoomCompleteContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="NewRunesControl" type="HBoxContainer" parent="CanvasLayer/RoomCompleteContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Button" type="Button" parent="CanvasLayer/RoomCompleteContainer/VBoxContainer"]
+custom_minimum_size = Vector2(152.8, 43.365)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "Next Level"
+
 [node name="Camera2D" type="Camera2D" parent="."]
 script = SubResource("GDScript_dnsev")
 
@@ -343,3 +370,4 @@ script = SubResource("GDScript_dnsev")
 [connection signal="pressed" from="CanvasLayer/HandContainer/VBoxContainer/Button" to="DeckHandler" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PauseMenu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="CanvasLayer/PauseMenu" method="_on_menu_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/RoomCompleteContainer/VBoxContainer/Button" to="CanvasLayer/RoomCompleteContainer" method="_on_button_pressed"]

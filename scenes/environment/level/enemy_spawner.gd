@@ -1,5 +1,7 @@
 extends Node
 
+@onready var rune_pool: Node = get_node("/root/RunePool")
+
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var enemy_data: Array = [
 	{
@@ -23,6 +25,7 @@ func spawn(spawn_positions: PackedVector2Array, energy: int):
 
 func _on_child_exiting_tree(node):
 	if get_child_count() <= 1:
-		var hole = preload("res://scenes/environment/hole/hole.tscn").instantiate()
-		add_sibling(hole)
-		hole.global_position = node.global_position
+		var overworld_rune = preload("res://scenes/runes/overworld_rune/overworld_rune.tscn").instantiate()
+		overworld_rune.rune = rune_pool.get_random_rune()
+		overworld_rune.global_position = node.global_position
+		add_sibling(overworld_rune)
