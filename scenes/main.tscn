@@ -5,7 +5,6 @@
 [ext_resource type="Script" path="res://scenes/handlers/mana_handler.gd" id="3_vxcn8"]
 [ext_resource type="Script" path="res://scenes/handlers/bullet_handler.gd" id="4_6fohk"]
 [ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate/fire_rate_attribute.tres" id="5_cej1e"]
-[ext_resource type="Script" path="res://scenes/handlers/deck_handler.gd" id="5_jnbq5"]
 [ext_resource type="Resource" uid="uid://yvstek8jsq1s" path="res://scenes/attributes/automatic_fire/automatic_fire_attribute.tres" id="6_4q5i8"]
 [ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="8_eheqx"]
 [ext_resource type="Resource" uid="uid://l35nc4pia1xa" path="res://scenes/attributes/spread_angle/spread_angle_attribute.tres" id="10_wwfku"]
@@ -13,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://x35ji78kslr2" path="res://scenes/attributes/bullet_spawn/bullet_spawn_attribute.tres" id="11_ndstk"]
 [ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
 [ext_resource type="Resource" uid="uid://cor4v0lch1y7b" path="res://scenes/attributes/projectile/projectile_attribute.tres" id="12_y82au"]
+[ext_resource type="PackedScene" uid="uid://lc0qrc5ks0rw" path="res://scenes/interface/hand_interface/hand_interface.tscn" id="14_cvbr4"]
 [ext_resource type="Script" path="res://scenes/main/room_complete_control.gd" id="14_d0s16"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
@@ -28,6 +28,7 @@ var level_number: int = 1
 func _ready():
 	event_bus.game_restarted.connect(_restart_game)
 	event_bus.player_requested_next_level.connect(_switch_levels)
+	event_bus.player_activated_hand.connect(_start_gameplay)
 	_load_level()
 
 func _load_level():
@@ -39,7 +40,7 @@ func _start_pre_level(starting_position: Vector2):
 	event_bus.start_pre_level()
 	player.global_position = starting_position
 	
-func start_gameplay():
+func _start_gameplay():
 	event_bus.start_gameplay()
 	
 func _switch_levels():
@@ -186,9 +187,6 @@ fire_rate_attribute = ExtResource("5_cej1e")
 automatic_fire_attribute = ExtResource("6_4q5i8")
 num_bullets_attribute = ExtResource("11_s3s50")
 
-[node name="DeckHandler" type="Node" parent="."]
-script = ExtResource("5_jnbq5")
-
 [node name="AttributeHandler" type="Node" parent="."]
 script = ExtResource("8_eheqx")
 attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50"), ExtResource("11_ndstk"), ExtResource("12_y82au")])
@@ -219,7 +217,7 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Restart"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="GameplayInterface" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -230,20 +228,20 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameplayInterface"]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/GameplayInterface/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Health: "
 
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/background = SubResource("StyleBoxFlat_qirpa")
@@ -252,11 +250,11 @@ step = 1.0
 value = 100.0
 script = ExtResource("11_b53u8")
 
-[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+[node name="Label2" type="Label" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Mana: "
 
-[node name="ManaBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/HBoxContainer/GridContainer"]
+[node name="ManaBar" type="ProgressBar" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_rhenx")
 theme_override_styles/fill = SubResource("StyleBoxFlat_6a6hw")
@@ -265,7 +263,7 @@ step = 1.0
 value = 1000.0
 rounded = true
 
-[node name="LevelNumberLabel" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+[node name="LevelNumberLabel" type="Label" parent="CanvasLayer/GameplayInterface/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -273,26 +271,7 @@ size_flags_stretch_ratio = 2.73
 text = "0"
 horizontal_alignment = 2
 
-[node name="HandContainer" type="CenterContainer" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 59.0
-offset_bottom = 35.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HandContainer"]
-layout_mode = 2
-
-[node name="Hand" type="HBoxContainer" parent="CanvasLayer/HandContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/HandContainer/VBoxContainer"]
-custom_minimum_size = Vector2(150, 46.23)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "READY"
+[node name="HandInterface" parent="CanvasLayer" instance=ExtResource("14_cvbr4")]
 
 [node name="PauseMenu" type="ColorRect" parent="CanvasLayer"]
 process_mode = 3
@@ -367,7 +346,6 @@ text = "Next Level"
 script = SubResource("GDScript_dnsev")
 
 [connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/GameOverButton" to="CanvasLayer/GameOverContainer" method="_on_game_over_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/HandContainer/VBoxContainer/Button" to="DeckHandler" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PauseMenu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="CanvasLayer/PauseMenu" method="_on_menu_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/RoomCompleteContainer/VBoxContainer/Button" to="CanvasLayer/RoomCompleteContainer" method="_on_button_pressed"]

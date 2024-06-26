@@ -1,0 +1,266 @@
+[gd_scene load_steps=13 format=3 uid="uid://lc0qrc5ks0rw"]
+
+[ext_resource type="Script" path="res://scenes/interface/hand_interface/hand_interface.gd" id="1_tsq47"]
+
+[sub_resource type="Gradient" id="Gradient_rohp8"]
+offsets = PackedFloat32Array(0, 0.344, 0.704, 0.968153)
+colors = PackedColorArray(0.406491, 0.454696, 0.563335, 1, 0.406491, 0.454696, 0.563335, 1, 0.407843, 0.454902, 0.564706, 0.67451, 0.407843, 0.454902, 0.564706, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3ffy4"]
+gradient = SubResource("Gradient_rohp8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yy5mh"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture1D_3ffy4")
+
+[sub_resource type="Gradient" id="Gradient_ea6ru"]
+offsets = PackedFloat32Array(0, 0.382813, 1)
+colors = PackedColorArray(0.894118, 0.580392, 0.678431, 0, 0.895622, 0.581398, 0.677278, 1, 0.895622, 0.581398, 0.677278, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lr1h4"]
+gradient = SubResource("Gradient_ea6ru")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ogbl"]
+texture = SubResource("GradientTexture1D_lr1h4")
+
+[sub_resource type="Animation" id="Animation_bfbmf"]
+resource_name = "close_deck_display"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeckDisplay:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -300, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("DeckDisplay:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(),
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
+}
+
+[sub_resource type="Animation" id="Animation_toutb"]
+resource_name = "close_discard_display"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DiscardDisplay:offset_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-275, -0.25, 0, 0.25, 0, 275, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(-0.1, 0.3)
+}
+
+[sub_resource type="Animation" id="Animation_dir0g"]
+resource_name = "open_deck_display"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeckDisplay:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-300, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("DeckDisplay:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(),
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
+}
+
+[sub_resource type="Animation" id="Animation_oimik"]
+resource_name = "open_discard_display"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DiscardDisplay:offset_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(275, -0.25, 0, 0.25, 0, -275, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lmshm"]
+_data = {
+"close_deck_display": SubResource("Animation_bfbmf"),
+"close_discard_display": SubResource("Animation_toutb"),
+"open_deck_display": SubResource("Animation_dir0g"),
+"open_discard_display": SubResource("Animation_oimik")
+}
+
+[node name="HandInterface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tsq47")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Hand" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 46.23)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "READY"
+
+[node name="ShowDeckControl" type="Panel" parent="MarginContainer"]
+custom_minimum_size = Vector2(60, 250)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/ShowDeckControl"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 175.0
+offset_right = 105.0
+offset_bottom = 225.0
+rotation = -1.5708
+text = "Deck"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShowDiscardControl" type="Panel" parent="MarginContainer"]
+custom_minimum_size = Vector2(60, 250)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/ShowDiscardControl"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 75.0
+offset_right = 155.0
+offset_bottom = 125.0
+rotation = 1.5708
+text = "Discard"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeckDisplay" type="Panel" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_right = -25.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_yy5mh")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="DeckDisplay"]
+layout_mode = 2
+offset_left = 20.0
+offset_right = 200.0
+offset_bottom = 1080.0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="DeckDisplay/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="CenterContainer" type="CenterContainer" parent="DeckDisplay/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Deck" type="VBoxContainer" parent="DeckDisplay/ScrollContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="DiscardDisplay" type="Panel" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(275, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 275.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3ogbl")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="DiscardDisplay"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+grow_horizontal = 0
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="DiscardDisplay/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 20
+
+[node name="CenterContainer" type="CenterContainer" parent="DiscardDisplay/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Discard" type="VBoxContainer" parent="DiscardDisplay/ScrollContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lmshm")
+}
+
+[connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="mouse_entered" from="MarginContainer/ShowDeckControl" to="." method="_on_show_deck_control_mouse_entered"]
+[connection signal="mouse_entered" from="MarginContainer/ShowDiscardControl" to="." method="_on_show_discard_control_mouse_entered"]
+[connection signal="mouse_exited" from="DeckDisplay" to="." method="_on_deck_display_mouse_exited"]
+[connection signal="mouse_exited" from="DiscardDisplay" to="." method="_on_discard_display_mouse_exited"]

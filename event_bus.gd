@@ -35,3 +35,7 @@ func pick_up_room_rune(rune: Rune):
 signal player_requested_next_level()
 func request_next_level():
 	player_requested_next_level.emit()
+	
+signal player_activated_hand
+func activate_hand():
+	player_activated_hand.emit()
