@@ -31,7 +31,7 @@ func _physics_process(delta: float):
 			is_launching = false
 		return
 		
-	if targets.front() == null: 
+	if targets.is_empty(): 
 		if animated_sprite_2d.is_playing():
 			animated_sprite_2d.stop()
 			animated_sprite_2d.frame = 0

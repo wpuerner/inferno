@@ -16,16 +16,10 @@ var rune_to_card_map = {}
 func _ready():
 	event_bus.game_restarted.connect(_shuffle)
 	event_bus.pre_level_started.connect(_open_hand)
-	event_bus.player_picked_up_room_rune.connect(func(rune): discard.append(rune))
+	event_bus.player_picked_up_room_rune.connect(_add_rune_to_discard)
 	for rune in rune_pool.get_deck():
-		_create_card_from_rune(rune)
 		_add_rune_to_deck(rune)
 	_shuffle()
-	
-func _create_card_from_rune(rune: Rune):
-		var card = preload("res://scenes/runes/rune_card/rune_card.tscn").instantiate()
-		card.rune = rune
-		rune_to_card_map[rune] = card
 
 func _on_show_deck_control_mouse_entered():
 	animation_player.play("open_deck_display")
@@ -69,9 +63,16 @@ func _activate_hand():
 		_add_rune_to_discard(rune)
 	selected_runes.clear()
 
+func _get_or_create_card(rune: Rune) -> Control:
+	if rune_to_card_map.has(rune): return rune_to_card_map[rune]
+	var card = preload("res://scenes/runes/rune_card/rune_card.tscn").instantiate()
+	card.rune = rune
+	rune_to_card_map[rune] = card
+	return card
+
 func _add_rune_to_deck(rune: Rune):
 	deck.append(rune)
-	var card = rune_to_card_map[rune]
+	var card = _get_or_create_card(rune)
 	card.is_selected = false
 	card.is_selectable = false
 	deck_control.add_child(card)
@@ -82,7 +83,7 @@ func _remove_rune_from_deck(rune: Rune):
 	
 func _add_rune_to_hand(rune: Rune):
 	hand.append(rune)
-	var card = rune_to_card_map[rune]
+	var card = _get_or_create_card(rune)
 	card.is_selected = false
 	card.is_selectable = true
 	hand_control.add_child(card)
@@ -93,7 +94,7 @@ func _remove_rune_from_hand(rune: Rune):
 	
 func _add_rune_to_discard(rune: Rune):
 	discard.append(rune)
-	var card = rune_to_card_map[rune]
+	var card = _get_or_create_card(rune)
 	card.is_selected = false
 	card.is_selectable = false
 	discard_control.add_child(card)
