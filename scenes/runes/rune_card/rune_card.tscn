@@ -26,22 +26,22 @@ var is_selectable: bool = false:
 		mouse_filter = Control.MOUSE_FILTER_STOP if is_selectable else Control.MOUSE_FILTER_IGNORE
 
 func _ready():
+	pivot_offset = Vector2(size.x / 2, size.y / 2)
 	_generate()
 
 func _on_mouse_entered():
 	if !is_selectable: return
 	is_hovered = true
-	if !default_position: default_position = position
 	if tween: tween.kill()
 	tween = create_tween()
-	tween.tween_property(self, \"position\", Vector2(default_position.x, default_position.y - 15), 0.1)
+	tween.tween_property(self, \"scale\", Vector2(1.1, 1.1), 0.1)
 	
 func _on_mouse_exited():
 	if !is_selectable: return
 	is_hovered = false
 	if tween: tween.kill()
 	tween = create_tween()
-	tween.tween_property(self, \"position\", Vector2(default_position.x, default_position.y), 0.1)
+	tween.tween_property(self, \"scale\", Vector2(1, 1), 0.1)
 
 func _input(event: InputEvent):
 	if !is_selectable: return
