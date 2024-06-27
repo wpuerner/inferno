@@ -6,6 +6,7 @@ extends Control
 @onready var hand_control: Control = find_child("Hand")
 @onready var deck_control: Control = find_child("Deck")
 @onready var discard_control: Control = find_child("Discard")
+@onready var added_runes_container: Node = $AddedRunesContainer
 
 var hand: Array[Rune]
 var selected_runes: Array[Rune]
@@ -16,7 +17,7 @@ var rune_to_card_map = {}
 func _ready():
 	event_bus.game_restarted.connect(_shuffle)
 	event_bus.pre_level_started.connect(_open_hand)
-	event_bus.player_picked_up_room_rune.connect(_add_rune_to_discard)
+	event_bus.player_picked_up_room_rune.connect(_handle_picked_up_rune)
 	for rune in rune_pool.get_deck():
 		_add_rune_to_deck(rune)
 	_shuffle()
@@ -69,6 +70,10 @@ func _get_or_create_card(rune: Rune) -> Control:
 	card.rune = rune
 	rune_to_card_map[rune] = card
 	return card
+
+func _handle_picked_up_rune(rune: Rune):
+	added_runes_container.add_child(rune)
+	_add_rune_to_discard(rune)
 
 func _add_rune_to_deck(rune: Rune):
 	deck.append(rune)

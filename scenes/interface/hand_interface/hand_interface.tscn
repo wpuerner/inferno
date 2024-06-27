@@ -259,6 +259,8 @@ libraries = {
 "": SubResource("AnimationLibrary_lmshm")
 }
 
+[node name="AddedRunesContainer" type="Node" parent="."]
+
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/ShowDeckControl" to="." method="_on_show_deck_control_mouse_entered"]
 [connection signal="mouse_entered" from="MarginContainer/ShowDiscardControl" to="." method="_on_show_discard_control_mouse_entered"]
