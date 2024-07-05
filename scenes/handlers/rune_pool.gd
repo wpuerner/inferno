@@ -29,3 +29,6 @@ func get_runes():
 
 func get_random_rune() -> Rune:
 	return load(rune_scene_paths.pick_random()).instantiate()
+	
+func add_rune(rune: Rune):
+	add_child(rune)

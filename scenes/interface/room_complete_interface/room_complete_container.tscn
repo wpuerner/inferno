@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://btqpmb2bk7q3h"]
+
+[ext_resource type="Script" path="res://scenes/interface/room_complete_interface/room_complete_control.gd" id="1_3ldws"]
+
+[node name="RoomCompleteContainer" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3ldws")
+
+[node name="NewRunesInterface" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="NewRunesControl" type="HBoxContainer" parent="NewRunesInterface"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Button" type="Button" parent="NewRunesInterface"]
+custom_minimum_size = Vector2(152.8, 43.365)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "Next Level"
+
+[node name="SaveRuneInterface" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="SaveRuneLabel" type="Label" parent="SaveRuneInterface"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Save a Rune"
+horizontal_alignment = 1
+
+[node name="SaveRuneLabel2" type="Label" parent="SaveRuneInterface"]
+layout_mode = 2
+text = "Saved runes will be removed from your deck for this run"
+horizontal_alignment = 1
+
+[node name="HScrollBar" type="ScrollContainer" parent="SaveRuneInterface"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="SaveRuneControl" type="HBoxContainer" parent="SaveRuneInterface/HScrollBar"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SaveRuneButton" type="Button" parent="SaveRuneInterface"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Save Rune"
+
+[connection signal="pressed" from="NewRunesInterface/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="SaveRuneInterface/SaveRuneButton" to="." method="_on_save_rune_button_pressed"]

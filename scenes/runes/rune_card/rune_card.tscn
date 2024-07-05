@@ -25,6 +25,9 @@ var is_selectable: bool = false:
 		is_selectable = value
 		mouse_filter = Control.MOUSE_FILTER_STOP if is_selectable else Control.MOUSE_FILTER_IGNORE
 
+func deselect():
+	is_selected = false
+
 func _ready():
 	pivot_offset = Vector2(size.x / 2, size.y / 2)
 	_generate()

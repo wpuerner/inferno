@@ -18,6 +18,7 @@ func _ready():
 	event_bus.level_loaded.connect(_reset)
 	event_bus.level_loaded.connect(func(): set_physics_process(false))
 	event_bus.player_killed.connect(func(): set_physics_process(false))
+	event_bus.player_picked_up_room_rune.connect(func(_rune): set_physics_process(false))
 	event_bus.gameplay_started.connect(func(): set_physics_process(true))
 	timer = Timer.new()
 	add_child(timer)

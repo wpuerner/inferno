@@ -14,6 +14,16 @@ var deck: Array[Rune]
 var discard: Array[Rune]
 var rune_to_card_map = {}
 
+func get_added_runes():
+	return added_runes_container.get_children()
+	
+func send_rune_to_rune_pool(rune: Rune):
+	_remove_rune_from_deck(rune)
+	_remove_rune_from_discard(rune)
+	rune_to_card_map[rune].queue_free()
+	added_runes_container.remove_child(rune)
+	rune_pool.add_rune(rune)
+
 func _ready():
 	event_bus.game_restarted.connect(_shuffle)
 	event_bus.pre_level_started.connect(_open_hand)
@@ -83,6 +93,7 @@ func _add_rune_to_deck(rune: Rune):
 	deck_control.add_child(card)
 	
 func _remove_rune_from_deck(rune: Rune):
+	if not deck.has(rune): return
 	deck.erase(rune)
 	deck_control.remove_child(rune_to_card_map[rune])
 	
@@ -105,5 +116,6 @@ func _add_rune_to_discard(rune: Rune):
 	discard_control.add_child(card)
 	
 func _remove_rune_from_discard(rune: Rune):
+	if not discard.has(rune): return
 	discard.erase(rune)
 	discard_control.remove_child(rune_to_card_map[rune])

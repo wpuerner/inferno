@@ -13,7 +13,7 @@
 [ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
 [ext_resource type="Resource" uid="uid://cor4v0lch1y7b" path="res://scenes/attributes/projectile/projectile_attribute.tres" id="12_y82au"]
 [ext_resource type="PackedScene" uid="uid://lc0qrc5ks0rw" path="res://scenes/interface/hand_interface/hand_interface.tscn" id="14_cvbr4"]
-[ext_resource type="Script" path="res://scenes/main/room_complete_control.gd" id="14_d0s16"]
+[ext_resource type="PackedScene" uid="uid://btqpmb2bk7q3h" path="res://scenes/interface/room_complete_interface/room_complete_container.tscn" id="14_yti00"]
 
 [sub_resource type="GDScript" id="GDScript_sn1df"]
 script/source = "extends Node2D
@@ -318,29 +318,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Menu"
 
-[node name="RoomCompleteContainer" type="CenterContainer" parent="CanvasLayer"]
+[node name="RoomCompleteContainer" parent="CanvasLayer" node_paths=PackedStringArray("hand_interface") instance=ExtResource("14_yti00")]
 visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("14_d0s16")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/RoomCompleteContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="NewRunesControl" type="HBoxContainer" parent="CanvasLayer/RoomCompleteContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Button" type="Button" parent="CanvasLayer/RoomCompleteContainer/VBoxContainer"]
-custom_minimum_size = Vector2(152.8, 43.365)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 18
-text = "Next Level"
+hand_interface = NodePath("../HandInterface")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = SubResource("GDScript_dnsev")
@@ -348,4 +328,3 @@ script = SubResource("GDScript_dnsev")
 [connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/GameOverButton" to="CanvasLayer/GameOverContainer" method="_on_game_over_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PauseMenu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="CanvasLayer/PauseMenu" method="_on_menu_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/RoomCompleteContainer/VBoxContainer/Button" to="CanvasLayer/RoomCompleteContainer" method="_on_button_pressed"]

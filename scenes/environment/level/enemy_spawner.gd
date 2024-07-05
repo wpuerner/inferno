@@ -28,4 +28,4 @@ func _on_child_exiting_tree(node):
 		var overworld_rune = preload("res://scenes/runes/overworld_rune/overworld_rune.tscn").instantiate()
 		overworld_rune.rune = rune_pool.get_random_rune()
 		overworld_rune.global_position = node.global_position
-		add_sibling(overworld_rune)
+		add_sibling.call_deferred(overworld_rune)
