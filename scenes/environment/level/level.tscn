@@ -30,7 +30,7 @@ func generate(level_number: int) -> Vector2:
 	return tile_map.to_global(tile_map.map_to_local(starting_position))
 	
 func _generate_grid():
-	var grid_side_length: int = 100
+	var grid_side_length: int = 50
 	grid.resize(grid_side_length)
 	for i in grid.size():
 		grid[i] = PackedInt32Array()
@@ -85,7 +85,7 @@ func _set_tile_map():
 	for x in grid.size() - 1:
 		for y in grid[x].size():
 			if grid[x][y] != 0: tile_map.set_cell(1, Vector2i(x, y), 1, Vector2i(0, 0))
-			if grid[x][y] == 2: tile_map.set_cells_terrain_connect(0, [Vector2i(x, y)], 0, 0)
+			if grid[x][y] == 2 or grid[x][y] == 0: tile_map.set_cells_terrain_connect(0, [Vector2i(x, y)], 0, 0)
 
 func _generate_navigation_region():
 	var bounds: Rect2 = Rect2(tile_map.to_global(tile_map.map_to_local(grid_bounds.position)), tile_map.to_global(tile_map.map_to_local(grid_bounds.size)))
