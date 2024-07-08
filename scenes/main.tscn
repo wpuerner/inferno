@@ -323,6 +323,7 @@ visible = false
 hand_interface = NodePath("../HandInterface")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.03, 2.03)
 script = SubResource("GDScript_dnsev")
 
 [connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/GameOverButton" to="CanvasLayer/GameOverContainer" method="_on_game_over_button_pressed"]
