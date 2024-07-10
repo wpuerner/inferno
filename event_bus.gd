@@ -39,3 +39,7 @@ func request_next_level():
 signal player_activated_hand
 func activate_hand():
 	player_activated_hand.emit()
+	
+signal mob_was_killed(mob: Node2D)
+func kill_mob(mob: Node2D):
+	mob_was_killed.emit(mob)

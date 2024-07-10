@@ -1,43 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://co6cm7h26680f"]
 
-[ext_resource type="Resource" uid="uid://d0faysq8skc1l" path="res://scenes/attributes/health/health_attribute.tres" id="1_4g3au"]
+[ext_resource type="Script" path="res://scenes/mobs/skull/skull.gd" id="1_frbeo"]
 [ext_resource type="Texture2D" uid="uid://wcqneepn6llo" path="res://scenes/mobs/skull/skull.png" id="1_gx06k"]
 [ext_resource type="PackedScene" uid="uid://dcimufvvru2en" path="res://scenes/parts/hurtbox/hurtbox.tscn" id="4_0bpr5"]
 [ext_resource type="PackedScene" uid="uid://6qy0ls61xyi8" path="res://scenes/parts/line_of_sight_detector/line_of_sight_detector.tscn" id="4_at6ur"]
-
-[sub_resource type="GDScript" id="GDScript_68qq3"]
-script/source = "extends CharacterBody2D
-
-@export var health_attribute: HealthAttribute
-
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-
-const speed: float = 200
-var player: Node2D
-var is_enabled: bool = false
-
-func _ready():
-	event_bus.gameplay_started.connect(func(): is_enabled = true)
-	set_physics_process(false)
-	
-func _physics_process(_delta: float):
-	navigation_agent_2d.target_position = player.global_position
-	velocity = global_position.direction_to(navigation_agent_2d.get_next_path_position()) * speed
-	move_and_slide()
-
-func _on_line_of_sight_detector_object_sighted(object):
-	if !is_enabled: return
-	self.player = object
-	set_physics_process(true)
-	animated_sprite.play(\"moving\")
-
-func _on_line_of_sight_detector_object_left_range(object):
-	self.player = null
-	set_physics_process(false)
-	animated_sprite.play(\"idle\")
-"
+[ext_resource type="PackedScene" uid="uid://bnljpfs3okqsa" path="res://scenes/parts/entity_health/entity_health.tscn" id="5_rv7ah"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f73yy"]
 atlas = ExtResource("1_gx06k")
@@ -100,8 +67,7 @@ radius = 514.062
 scale = Vector2(0.5, 0.5)
 collision_layer = 2
 collision_mask = 0
-script = SubResource("GDScript_68qq3")
-health_attribute = ExtResource("1_4g3au")
+script = ExtResource("1_frbeo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_1mq0k")
@@ -124,5 +90,9 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LineOfSightDetector"]
 shape = SubResource("CircleShape2D_c881b")
 
+[node name="EntityHealth" parent="." instance=ExtResource("5_rv7ah")]
+health = 100
+
 [connection signal="object_left_range" from="LineOfSightDetector" to="." method="_on_line_of_sight_detector_object_left_range"]
 [connection signal="object_sighted" from="LineOfSightDetector" to="." method="_on_line_of_sight_detector_object_sighted"]
+[connection signal="health_was_depleated" from="EntityHealth" to="." method="_on_entity_health_health_was_depleated"]
