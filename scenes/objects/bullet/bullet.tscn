@@ -13,11 +13,8 @@ script/source = "extends Area2D
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var speed: float = 600
 
-func init():
-	rng.randomize()
-	var spread_angle = spread_angle_attribute.get_value()
-	var angle = rng.randf_range(-spread_angle / 2, spread_angle / 2)
-	global_rotation = global_position.angle_to_point(get_global_mouse_position()) + deg_to_rad(angle)
+func init(direction: float):
+	global_rotation = direction
 
 func _physics_process(delta: float):
 	global_position += delta * Vector2(speed, 0).rotated(global_rotation)
@@ -82,7 +79,7 @@ spread_angle_attribute = ExtResource("1_hwnee")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tm8f6")
 autoplay = "default"
-frame_progress = 0.00710242
+frame_progress = 0.262209
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_jtiw3")
