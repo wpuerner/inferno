@@ -13,9 +13,7 @@ func _ready():
 
 func _on_entity_health_health_was_depleated():
 	animated_sprite.play("dieing")
-	remove_child(animated_sprite)
-	animated_sprite.global_position = global_position
-	add_sibling(animated_sprite)
+	animated_sprite.reparent(get_parent())
 	event_bus.kill_mob(self)
 	queue_free()
 

@@ -6,8 +6,14 @@ signal object_left_range(object: Node2D)
 
 @export_flags_2d_physics var ray_mask: int
 
+@onready var event_bus: Node = get_node("/root/EventBus")
+
 var objects: Array = []
 var object_in_sight: Node2D
+
+func _ready():
+	set_physics_process(false)
+	event_bus.gameplay_started.connect(func(): set_physics_process(true))
 
 func _physics_process(_delta):
 	if objects.is_empty(): return

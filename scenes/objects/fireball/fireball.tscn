@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://drdjb67o0a1bp"]
+[gd_scene load_steps=8 format=3 uid="uid://drdjb67o0a1bp"]
 
 [ext_resource type="Script" path="res://scenes/objects/fireball/fireball.gd" id="1_ij420"]
 [ext_resource type="Texture2D" uid="uid://iwpub42r6iv3" path="res://scenes/objects/fireball/fireball.png" id="2_meeqi"]
-[ext_resource type="PackedScene" uid="uid://dcimufvvru2en" path="res://scenes/parts/hurtbox/hurtbox.tscn" id="3_gi4lq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_taji7"]
 atlas = ExtResource("2_meeqi")
@@ -39,7 +38,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_ucsyt"]
 radius = 5.0
 
-[node name="Fireball" type="Node2D"]
+[node name="Fireball" type="Area2D"]
+collision_layer = 0
+collision_mask = 5
 script = ExtResource("1_ij420")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -48,10 +49,7 @@ autoplay = "default"
 frame_progress = 0.206049
 offset = Vector2(-4.675, 0)
 
-[node name="Hurtbox" parent="." instance=ExtResource("3_gi4lq")]
-collision_mask = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ucsyt")
 
-[connection signal="hurtbox_collided" from="Hurtbox" to="." method="_on_hurtbox_hurtbox_collided"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
