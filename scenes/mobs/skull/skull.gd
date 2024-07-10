@@ -23,7 +23,7 @@ func _on_line_of_sight_detector_object_sighted(object):
 	set_physics_process(true)
 	animated_sprite.play("moving")
 
-func _on_line_of_sight_detector_object_left_range(object):
+func _on_line_of_sight_detector_object_left_range(_object):
 	self.player = null
 	set_physics_process(false)
 	animated_sprite.play("idle")

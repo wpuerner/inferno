@@ -53,6 +53,5 @@ func _generate():
 	if !rune: return
 	title_label.text = rune.display_name
 	rune_texture.texture = rune.texture
-	var description_string: String = ""
 	description_label.text = " ".join(rune.get_modifier_display_names())
 	modulate = Color.SKY_BLUE if is_selected else Color.WHITE

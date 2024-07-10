@@ -18,7 +18,6 @@ func _ready():
 func _physics_process(_delta):
 	if objects.is_empty(): return
 	
-	var space_state: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 	if is_instance_valid(object_in_sight):
 		if _has_line_of_sight_to_object(object_in_sight):
 			return

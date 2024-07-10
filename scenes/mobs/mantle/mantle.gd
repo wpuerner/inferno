@@ -21,7 +21,7 @@ func _on_line_of_sight_detector_object_sighted(object):
 	player = object
 	charge_timer.start()
 
-func _on_line_of_sight_detector_object_left_sight(object):
+func _on_line_of_sight_detector_object_left_sight(_object):
 	player = null
 	if animated_sprite.animation != "idle": animated_sprite.play("idle")
 	charge_timer.stop()

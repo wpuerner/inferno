@@ -23,7 +23,7 @@ func init():
 	var angle = rng.randf_range(-spread_angle / 2, spread_angle / 2)
 	velocity = launch_speed * Vector2.from_angle(global_position.angle_to_point(get_global_mouse_position()) + deg_to_rad(angle))
 
-func _physics_process(delta: float):
+func _physics_process(_delta):
 	if is_launching:
 		velocity *= drag
 		move_and_slide()
@@ -46,7 +46,7 @@ func _kill_worm():
 		add_sibling.call_deferred(spawn)
 	queue_free()
 
-func _on_trigger_area_body_entered(body):
+func _on_trigger_area_body_entered(_body):
 	_kill_worm()
 
 func _on_line_of_sight_detector_object_sighted(object):
