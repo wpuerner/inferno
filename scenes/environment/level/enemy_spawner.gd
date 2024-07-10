@@ -34,6 +34,7 @@ func spawn(spawn_positions: PackedVector2Array, energy: int):
 func _ready():
 	event_bus.level_loaded.connect(_remove_all_children)
 	event_bus.mob_was_killed.connect(_handle_mob_was_killed)
+	event_bus.game_restarted.connect(_reset)
 
 func _handle_mob_was_killed(mob: Node2D):
 	mobs.erase(mob)
@@ -46,3 +47,7 @@ func _handle_mob_was_killed(mob: Node2D):
 func _remove_all_children():
 	for child in get_children():
 		child.queue_free()
+
+func _reset():
+	mobs.clear()
+	_remove_all_children()

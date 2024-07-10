@@ -1,22 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://b22afvql266ju"]
+[gd_scene load_steps=6 format=3 uid="uid://b22afvql266ju"]
 
 [ext_resource type="Texture2D" uid="uid://bjewfr4sbl6am" path="res://scenes/effects/puff/puff.png" id="1_75wd1"]
 [ext_resource type="Script" path="res://scenes/effects/explosion/explosion.gd" id="1_at7gm"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_85u0s"]
-radius = 39.0
+[ext_resource type="PackedScene" uid="uid://dcimufvvru2en" path="res://scenes/parts/hurtbox/hurtbox.tscn" id="3_c887h"]
 
 [sub_resource type="Curve" id="Curve_qfe1y"]
 _data = [Vector2(0, 0.319661), 0.0, 0.0, 0, 0, Vector2(1, 0.834512), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="Explosion" type="Area2D"]
-collision_layer = 0
-collision_mask = 3
-script = ExtResource("1_at7gm")
+[sub_resource type="CircleShape2D" id="CircleShape2D_85u0s"]
+radius = 39.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_85u0s")
+[node name="Explosion" type="Node2D"]
+script = ExtResource("1_at7gm")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 emitting = false
@@ -41,5 +37,11 @@ wait_time = 0.3
 one_shot = true
 autostart = true
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="Hurtbox" parent="." instance=ExtResource("3_c887h")]
+collision_mask = 3
+damage_amount = 50
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_85u0s")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -52,22 +52,6 @@ func _restart_game():
 	_load_level()
 "
 
-[sub_resource type="GDScript" id="GDScript_6s5x2"]
-script/source = "extends CenterContainer
-
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-
-func _ready():
-	event_bus.player_killed.connect(_show)
-	
-func _show():
-	visible = true
-
-func _on_game_over_button_pressed():
-	visible = false
-	event_bus.restart_game()
-"
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qirpa"]
 bg_color = Color(0.977937, 0.977937, 0.977937, 1)
 border_color = Color(0.977937, 0.977937, 0.977937, 1)
@@ -161,6 +145,22 @@ expand_margin_top = 20.0
 expand_margin_right = 20.0
 expand_margin_bottom = 20.0
 
+[sub_resource type="GDScript" id="GDScript_6s5x2"]
+script/source = "extends CenterContainer
+
+@onready var event_bus: Node = get_node(\"/root/EventBus\")
+
+func _ready():
+	event_bus.player_killed.connect(_show)
+	
+func _show():
+	visible = true
+
+func _on_game_over_button_pressed():
+	visible = false
+	event_bus.restart_game()
+"
+
 [sub_resource type="GDScript" id="GDScript_dnsev"]
 script/source = "extends Camera2D
 
@@ -192,30 +192,6 @@ script = ExtResource("8_eheqx")
 attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50"), ExtResource("11_ndstk"), ExtResource("12_y82au")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="GameOverContainer" type="CenterContainer" parent="CanvasLayer"]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 272.0
-offset_bottom = 107.0
-grow_horizontal = 2
-grow_vertical = 2
-script = SubResource("GDScript_6s5x2")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverContainer"]
-layout_mode = 2
-
-[node name="GameOverLabel" type="Label" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Game Over"
-horizontal_alignment = 1
-
-[node name="GameOverButton" type="Button" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
-layout_mode = 2
-text = "Restart"
 
 [node name="GameplayInterface" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
@@ -318,6 +294,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Menu"
 
+[node name="GameOverContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 272.0
+offset_bottom = 107.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_6s5x2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverContainer"]
+layout_mode = 2
+
+[node name="GameOverLabel" type="Label" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="GameOverButton" type="Button" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
+layout_mode = 2
+text = "Restart"
+
 [node name="RoomCompleteContainer" parent="CanvasLayer" node_paths=PackedStringArray("hand_interface") instance=ExtResource("14_yti00")]
 visible = false
 hand_interface = NodePath("../HandInterface")
@@ -326,6 +326,6 @@ hand_interface = NodePath("../HandInterface")
 zoom = Vector2(2.03, 2.03)
 script = SubResource("GDScript_dnsev")
 
-[connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/GameOverButton" to="CanvasLayer/GameOverContainer" method="_on_game_over_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PauseMenu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="CanvasLayer/PauseMenu" method="_on_menu_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/GameOverButton" to="CanvasLayer/GameOverContainer" method="_on_game_over_button_pressed"]
