@@ -4,7 +4,8 @@ var rune_scene_paths: Array[String] = [
 	"res://scenes/runes/scatter_shot/scatter_shot.tscn",
 	"res://scenes/runes/rapid_fire/rapid_fire.tscn",
 	"res://scenes/runes/explosive/explosive.tscn",
-	"res://scenes/runes/worms/worms.tscn"
+	"res://scenes/runes/worms/worms.tscn",
+	"res://scenes/runes/warp/warp.tscn"
 ]
 
 func _ready():

@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://cl65k7ryvuev5"]
+
+[ext_resource type="Texture2D" uid="uid://w5t0w16r102l" path="res://scenes/parts/warp_utility/warp.png" id="1_8mqu4"]
+[ext_resource type="Script" path="res://scenes/parts/warp_utility/warp_effect.gd" id="2_rdl0b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ct7d"]
+atlas = ExtResource("1_8mqu4")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d36kd"]
+atlas = ExtResource("1_8mqu4")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eid1u"]
+atlas = ExtResource("1_8mqu4")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pcqjd"]
+atlas = ExtResource("1_8mqu4")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g0r7j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ct7d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d36kd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eid1u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pcqjd")
+}],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="WarpEffect" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_g0r7j")
+autoplay = "default"
+frame_progress = 0.294384
+script = ExtResource("2_rdl0b")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://htuatyjsj8qn"]
+
+[ext_resource type="Script" path="res://scenes/runes/warp/warp.gd" id="1_rfpsa"]
+[ext_resource type="Texture2D" uid="uid://dq07gvmbuh12y" path="res://scenes/runes/warp/warp.png" id="2_8kk12"]
+
+[node name="Warp" type="Node"]
+script = ExtResource("1_rfpsa")
+display_name = "Warp"
+texture = ExtResource("2_8kk12")
+description_strings = PackedStringArray("Player can warp (right click to warp)")
