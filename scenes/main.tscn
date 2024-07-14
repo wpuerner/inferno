@@ -34,11 +34,11 @@ func _ready():
 func _load_level():
 	find_child(\"LevelNumberLabel\").text = str(level_number)
 	event_bus.load_level()
-	_start_pre_level(level.generate(level_number))
+	player.global_position = level.generate(level_number)
+	_start_pre_level()
 
-func _start_pre_level(starting_position: Vector2):
+func _start_pre_level():
 	event_bus.start_pre_level()
-	player.global_position = starting_position
 	
 func _start_gameplay():
 	event_bus.start_gameplay()
@@ -165,8 +165,18 @@ func _on_game_over_button_pressed():
 script/source = "extends Camera2D
 
 @onready var player: Node2D = get_parent().find_child(\"Player\")
+@onready var event_bus: Node = get_node(\"/root/EventBus\")
 
-func _process(_delta):
+var follow_speed = 10
+
+
+func _ready():
+	event_bus.pre_level_started.connect(_reset)
+
+func _physics_process(delta):
+	global_position = global_position.lerp(player.global_position, delta * follow_speed)
+
+func _reset():
 	global_position = player.global_position
 "
 
