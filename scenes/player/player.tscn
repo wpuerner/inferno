@@ -1,33 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://pdahs317ljur"]
+[gd_scene load_steps=6 format=3 uid="uid://pdahs317ljur"]
 
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_31rwy"]
 [ext_resource type="Texture2D" uid="uid://lqlchfa1pk6y" path="res://scenes/player/player.png" id="1_bftvy"]
 [ext_resource type="Script" path="res://scenes/player/player_health.gd" id="2_pv3nn"]
-
-[sub_resource type="GDScript" id="GDScript_4kpq3"]
-script/source = "extends CharacterBody2D
-
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-@onready var health_attribute: Node = $PlayerHealth
-
-const SPEED = 300.0
-
-func _ready():
-	event_bus.pre_level_started.connect(func(): set_physics_process(false))
-	event_bus.player_picked_up_room_rune.connect(func(_rune): set_physics_process(false))
-	event_bus.gameplay_started.connect(func(): set_physics_process(true))
-
-func _physics_process(_delta):
-	var direction_x: float = Input.get_axis(\"move_left\", \"move_right\")
-	var direction_y: float = Input.get_axis(\"move_up\", \"move_down\")
-	var direction: Vector2 = Vector2(direction_x, direction_y).normalized()
-	
-	if direction.length() > 0:
-		velocity = direction * SPEED
-	else:
-		velocity = velocity.move_toward(Vector2.ZERO, SPEED)
-
-	move_and_slide()
-"
+[ext_resource type="PackedScene" uid="uid://dun2wrnfjw7qi" path="res://scenes/parts/warp_utility/warp_utility.tscn" id="4_cr5pl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ncfpm"]
 radius = 24.0
@@ -38,7 +14,7 @@ y_sort_enabled = true
 scale = Vector2(0.25, 0.25)
 collision_mask = 5
 motion_mode = 1
-script = SubResource("GDScript_4kpq3")
+script = ExtResource("1_31rwy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_bftvy")
@@ -49,3 +25,5 @@ shape = SubResource("CapsuleShape2D_ncfpm")
 
 [node name="PlayerHealth" type="Node" parent="."]
 script = ExtResource("2_pv3nn")
+
+[node name="WarpUtility" parent="." instance=ExtResource("4_cr5pl")]

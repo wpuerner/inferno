@@ -6,10 +6,11 @@ extends Node
 @onready var event_bus: Node = get_node("/root/EventBus")
 
 var warping: bool = false
-var direction: float
+var direction: Vector2
 var speed: float = 1000
 var mana_cost: int = 100
 var default_collision_layer: int
+var initial_velocity: Vector2
 
 func _ready():
 	default_collision_layer = parent.collision_layer
@@ -20,14 +21,20 @@ func _input(event: InputEvent):
 	if mana_handler:
 		if !mana_handler.has_enough_mana(mana_cost): return
 		mana_handler.decrease_mana(mana_cost)
+		
+	initial_velocity = parent.velocity
+	
 	var effect = preload("res://scenes/parts/warp_utility/warp_effect.tscn").instantiate()
 	effect.global_position = parent.global_position
 	parent.add_sibling(effect)
+	
 	parent.modulate = Color.TRANSPARENT
 	parent.collision_layer = 0
 	parent.set_physics_process(false)
-	direction = parent.global_position.angle_to_point(parent.get_global_mouse_position())
-	parent.velocity = Vector2.from_angle(direction) * speed
+	
+	direction = Vector2(Input.get_axis("move_left", "move_right"), Input.get_axis("move_up", "move_down")).normalized()
+	parent.velocity = direction * speed
+	
 	warping = true
 	timer.start()
 	
@@ -39,4 +46,6 @@ func _on_timer_timeout():
 	warping = false
 	parent.modulate = Color.WHITE
 	parent.collision_layer = default_collision_layer
+	parent.velocity = initial_velocity
 	parent.set_physics_process(true)
+	
