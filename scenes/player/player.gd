@@ -12,7 +12,7 @@ func _ready():
 	event_bus.player_picked_up_room_rune.connect(func(_rune): set_physics_process(false))
 	event_bus.gameplay_started.connect(func(): set_physics_process(true))
 
-func _physics_process(delta):
+func _physics_process(delta: float):
 	var direction_x: float = Input.get_axis("move_left", "move_right")
 	var direction_y: float = Input.get_axis("move_up", "move_down")
 	var direction: Vector2 = Vector2(direction_x, direction_y).normalized()
