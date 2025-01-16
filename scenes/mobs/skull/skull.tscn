@@ -1,9 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://co6cm7h26680f"]
+[gd_scene load_steps=13 format=3 uid="uid://co6cm7h26680f"]
 
 [ext_resource type="Script" path="res://scenes/mobs/skull/skull.gd" id="1_frbeo"]
 [ext_resource type="Texture2D" uid="uid://wcqneepn6llo" path="res://scenes/mobs/skull/skull.png" id="1_gx06k"]
 [ext_resource type="PackedScene" uid="uid://dcimufvvru2en" path="res://scenes/parts/hurtbox/hurtbox.tscn" id="4_0bpr5"]
-[ext_resource type="PackedScene" uid="uid://6qy0ls61xyi8" path="res://scenes/parts/line_of_sight_detector/line_of_sight_detector.tscn" id="4_at6ur"]
 [ext_resource type="PackedScene" uid="uid://bnljpfs3okqsa" path="res://scenes/parts/entity_health/entity_health.tscn" id="5_rv7ah"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f73yy"]
@@ -51,7 +50,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"moving",
-"speed": 12.0
+"speed": 6.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3jx18"]
@@ -59,9 +58,6 @@ radius = 22.0907
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8ewnt"]
 radius = 30.2655
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_c881b"]
-radius = 514.062
 
 [node name="Skull" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
@@ -71,7 +67,8 @@ script = ExtResource("1_frbeo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_1mq0k")
-animation = &"idle"
+animation = &"moving"
+frame_progress = 0.463612
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_3jx18")
@@ -84,15 +81,7 @@ collision_mask = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CircleShape2D_8ewnt")
 
-[node name="LineOfSightDetector" parent="." instance=ExtResource("4_at6ur")]
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LineOfSightDetector"]
-shape = SubResource("CircleShape2D_c881b")
-
 [node name="EntityHealth" parent="." instance=ExtResource("5_rv7ah")]
 health = 100
 
-[connection signal="object_left_range" from="LineOfSightDetector" to="." method="_on_line_of_sight_detector_object_left_range"]
-[connection signal="object_sighted" from="LineOfSightDetector" to="." method="_on_line_of_sight_detector_object_sighted"]
 [connection signal="health_was_depleated" from="EntityHealth" to="." method="_on_entity_health_health_was_depleated"]

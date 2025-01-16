@@ -1,190 +1,29 @@
-[gd_scene load_steps=24 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=21 format=3 uid="uid://bl5h7px3w3u8b"]
 
-[ext_resource type="PackedScene" uid="uid://b54f042muojun" path="res://scenes/environment/level/level.tscn" id="1_ddhtq"]
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_vyh3l"]
 [ext_resource type="Script" path="res://scenes/handlers/mana_handler.gd" id="3_vxcn8"]
 [ext_resource type="Script" path="res://scenes/handlers/bullet_handler.gd" id="4_6fohk"]
 [ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate/fire_rate_attribute.tres" id="5_cej1e"]
 [ext_resource type="Resource" uid="uid://yvstek8jsq1s" path="res://scenes/attributes/automatic_fire/automatic_fire_attribute.tres" id="6_4q5i8"]
+[ext_resource type="Script" path="res://scenes/attributes/attribute/attribute.gd" id="8_2b871"]
 [ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="8_eheqx"]
 [ext_resource type="Resource" uid="uid://l35nc4pia1xa" path="res://scenes/attributes/spread_angle/spread_angle_attribute.tres" id="10_wwfku"]
-[ext_resource type="Script" path="res://scenes/interface/health_bar.gd" id="11_b53u8"]
 [ext_resource type="Resource" uid="uid://x35ji78kslr2" path="res://scenes/attributes/bullet_spawn/bullet_spawn_attribute.tres" id="11_ndstk"]
 [ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
+[ext_resource type="Script" path="res://scenes/handlers/rune_pool.gd" id="12_pu1ml"]
 [ext_resource type="Resource" uid="uid://cor4v0lch1y7b" path="res://scenes/attributes/projectile/projectile_attribute.tres" id="12_y82au"]
-[ext_resource type="PackedScene" uid="uid://lc0qrc5ks0rw" path="res://scenes/interface/hand_interface/hand_interface.tscn" id="14_cvbr4"]
-[ext_resource type="PackedScene" uid="uid://btqpmb2bk7q3h" path="res://scenes/interface/room_complete_interface/room_complete_container.tscn" id="14_yti00"]
-
-[sub_resource type="GDScript" id="GDScript_sn1df"]
-script/source = "extends Node2D
-
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-@onready var player: Node2D = $Player
-@onready var level: Node = $Level
-
-var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var level_number: int = 1
-
-func _ready():
-	event_bus.game_restarted.connect(_restart_game)
-	event_bus.player_requested_next_level.connect(_switch_levels)
-	event_bus.player_activated_hand.connect(_start_gameplay)
-	_load_level()
-
-func _load_level():
-	find_child(\"LevelNumberLabel\").text = str(level_number)
-	event_bus.load_level()
-	player.global_position = level.generate(level_number)
-	_start_pre_level()
-
-func _start_pre_level():
-	event_bus.start_pre_level()
-	
-func _start_gameplay():
-	event_bus.start_gameplay()
-	
-func _switch_levels():
-	level_number += 1
-	_load_level()
-
-func _restart_game():
-	level_number = 1
-	_load_level()
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qirpa"]
-bg_color = Color(0.977937, 0.977937, 0.977937, 1)
-border_color = Color(0.977937, 0.977937, 0.977937, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hccur"]
-bg_color = Color(0.729412, 0.211765, 0.231373, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.977937, 0.977937, 0.977937, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhenx"]
-bg_color = Color(0.976471, 0.976471, 0.976471, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0453671, 0.0424668, 0.0405312, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6a6hw"]
-bg_color = Color(0.054902, 0.443137, 0.627451, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0470588, 0.0431373, 0.0392157, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="GDScript" id="GDScript_wr0e6"]
-script/source = "extends ColorRect
-
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-@onready var menu_handler: Node = get_node(\"/root/MenuHandler\")
-
-func _input(event: InputEvent):
-	if !event.is_action_pressed(\"open_menu\"): return
-	if visible: 
-		_unpause()
-	else:
-		_pause()
-		
-func _unpause():
-	get_tree().paused = false
-	visible = false
-	
-func _pause():
-	get_tree().paused = true
-	visible = true
-
-func _go_to_menu():
-	get_tree().paused = false
-	menu_handler.activate_menu()
-
-func _on_resume_button_pressed():
-	_unpause()
-
-
-func _on_menu_button_pressed():
-	_go_to_menu()
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvm7y"]
-bg_color = Color(0.490196, 0.490196, 0.490196, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_left = 20.0
-expand_margin_top = 20.0
-expand_margin_right = 20.0
-expand_margin_bottom = 20.0
-
-[sub_resource type="GDScript" id="GDScript_6s5x2"]
-script/source = "extends CenterContainer
-
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-
-func _ready():
-	event_bus.player_killed.connect(_show)
-	
-func _show():
-	visible = true
-
-func _on_game_over_button_pressed():
-	visible = false
-	event_bus.restart_game()
-"
-
-[sub_resource type="GDScript" id="GDScript_dnsev"]
-script/source = "extends Camera2D
-
-@onready var player: Node2D = get_parent().find_child(\"Player\")
-@onready var event_bus: Node = get_node(\"/root/EventBus\")
-
-var follow_speed = 10
-
-
-func _ready():
-	event_bus.pre_level_started.connect(_reset)
-
-func _physics_process(delta):
-	global_position = global_position.lerp(player.global_position, delta * follow_speed)
-
-func _reset():
-	global_position = player.global_position
-"
+[ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/rapid_fire/rapid_fire.tscn" id="13_g0dpi"]
+[ext_resource type="PackedScene" uid="uid://bsaoofryqsgo8" path="res://scenes/runes/explosive/explosive.tscn" id="14_y5m0x"]
+[ext_resource type="PackedScene" uid="uid://v55nyikrr6u6" path="res://scenes/runes/scatter_shot/scatter_shot.tscn" id="15_2rxl3"]
+[ext_resource type="PackedScene" uid="uid://banoqqqiycy83" path="res://scenes/runes/worms/worms.tscn" id="16_0sl1q"]
+[ext_resource type="PackedScene" uid="uid://htuatyjsj8qn" path="res://scenes/runes/warp/warp.tscn" id="17_dhgyn"]
+[ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="19_j6yop"]
+[ext_resource type="Script" path="res://scenes/game_camera.gd" id="22_m5y6a"]
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
-script = SubResource("GDScript_sn1df")
-
-[node name="Level" parent="." instance=ExtResource("1_ddhtq")]
+script = ExtResource("1_vyh3l")
 
 [node name="Player" parent="." instance=ExtResource("1_tjb1v")]
 
@@ -199,143 +38,48 @@ num_bullets_attribute = ExtResource("11_s3s50")
 
 [node name="AttributeHandler" type="Node" parent="."]
 script = ExtResource("8_eheqx")
-attributes = Array[Resource("res://scenes/attributes/attribute/attribute.gd")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50"), ExtResource("11_ndstk"), ExtResource("12_y82au")])
+attributes = Array[ExtResource("8_2b871")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50"), ExtResource("11_ndstk"), ExtResource("12_y82au")])
+
+[node name="RunePool" type="Node" parent="."]
+script = ExtResource("12_pu1ml")
+
+[node name="RapidFire" parent="RunePool" instance=ExtResource("13_g0dpi")]
+
+[node name="RapidFire2" parent="RunePool" instance=ExtResource("13_g0dpi")]
+
+[node name="RapidFire3" parent="RunePool" instance=ExtResource("13_g0dpi")]
+
+[node name="RapidFire4" parent="RunePool" instance=ExtResource("13_g0dpi")]
+
+[node name="Explosive" parent="RunePool" instance=ExtResource("14_y5m0x")]
+
+[node name="Explosive2" parent="RunePool" instance=ExtResource("14_y5m0x")]
+
+[node name="ScatterShot" parent="RunePool" instance=ExtResource("15_2rxl3")]
+
+[node name="ScatterShot2" parent="RunePool" instance=ExtResource("15_2rxl3")]
+
+[node name="Worms" parent="RunePool" instance=ExtResource("16_0sl1q")]
+
+[node name="Warp" parent="RunePool" instance=ExtResource("17_dhgyn")]
+
+[node name="Warp2" parent="RunePool" instance=ExtResource("17_dhgyn")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="GameplayInterface" type="MarginContainer" parent="CanvasLayer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameplayInterface"]
-layout_mode = 2
-size_flags_vertical = 0
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+render_target_update_mode = 4
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/GameplayInterface/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-columns = 2
+[node name="Hand" parent="CanvasLayer/SubViewportContainer/SubViewport" instance=ExtResource("19_j6yop")]
 
-[node name="Label" type="Label" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
-layout_mode = 2
-text = "Health: "
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/background = SubResource("StyleBoxFlat_qirpa")
-theme_override_styles/fill = SubResource("StyleBoxFlat_hccur")
-step = 1.0
-value = 100.0
-script = ExtResource("11_b53u8")
-
-[node name="Label2" type="Label" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
-layout_mode = 2
-text = "Mana: "
-
-[node name="ManaBar" type="ProgressBar" parent="CanvasLayer/GameplayInterface/HBoxContainer/GridContainer"]
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_rhenx")
-theme_override_styles/fill = SubResource("StyleBoxFlat_6a6hw")
-max_value = 1000.0
-step = 1.0
-value = 1000.0
-rounded = true
-
-[node name="LevelNumberLabel" type="Label" parent="CanvasLayer/GameplayInterface/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
-size_flags_stretch_ratio = 2.73
-text = "0"
-horizontal_alignment = 2
-
-[node name="HandInterface" parent="CanvasLayer" instance=ExtResource("14_cvbr4")]
-
-[node name="PauseMenu" type="ColorRect" parent="CanvasLayer"]
-process_mode = 3
-visible = false
-z_index = 100
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 1, 1, 0.14902)
-script = SubResource("GDScript_wr0e6")
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PauseMenu"]
-layout_mode = 2
-offset_left = 881.0
-offset_top = 491.0
-offset_right = 1039.0
-offset_bottom = 588.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_pvm7y")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseMenu/PanelContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "PAUSED"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
-process_mode = 3
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Resume"
-
-[node name="MenuButton" type="Button" parent="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer"]
-process_mode = 3
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Menu"
-
-[node name="GameOverContainer" type="CenterContainer" parent="CanvasLayer"]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 272.0
-offset_bottom = 107.0
-grow_horizontal = 2
-grow_vertical = 2
-script = SubResource("GDScript_6s5x2")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverContainer"]
-layout_mode = 2
-
-[node name="GameOverLabel" type="Label" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Game Over"
-horizontal_alignment = 1
-
-[node name="GameOverButton" type="Button" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
-layout_mode = 2
-text = "Restart"
-
-[node name="RoomCompleteContainer" parent="CanvasLayer" node_paths=PackedStringArray("hand_interface") instance=ExtResource("14_yti00")]
-visible = false
-hand_interface = NodePath("../HandInterface")
-
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="GameCamera" type="Camera2D" parent="."]
 zoom = Vector2(2.03, 2.03)
-script = SubResource("GDScript_dnsev")
-
-[connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PauseMenu" method="_on_resume_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/PauseMenu/PanelContainer/VBoxContainer/HBoxContainer/MenuButton" to="CanvasLayer/PauseMenu" method="_on_menu_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/GameOverButton" to="CanvasLayer/GameOverContainer" method="_on_game_over_button_pressed"]
+script = ExtResource("22_m5y6a")

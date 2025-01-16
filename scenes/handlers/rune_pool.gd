@@ -8,28 +8,31 @@ var rune_scene_paths: Array[String] = [
 	"res://scenes/runes/warp/warp.tscn"
 ]
 
-func _ready():
-	_generate_rune_pool()
+var hand: Array[Rune]
+var deck: Array[Rune]
+var discard: Array[Rune]
 
-func _generate_rune_pool():
-	for i in 15:
-		var rune_scene_path = rune_scene_paths[i % rune_scene_paths.size()]
-		var rune = load(rune_scene_path).instantiate()
-		if get_child_count() < 8: rune.is_in_deck = true
-		add_child(rune)
+func get_hand() -> Array[Rune]:
+	var hand
+	for i in range(0, 5):
+		if deck.size() == 0:
+			deck.append(discard.duplicate(true))
+			discard.clear()
+			_shuffle_deck()
+		# If the deck is still empty after reshuffling, just return what is already in the hand.
+		# Can happen if there are fewer cards in the deck than go to a hand.
+		if deck.size() == 0:
+			return hand
+		hand.append(deck.pop_front())
+	return hand
 
-func get_deck() -> Array[Rune]:
-	var runes: Array[Rune] = []
-	for rune in get_children():
-		if rune.is_in_deck:
-			runes.append(rune)
-	return runes
-	
-func get_runes():
-	return get_children()
-
-func get_random_rune() -> Rune:
-	return load(rune_scene_paths.pick_random()).instantiate()
-	
 func add_rune(rune: Rune):
 	add_child(rune)
+	discard.append(rune)
+
+func _ready():
+	deck = get_children().filter(func(child): return child is Rune)
+	_shuffle_deck()
+	
+func _shuffle_deck():
+	deck.shuffle()

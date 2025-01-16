@@ -17,4 +17,4 @@ func activate_game():
 func activate_deck_selector():
 	var menu = get_node("/root/MainMenu")
 	if is_instance_valid(menu): menu.queue_free()
-	get_tree().root.add_child(preload("res://scenes/menu/deck_selector/deck_selector.tscn").instantiate())
+	#get_tree().root.add_child(preload("res://scenes/menu/deck_selector/deck_selector.tscn").instantiate())

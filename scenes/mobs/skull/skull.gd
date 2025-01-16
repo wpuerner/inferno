@@ -17,17 +17,6 @@ func _physics_process(_delta: float):
 	velocity = global_position.direction_to(navigation_agent_2d.get_next_path_position()) * speed
 	move_and_slide()
 
-func _on_line_of_sight_detector_object_sighted(object):
-	if !is_enabled: return
-	self.player = object
-	set_physics_process(true)
-	animated_sprite.play("moving")
-
-func _on_line_of_sight_detector_object_left_range(_object):
-	self.player = null
-	set_physics_process(false)
-	animated_sprite.play("idle")
-
 func _on_entity_health_health_was_depleated():
 	event_bus.kill_mob(self)
 	queue_free()

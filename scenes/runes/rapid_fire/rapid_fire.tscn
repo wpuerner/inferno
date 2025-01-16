@@ -1,15 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://drn72cu2ncene"]
+[gd_scene load_steps=3 format=3 uid="uid://drn72cu2ncene"]
 
 [ext_resource type="Texture2D" uid="uid://dxanw34iblju1" path="res://scenes/runes/rapid_fire/rapid_fire.png" id="1_0otus"]
 [ext_resource type="Script" path="res://scenes/runes/rune.gd" id="1_ju18h"]
-[ext_resource type="PackedScene" uid="uid://cf0wc2u7c5m17" path="res://scenes/modifiers/fire_rate_up/fire_rate_up_modifier.tscn" id="2_2s5hw"]
-[ext_resource type="PackedScene" uid="uid://deo6qs55asttj" path="res://scenes/modifiers/automatic_fire_on/automatic_fire_on_modifier.tscn" id="4_3fcec"]
 
 [node name="RapidFire" type="Node"]
 script = ExtResource("1_ju18h")
 display_name = "Rapid Fire"
-texture = ExtResource("1_0otus")
-
-[node name="FireRateUpModifier" parent="." instance=ExtResource("2_2s5hw")]
-
-[node name="AutomaticFireOnModifier" parent="." instance=ExtResource("4_3fcec")]
+icon = ExtResource("1_0otus")
+effect_description = "Enable auto-fire"
+stack_description = "On stack: increase fire rate"

@@ -19,7 +19,6 @@ config/icon="res://icon.svg"
 
 EventBus="*res://event_bus.gd"
 MenuHandler="*res://scenes/handlers/menu_handler.gd"
-RunePool="*res://scenes/handlers/rune_pool.gd"
 
 [debug]
 

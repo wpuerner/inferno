@@ -3,106 +3,112 @@
 [ext_resource type="Script" path="res://scenes/runes/rune_card/rune_card.gd" id="1_45ddr"]
 [ext_resource type="Texture2D" uid="uid://cqx4v3t17pivr" path="res://scenes/runes/worms/worms.png" id="2_5786a"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m0uxd"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3dsj"]
+size = Vector2(178, 179)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gj2pi"]
-bg_color = Color(1, 0.919, 0.73, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0.909007, 0.941175, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vx1k4"]
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+border_color = Color(0.625597, 0.625597, 0.625597, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bceyu"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6rnb1"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
-[node name="RuneCard" type="Panel"]
-custom_minimum_size = Vector2(180, 250)
-offset_right = 180.0
-offset_bottom = 250.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_m0uxd")
+[node name="RuneCard" type="Area2D"]
 script = ExtResource("1_45ddr")
 
-[node name="TitleLabel" type="Label" parent="."]
-layout_mode = 0
-offset_right = 180.0
-offset_bottom = 40.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
-text = "RUNE CARD TITLE"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_a3dsj")
 
 [node name="Panel" type="Panel" parent="."]
-clip_contents = true
-layout_mode = 0
-offset_left = 10.0
-offset_top = 40.0
-offset_right = 170.0
-offset_bottom = 150.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_gj2pi")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -90.0
+offset_right = 90.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vx1k4")
 
 [node name="TextureRect" type="TextureRect" parent="Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -9.0
-offset_bottom = 9.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_5786a")
 expand_mode = 4
 stretch_mode = 5
 
-[node name="Panel" type="Panel" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="InfoPanel" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(180, 0)
+offset_left = -60.0
+offset_top = -110.0
+offset_right = 60.0
+offset_bottom = -100.0
 grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bceyu")
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6rnb1")
 
-[node name="DescriptionLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 155.0
-offset_right = 170.0
-offset_bottom = 240.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 12
-text = "THIS IS A LONG DESCRIPTION TEXT"
+[node name="MarginContainer" type="MarginContainer" parent="InfoPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DisplayNameLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Sample Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="EffectDescriptionLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "This rune has a certain effect and is also really long text and keeps goign to the next line and continues to be super long"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StackDescriptionLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "This rune has a different effect when stacked"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
