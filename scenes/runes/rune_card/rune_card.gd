@@ -1,11 +1,7 @@
-extends Area2D
+class_name RuneCard extends Area2D
 
-signal selection_state_changed(rune: Rune, selected: bool)
+signal was_selected
 
-var is_selected: bool = false:
-	set(value):
-		is_selected = value
-		selection_state_changed.emit(rune, is_selected)
 var rune: Rune:
 	set(value):
 		rune = value
@@ -25,4 +21,4 @@ func _on_mouse_exited():
 
 func _on_input_event(_viewport, event: InputEvent, _shape_idx):
 	if !event.is_action_pressed("primary"): return
-	is_selected = !is_selected
+	was_selected.emit()

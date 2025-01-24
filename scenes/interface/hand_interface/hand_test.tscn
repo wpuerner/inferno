@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://buqjywfxthk4k"]
+
+[ext_resource type="Script" path="res://scenes/interface/hand_interface/hand_test.gd" id="1_8c0p0"]
+[ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="2_oka8p"]
+[ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/rapid_fire/rapid_fire.tscn" id="3_ovoq5"]
+
+[node name="HandTest" type="Node2D"]
+script = ExtResource("1_8c0p0")
+
+[node name="Hand" parent="." instance=ExtResource("2_oka8p")]
+
+[node name="Runes" type="Node" parent="."]
+
+[node name="RapidFire" parent="Runes" instance=ExtResource("3_ovoq5")]
+
+[node name="RapidFire2" parent="Runes" instance=ExtResource("3_ovoq5")]
+
+[node name="RapidFire3" parent="Runes" instance=ExtResource("3_ovoq5")]
+
+[node name="RapidFire4" parent="Runes" instance=ExtResource("3_ovoq5")]
+
+[node name="RapidFire5" parent="Runes" instance=ExtResource("3_ovoq5")]

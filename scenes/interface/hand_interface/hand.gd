@@ -2,15 +2,47 @@ extends Node2D
 
 const SEPARATION: int = 200
 
+var selected_cards: Array[RuneCard] = []
+
+func open_with_runes(runes: Array[Rune]):
+	for rune in runes:
+		add_rune(rune)
+		await get_tree().create_timer(0.2).timeout
+
 func add_rune(rune: Rune):
 	var rune_card = preload("res://scenes/runes/rune_card/rune_card.tscn").instantiate()
 	rune_card.rune = rune
+	rune_card.position = _get_initial_position()
+	rune_card.was_selected.connect(_rune_card_was_selected.bind(rune_card))
 	add_child(rune_card)
 	for n in range(0, get_child_count()):
 		var child: Node2D = get_children()[n]
-		child.position = Vector2(_get_x_position(n), 0)
+		var new_position: Vector2 = Vector2(_get_x_position(n), 0)
+		var tween: Tween = get_tree().create_tween()
+		tween.tween_property(child, "position", new_position, 0.1).set_ease(Tween.EASE_OUT)
+
+func get_selected_runes() -> Array[Rune]:
+	var runes: Array[Rune] = []
+	for card in selected_cards:
+		runes.append(card.rune)
+	return runes
 
 func _get_x_position(index: int):
 	var num_cards = get_child_count()
 	var hand_width = (num_cards - 1) * SEPARATION
-	return (-0.5 * hand_width) + SEPARATION * (index - 1)
+	var value = (-0.5 * hand_width) + SEPARATION * index
+	return value
+
+func _get_initial_position() -> Vector2:
+	return Vector2(0, get_viewport_rect().size.y + 200 - position.y)
+
+func _rune_card_was_selected(rune_card: Node2D):
+	var y_pos: int = 0
+	if selected_cards.has(rune_card):
+		selected_cards.erase(rune_card)
+	else:
+		selected_cards.append(rune_card)
+		y_pos = -100
+	var tween: Tween = get_tree().create_tween()
+	tween.tween_property(rune_card, "position", Vector2(rune_card.position.x, y_pos), 0.1)
+		
