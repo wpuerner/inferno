@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://dyxjrdhdnrs2b"]
+
+[ext_resource type="Script" path="res://scenes/game_camera.gd" id="1_mmott"]
+
+[sub_resource type="Gradient" id="Gradient_8lea3"]
+offsets = PackedFloat32Array(0.688849, 0.915468)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nj61t"]
+noise_type = 4
+frequency = 0.1832
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mvo2w"]
+width = 5000
+height = 5000
+generate_mipmaps = false
+normalize = false
+color_ramp = SubResource("Gradient_8lea3")
+noise = SubResource("FastNoiseLite_nj61t")
+
+[sub_resource type="Gradient" id="Gradient_uefek"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.372302, 0.566547)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bao3b"]
+noise_type = 2
+frequency = 0.0221
+fractal_type = 0
+fractal_gain = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4mytm"]
+width = 5000
+height = 5000
+generate_mipmaps = false
+normalize = false
+color_ramp = SubResource("Gradient_uefek")
+noise = SubResource("FastNoiseLite_bao3b")
+
+[node name="GameCamera" type="Camera2D"]
+zoom = Vector2(2.03, 2.03)
+script = ExtResource("1_mmott")
+
+[node name="Background2" type="Sprite2D" parent="."]
+z_index = -1
+texture = SubResource("NoiseTexture2D_mvo2w")
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 512)
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -1
+texture = SubResource("NoiseTexture2D_4mytm")
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 512)

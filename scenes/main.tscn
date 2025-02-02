@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://banoqqqiycy83" path="res://scenes/runes/worms/worms.tscn" id="16_0sl1q"]
 [ext_resource type="PackedScene" uid="uid://htuatyjsj8qn" path="res://scenes/runes/warp/warp.tscn" id="17_dhgyn"]
 [ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="19_j6yop"]
-[ext_resource type="Script" path="res://scenes/game_camera.gd" id="22_m5y6a"]
+[ext_resource type="PackedScene" uid="uid://dyxjrdhdnrs2b" path="res://scenes/game_camera.tscn" id="20_q2ocl"]
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -80,6 +80,4 @@ render_target_update_mode = 4
 
 [node name="Hand" parent="CanvasLayer/SubViewportContainer/SubViewport" instance=ExtResource("19_j6yop")]
 
-[node name="GameCamera" type="Camera2D" parent="."]
-zoom = Vector2(2.03, 2.03)
-script = ExtResource("22_m5y6a")
+[node name="GameCamera" parent="." instance=ExtResource("20_q2ocl")]

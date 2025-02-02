@@ -17,11 +17,14 @@ func _physics_process(delta: float):
 	var direction_y: float = Input.get_axis("move_up", "move_down")
 	var direction: Vector2 = Vector2(direction_x, direction_y).normalized()
 	
-	print_debug(direction)
-	
 	if direction.length() > 0:
 		velocity = velocity.move_toward(direction * max_speed, delta * acceleration)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, delta * deceleration)
 
+	global_rotation = global_position.angle_to_point(get_global_mouse_position())
+
 	move_and_slide()
+
+func _draw():
+	draw_polyline([Vector2(-20, -20), Vector2(0, 0), Vector2(-20, 20)], Color.GREEN, 5, true)

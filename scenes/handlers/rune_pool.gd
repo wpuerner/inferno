@@ -31,7 +31,8 @@ func add_rune(rune: Rune):
 	discard.append(rune)
 
 func _ready():
-	deck = get_children().filter(func(child): return child is Rune)
+	for child in get_children().filter(func(child): return child is Rune):
+		deck.append(child)
 	_shuffle_deck()
 	
 func _shuffle_deck():

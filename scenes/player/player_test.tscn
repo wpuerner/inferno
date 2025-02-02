@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://xn0smvde8weo"]
+
+[ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_axyg8"]
+[ext_resource type="Script" path="res://scenes/player/player_test.gd" id="1_pfifn"]
+[ext_resource type="PackedScene" uid="uid://dyxjrdhdnrs2b" path="res://scenes/game_camera.tscn" id="2_6bpwe"]
+
+[node name="PlayerTest" type="Node2D"]
+script = ExtResource("1_pfifn")
+
+[node name="Player" parent="." instance=ExtResource("1_axyg8")]
+
+[node name="GameCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_6bpwe")]
+zoom = Vector2(1.2, 1.2)
+player = NodePath("../Player")
