@@ -1,18 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=11 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_vyh3l"]
-[ext_resource type="Script" path="res://scenes/handlers/mana_handler.gd" id="3_vxcn8"]
-[ext_resource type="Script" path="res://scenes/handlers/bullet_handler.gd" id="4_6fohk"]
-[ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate/fire_rate_attribute.tres" id="5_cej1e"]
-[ext_resource type="Resource" uid="uid://yvstek8jsq1s" path="res://scenes/attributes/automatic_fire/automatic_fire_attribute.tres" id="6_4q5i8"]
-[ext_resource type="Script" path="res://scenes/attributes/attribute/attribute.gd" id="8_2b871"]
-[ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="8_eheqx"]
-[ext_resource type="Resource" uid="uid://l35nc4pia1xa" path="res://scenes/attributes/spread_angle/spread_angle_attribute.tres" id="10_wwfku"]
-[ext_resource type="Resource" uid="uid://x35ji78kslr2" path="res://scenes/attributes/bullet_spawn/bullet_spawn_attribute.tres" id="11_ndstk"]
-[ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/num_bullets/num_bullets_attribute.tres" id="11_s3s50"]
 [ext_resource type="Script" path="res://scenes/handlers/rune_pool.gd" id="12_pu1ml"]
-[ext_resource type="Resource" uid="uid://cor4v0lch1y7b" path="res://scenes/attributes/projectile/projectile_attribute.tres" id="12_y82au"]
 [ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/rapid_fire/rapid_fire.tscn" id="13_g0dpi"]
 [ext_resource type="PackedScene" uid="uid://bsaoofryqsgo8" path="res://scenes/runes/explosive/explosive.tscn" id="14_y5m0x"]
 [ext_resource type="PackedScene" uid="uid://v55nyikrr6u6" path="res://scenes/runes/scatter_shot/scatter_shot.tscn" id="15_2rxl3"]
@@ -26,19 +16,6 @@ y_sort_enabled = true
 script = ExtResource("1_vyh3l")
 
 [node name="Player" parent="." instance=ExtResource("1_tjb1v")]
-
-[node name="ManaHandler" type="Node" parent="."]
-script = ExtResource("3_vxcn8")
-
-[node name="BulletHandler" type="Node" parent="."]
-script = ExtResource("4_6fohk")
-fire_rate_attribute = ExtResource("5_cej1e")
-automatic_fire_attribute = ExtResource("6_4q5i8")
-num_bullets_attribute = ExtResource("11_s3s50")
-
-[node name="AttributeHandler" type="Node" parent="."]
-script = ExtResource("8_eheqx")
-attributes = Array[ExtResource("8_2b871")]([ExtResource("6_4q5i8"), ExtResource("5_cej1e"), ExtResource("10_wwfku"), ExtResource("11_s3s50"), ExtResource("11_ndstk"), ExtResource("12_y82au")])
 
 [node name="RunePool" type="Node" parent="."]
 script = ExtResource("12_pu1ml")
@@ -65,19 +42,26 @@ script = ExtResource("12_pu1ml")
 
 [node name="Warp2" parent="RunePool" instance=ExtResource("17_dhgyn")]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="HandCanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+[node name="Hand" parent="HandCanvasLayer" instance=ExtResource("19_j6yop")]
+
+[node name="MarginContainer" type="MarginContainer" parent="HandCanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_bottom = 48
 
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
-handle_input_locally = false
-render_target_update_mode = 4
+[node name="PlayButton" type="Button" parent="HandCanvasLayer/MarginContainer"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "PLAY"
 
-[node name="Hand" parent="CanvasLayer/SubViewportContainer/SubViewport" instance=ExtResource("19_j6yop")]
+[node name="GameCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("20_q2ocl")]
+player = NodePath("../Player")
 
-[node name="GameCamera" parent="." instance=ExtResource("20_q2ocl")]
+[connection signal="pressed" from="HandCanvasLayer/MarginContainer/PlayButton" to="." method="_on_play_button_pressed"]

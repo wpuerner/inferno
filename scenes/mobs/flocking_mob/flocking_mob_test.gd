@@ -1,8 +1,6 @@
 extends Node2D
 
 func _ready():
-	var rng = RandomNumberGenerator.new()
-	
 	for child in get_children():
 		if child != $Target:
 			child.target = $Target

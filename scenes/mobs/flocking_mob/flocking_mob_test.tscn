@@ -21,5 +21,38 @@ position = Vector2(1225, 252)
 [node name="FlockingMob4" parent="." instance=ExtResource("2_qgpnr")]
 position = Vector2(832, 418)
 
+[node name="FlockingMob5" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob6" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob7" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob8" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob9" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob10" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob11" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob12" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob13" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob14" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
+[node name="FlockingMob15" parent="." instance=ExtResource("2_qgpnr")]
+position = Vector2(832, 418)
+
 [node name="Target" type="Sprite2D" parent="."]
 texture = SubResource("PlaceholderTexture2D_ceqf2")

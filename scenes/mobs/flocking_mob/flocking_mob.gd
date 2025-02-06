@@ -1,14 +1,18 @@
 extends CharacterBody2D
 
-# Forward will be the positive x axis to make angle_to_point easier to process
+@export var target: Node2D
+
+var health: int = 3
+var close_peers: Array[Node2D] = []
 
 const STEERING_FORCE: float = 3.0
-const SEPARATION_FACTOR: float = 100.0
+const SEPARATION_FACTOR: float = 50.0
 const VIEW_ANGLE: float = 0.50 * PI  # The angle on either side of the forward axis where neighbors are visible
 const MOVE_SPEED: float = 80.0
 
-var target: Node2D
-var close_peers: Array[Node2D] = []
+func apply_damage(amount: int):
+	health -= amount
+	if health <= 0: queue_free()
 
 func _physics_process(delta: float):
 	if target == null:
@@ -58,3 +62,6 @@ func _get_correction_angle(from_angle: float, to_angle: float):
 	while abs(from_angle - to_angle) > PI:
 		to_angle += direction * 2 * PI
 	return to_angle - from_angle
+
+func _draw():
+	draw_circle(Vector2.ZERO, 20, Color.RED, false, 5)

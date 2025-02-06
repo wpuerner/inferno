@@ -1,10 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnek4ymnsbngc"]
+[gd_scene load_steps=4 format=3 uid="uid://bnek4ymnsbngc"]
 
-[ext_resource type="Texture2D" uid="uid://b6biwhun3xsxg" path="res://icon.svg" id="1_75qsy"]
 [ext_resource type="Script" path="res://scenes/mobs/flocking_mob/flocking_mob.gd" id="1_lc5pu"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_04du0"]
-size = Vector2(26, 26)
+[sub_resource type="CircleShape2D" id="CircleShape2D_gny7l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_08w3n"]
 radius = 92.0489
@@ -15,12 +13,7 @@ collision_mask = 0
 script = ExtResource("1_lc5pu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_04du0")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-rotation = 1.5708
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_75qsy")
+shape = SubResource("CircleShape2D_gny7l")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0

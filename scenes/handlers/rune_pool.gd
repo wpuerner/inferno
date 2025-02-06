@@ -8,12 +8,11 @@ var rune_scene_paths: Array[String] = [
 	"res://scenes/runes/warp/warp.tscn"
 ]
 
-var hand: Array[Rune]
 var deck: Array[Rune]
 var discard: Array[Rune]
 
 func get_hand() -> Array[Rune]:
-	var hand
+	var hand: Array[Rune] = []
 	for i in range(0, 5):
 		if deck.size() == 0:
 			deck.append(discard.duplicate(true))
