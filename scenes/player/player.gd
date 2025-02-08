@@ -4,9 +4,9 @@ extends CharacterBody2D
 
 var can_fire: bool = true
 
-const max_speed: float = 300
-const acceleration: float = 1800
-const deceleration: float = 2200
+const MAX_SPEED: float = 100
+const ACCELERATION: float = 500
+const DECELERATION: float = 700
 
 func _ready():
 	event_bus.pre_level_started.connect(func(): set_physics_process(false))
@@ -18,9 +18,9 @@ func _physics_process(delta: float):
 	var direction_y: float = Input.get_axis("move_up", "move_down")
 	var direction: Vector2 = Vector2(direction_x, direction_y).normalized()
 	if direction.length() > 0:
-		velocity = velocity.move_toward(direction * max_speed, delta * acceleration)
+		velocity = velocity.move_toward(direction * MAX_SPEED, delta * ACCELERATION)
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, delta * deceleration)
+		velocity = velocity.move_toward(Vector2.ZERO, delta * DECELERATION)
 	move_and_slide()
 	
 	global_rotation = global_position.angle_to_point(get_global_mouse_position())

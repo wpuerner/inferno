@@ -20,5 +20,5 @@ func _on_mouse_exited():
 	$InfoPanel.visible = false
 
 func _on_input_event(_viewport, event: InputEvent, _shape_idx):
-	if !event.is_action_pressed("primary"): return
+	if !event.is_action_pressed("select_rune"): return
 	was_selected.emit()
