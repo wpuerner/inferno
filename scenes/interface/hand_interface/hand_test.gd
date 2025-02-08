@@ -8,3 +8,5 @@ func _ready():
 		if child is Rune:
 			runes.append(child as Rune)
 	$Hand.open_with_runes(runes)
+	await get_tree().create_timer(3.0).timeout
+	$Hand.close()
