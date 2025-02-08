@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scenes/mobs/flocking_mob/flocking_mob.gd" id="1_lc5pu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gny7l"]
+radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_08w3n"]
 radius = 92.0489

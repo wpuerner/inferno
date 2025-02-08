@@ -3,7 +3,7 @@ extends Node2D
 @onready var hand: Node2D = find_child("Hand")
 @onready var debug_overlay = get_node("/root/DebugOverlay")
 
-var num_spawns: int = 5:
+var num_spawns: int = 2:
 	set(value):
 		num_spawns = value
 		debug_overlay.print("Number spawns remaining", num_spawns)
@@ -17,11 +17,13 @@ func _on_play_button_pressed():
 	hand.close()
 	await hand.was_closed
 	$HandCanvasLayer.visible = false
+	$RunePool.discard_hand()
+	num_spawns = 2
 	$EnemySpawnTimer.start(randf_range(1.0, 5.0))
 	$Player.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_enemy_spawn_timer_timeout():
-	var num_enemies: int = randi_range(5, 15)
+	var num_enemies: int = randi_range(5, 6)
 	var spawn_position: Vector2 = Vector2(randi_range(-500, 500), randi_range(-500, 500))
 	while num_enemies > 0:
 		var enemy = preload("res://scenes/mobs/flocking_mob/flocking_mob.tscn").instantiate()

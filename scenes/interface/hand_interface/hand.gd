@@ -32,7 +32,7 @@ func get_selected_runes() -> Array[Rune]:
 	return runes
 
 func close():
-	for n in range(0, get_child_count()):
+	while get_child_count() > 0:
 		var child: Node2D = get_children()[0]
 		var tween: Tween = get_tree().create_tween()
 		tween.tween_property(child, "global_position", deck_global_position, 0.1)

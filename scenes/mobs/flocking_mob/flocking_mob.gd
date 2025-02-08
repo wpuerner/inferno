@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var target: Node2D
 
-var health: int = 3
+var health: int = 1
 var close_peers: Array[Node2D] = []
 
 const STEERING_FORCE: float = 3.0
