@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var player_health_attribute: Attribute
+
 @onready var hand: Node2D = find_child("Hand")
 @onready var debug_overlay = get_node("/root/DebugOverlay")
 @onready var health_bar: ProgressBar = $GameplayOverlayCanvasLayer.find_child("HealthBar")
@@ -11,10 +13,12 @@ var num_spawns: int = 2:
 var active_enemies: Array[Node2D] = []
 
 func _ready():
+	player_health_attribute.was_changed.connect(_on_player_health_attribute_was_changed)
 	$HandCanvasLayer.find_child("Hand").position = get_viewport_rect().size / 2
 	_open_hand()
 
 func _on_play_button_pressed():
+	hand.activate()
 	hand.close()
 	await hand.was_closed
 	$HandCanvasLayer.visible = false
@@ -53,7 +57,7 @@ func _open_hand():
 	$HandCanvasLayer.visible = true
 	hand.open_with_runes($RunePool.get_hand())
 
-func _on_player_health_was_changed(new_amount):
+func _on_player_health_attribute_was_changed(new_amount):
 	health_bar.value = new_amount
 
 func _on_new_run_button_pressed():

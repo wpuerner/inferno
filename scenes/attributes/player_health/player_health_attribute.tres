@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bt2vdbxh8y806"]
+
+[ext_resource type="Script" path="res://scenes/attributes/player_health/player_health_attribute.gd" id="1_wyus8"]
+
+[resource]
+script = ExtResource("1_wyus8")

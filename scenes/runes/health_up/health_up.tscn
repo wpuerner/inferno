@@ -1,0 +1,13 @@
+[gd_scene load_steps=5 format=3 uid="uid://box2am0ofumyl"]
+
+[ext_resource type="PackedScene" uid="uid://cn4mq7b3ab4pw" path="res://scenes/runes/rune.tscn" id="1_5eg7m"]
+[ext_resource type="Script" path="res://scenes/runes/health_up/health_up.gd" id="2_ify43"]
+[ext_resource type="Resource" uid="uid://bt2vdbxh8y806" path="res://scenes/attributes/player_health/player_health_attribute.tres" id="3_x4lh7"]
+[ext_resource type="Texture2D" uid="uid://e5mbaqe7xtcv" path="res://scenes/runes/health_up/Designbolts-Free-Valentine-Heart-Heart.256.png" id="4_ispdr"]
+
+[node name="HealthUp" instance=ExtResource("1_5eg7m")]
+script = ExtResource("2_ify43")
+player_health_attribute = ExtResource("3_x4lh7")
+display_name = "HEALTH UP"
+icon = ExtResource("4_ispdr")
+effect_description = "Increases health by 1"

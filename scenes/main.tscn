@@ -1,14 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=14 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_vyh3l"]
+[ext_resource type="Resource" uid="uid://bt2vdbxh8y806" path="res://scenes/attributes/player_health/player_health_attribute.tres" id="2_fudvi"]
+[ext_resource type="PackedScene" uid="uid://box2am0ofumyl" path="res://scenes/runes/health_up/health_up.tscn" id="6_xrlci"]
 [ext_resource type="Script" path="res://scenes/debug_display.gd" id="11_yos21"]
 [ext_resource type="Script" path="res://scenes/handlers/rune_pool.gd" id="12_pu1ml"]
 [ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/rapid_fire/rapid_fire.tscn" id="13_g0dpi"]
-[ext_resource type="PackedScene" uid="uid://bsaoofryqsgo8" path="res://scenes/runes/explosive/explosive.tscn" id="14_y5m0x"]
-[ext_resource type="PackedScene" uid="uid://v55nyikrr6u6" path="res://scenes/runes/scatter_shot/scatter_shot.tscn" id="15_2rxl3"]
-[ext_resource type="PackedScene" uid="uid://banoqqqiycy83" path="res://scenes/runes/worms/worms.tscn" id="16_0sl1q"]
-[ext_resource type="PackedScene" uid="uid://htuatyjsj8qn" path="res://scenes/runes/warp/warp.tscn" id="17_dhgyn"]
 [ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="19_j6yop"]
 [ext_resource type="PackedScene" uid="uid://dyxjrdhdnrs2b" path="res://scenes/game_camera.tscn" id="20_q2ocl"]
 
@@ -40,9 +38,11 @@ corner_radius_bottom_left = 8
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_vyh3l")
+player_health_attribute = ExtResource("2_fudvi")
 
 [node name="Player" parent="." instance=ExtResource("1_tjb1v")]
 process_mode = 4
+player_health_attribute = ExtResource("2_fudvi")
 
 [node name="RunePool" type="Node" parent="."]
 script = ExtResource("12_pu1ml")
@@ -55,19 +55,11 @@ script = ExtResource("12_pu1ml")
 
 [node name="RapidFire4" parent="RunePool" instance=ExtResource("13_g0dpi")]
 
-[node name="Explosive" parent="RunePool" instance=ExtResource("14_y5m0x")]
+[node name="HealthUp" parent="RunePool" instance=ExtResource("6_xrlci")]
 
-[node name="Explosive2" parent="RunePool" instance=ExtResource("14_y5m0x")]
+[node name="HealthUp2" parent="RunePool" instance=ExtResource("6_xrlci")]
 
-[node name="ScatterShot" parent="RunePool" instance=ExtResource("15_2rxl3")]
-
-[node name="ScatterShot2" parent="RunePool" instance=ExtResource("15_2rxl3")]
-
-[node name="Worms" parent="RunePool" instance=ExtResource("16_0sl1q")]
-
-[node name="Warp" parent="RunePool" instance=ExtResource("17_dhgyn")]
-
-[node name="Warp2" parent="RunePool" instance=ExtResource("17_dhgyn")]
+[node name="HealthUp3" parent="RunePool" instance=ExtResource("6_xrlci")]
 
 [node name="GameplayOverlayCanvasLayer" type="CanvasLayer" parent="."]
 
@@ -169,7 +161,6 @@ offset_right = 40.0
 grow_vertical = 0
 script = ExtResource("11_yos21")
 
-[connection signal="health_was_changed" from="Player" to="." method="_on_player_health_was_changed"]
 [connection signal="was_killed" from="Player" to="." method="_on_player_was_killed"]
 [connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/NewRunButton" to="." method="_on_new_run_button_pressed"]
 [connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

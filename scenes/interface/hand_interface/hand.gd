@@ -8,6 +8,10 @@ const SEPARATION: int = 200
 
 var selected_cards: Array[RuneCard] = []
 
+func activate():
+	for card in selected_cards:
+		card.rune.activate()
+
 func open_with_runes(runes: Array[Rune]):
 	for rune in runes:
 		add_rune(rune)
@@ -32,6 +36,7 @@ func get_selected_runes() -> Array[Rune]:
 	return runes
 
 func close():
+	selected_cards.clear()
 	while get_child_count() > 0:
 		var child: Node2D = get_children()[0]
 		var tween: Tween = get_tree().create_tween()

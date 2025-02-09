@@ -1,20 +1,19 @@
 extends CharacterBody2D
 
 signal was_killed
-signal health_was_changed(new_amount: int)
+
+@export var player_health_attribute: Attribute
 
 var can_fire: bool = true
-var health: int = 8
 
 const MAX_SPEED: float = 100
 const ACCELERATION: float = 500
 const DECELERATION: float = 700
 
 func apply_damage(amount: int):
-	if health <= 0: return
-	health -= amount
-	health_was_changed.emit(health)
-	if health <= 0:
+	if player_health_attribute.get_value() <= 0: return
+	player_health_attribute.set_value(player_health_attribute.get_value() - amount)
+	if player_health_attribute.get_value() <= 0:
 		was_killed.emit()
 		queue_redraw()
 		set_physics_process(false)
@@ -22,7 +21,9 @@ func apply_damage(amount: int):
 		$OnDeathAnimation.play("default")
 		await $OnDeathAnimation.animation_finished
 		$OnDeathAnimation.visible = false
-		
+
+func _ready():
+	player_health_attribute.set_value(8)
 
 func _physics_process(delta: float):
 	var direction_x: float = Input.get_axis("move_left", "move_right")
@@ -39,7 +40,7 @@ func _physics_process(delta: float):
 	if Input.is_action_pressed("primary_fire") and can_fire: _fire_bullet()
 
 func _draw():
-	if health > 0:
+	if player_health_attribute.get_value() > 0:
 		draw_polyline([Vector2(-20, -20), Vector2(0, 0), Vector2(-20, 20)], Color.GREEN, 5, true)
 
 func _fire_bullet():

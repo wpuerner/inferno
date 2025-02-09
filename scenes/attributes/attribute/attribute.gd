@@ -1,15 +1,18 @@
 class_name Attribute extends Resource
 
-var value
+signal was_changed(new_value)
+
+var _value
 	
 func set_value(new_value):
-	value = new_value
+	_value = new_value
+	was_changed.emit(_value)
 
 func get_value():
-	return value
+	return _value
 	
 func get_default_value():
 	push_error("Must implement get_default_value for child attributes")
 
 func reset():
-	value = get_default_value()
+	set_value(get_default_value())
