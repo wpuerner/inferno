@@ -9,11 +9,12 @@
 script = ExtResource("1_pfifn")
 
 [node name="Player" parent="." instance=ExtResource("1_axyg8")]
+position = Vector2(723, 548)
 
 [node name="GameCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_6bpwe")]
 zoom = Vector2(1.2, 1.2)
 player = NodePath("../Player")
 
 [node name="FlockingMob" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_lpej7")]
-position = Vector2(-123, 4)
+position = Vector2(1152, 547)
 target = NodePath("../Player")

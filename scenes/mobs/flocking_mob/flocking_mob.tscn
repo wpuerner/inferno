@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bnek4ymnsbngc"]
+[gd_scene load_steps=6 format=3 uid="uid://bnek4ymnsbngc"]
 
 [ext_resource type="Script" path="res://scenes/mobs/flocking_mob/flocking_mob.gd" id="1_lc5pu"]
+[ext_resource type="PackedScene" uid="uid://dcimufvvru2en" path="res://scenes/parts/hurtbox/hurtbox.tscn" id="2_yxjrx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gny7l"]
 radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_08w3n"]
 radius = 92.0489
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wuw5y"]
+radius = 14.0357
 
 [node name="FlockingMob" type="CharacterBody2D"]
 collision_layer = 18
@@ -22,6 +26,13 @@ collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_08w3n")
+
+[node name="Hurtbox" parent="." instance=ExtResource("2_yxjrx")]
+collision_mask = 1
+damage_amount = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_wuw5y")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

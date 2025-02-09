@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var hand: Node2D = find_child("Hand")
 @onready var debug_overlay = get_node("/root/DebugOverlay")
+@onready var health_bar: ProgressBar = $GameplayOverlayCanvasLayer.find_child("HealthBar")
 
 var num_spawns: int = 2:
 	set(value):
@@ -51,3 +52,15 @@ func _finish_level():
 func _open_hand():
 	$HandCanvasLayer.visible = true
 	hand.open_with_runes($RunePool.get_hand())
+
+func _on_player_health_was_changed(new_amount):
+	health_bar.value = new_amount
+
+func _on_new_run_button_pressed():
+	get_tree().reload_current_scene()
+
+func _on_quit_button_pressed():
+	get_tree().quit()
+
+func _on_player_was_killed():
+	$GameplayMenuCanvasLayer.find_child("GameOverMenu").visible = true

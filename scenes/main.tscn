@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=16 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_vyh3l"]
@@ -11,6 +11,31 @@
 [ext_resource type="PackedScene" uid="uid://htuatyjsj8qn" path="res://scenes/runes/warp/warp.tscn" id="17_dhgyn"]
 [ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="19_j6yop"]
 [ext_resource type="PackedScene" uid="uid://dyxjrdhdnrs2b" path="res://scenes/game_camera.tscn" id="20_q2ocl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ha0sr"]
+bg_color = Color(0.925353, 0.925353, 0.925353, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_color = Color(0.169245, 0.169245, 0.169245, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="Theme" id="Theme_a2w2f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jjur0"]
+bg_color = Color(0.239883, 0.460545, 0.836923, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kqxfp"]
+bg_color = Color(0.727943, 0.146634, 0.252043, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Main" type="Node2D"]
 y_sort_enabled = true
@@ -44,7 +69,70 @@ script = ExtResource("12_pu1ml")
 
 [node name="Warp2" parent="RunePool" instance=ExtResource("17_dhgyn")]
 
+[node name="GameplayOverlayCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="GameplayOverlayCanvasLayer"]
+offset_right = 324.0
+offset_bottom = 48.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HealthBar" type="ProgressBar" parent="GameplayOverlayCanvasLayer/MarginContainer"]
+custom_minimum_size = Vector2(300, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+max_value = 8.0
+step = 1.0
+value = 8.0
+show_percentage = false
+
+[node name="GameplayMenuCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOverMenu" type="PanelContainer" parent="GameplayMenuCanvasLayer"]
+visible = false
+custom_minimum_size = Vector2(400, 200)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ha0sr")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameplayMenuCanvasLayer/GameOverMenu"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_top = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="NewRunButton" type="Button" parent="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+theme = SubResource("Theme_a2w2f")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_jjur0")
+text = "New Run"
+
+[node name="QuitButton" type="Button" parent="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_kqxfp")
+text = "Quit
+"
+
 [node name="HandCanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Hand" parent="HandCanvasLayer" instance=ExtResource("19_j6yop")]
 
@@ -73,9 +161,17 @@ one_shot = true
 [node name="DebugCanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="DebugDisplay" type="Label" parent="DebugCanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
 offset_right = 40.0
-offset_bottom = 23.0
+grow_vertical = 0
 script = ExtResource("11_yos21")
 
+[connection signal="health_was_changed" from="Player" to="." method="_on_player_health_was_changed"]
+[connection signal="was_killed" from="Player" to="." method="_on_player_was_killed"]
+[connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/NewRunButton" to="." method="_on_new_run_button_pressed"]
+[connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="HandCanvasLayer/MarginContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
