@@ -12,6 +12,7 @@ var rune: Rune:
 			var label: Label = $InfoPanel.find_child("StackDescriptionLabel")
 			label.visible = true
 			label.text = rune.stack_description
+		$Panel/CostLabel.text = str(rune.cost)
 
 func _on_mouse_entered():
 	$InfoPanel.visible = true

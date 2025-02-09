@@ -5,7 +5,7 @@
 
 [node name="RapidFire" type="Node"]
 script = ExtResource("1_ju18h")
-display_name = "Rapid Fire"
+display_name = "FIRE RATE UP"
 icon = ExtResource("1_0otus")
-effect_description = "Enable auto-fire"
-stack_description = "On stack: increase fire rate"
+effect_description = "Fire rate up"
+cost = 1

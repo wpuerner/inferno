@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=15 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_vyh3l"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scenes/debug_display.gd" id="11_yos21"]
 [ext_resource type="Script" path="res://scenes/handlers/rune_pool.gd" id="12_pu1ml"]
 [ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/rapid_fire/rapid_fire.tscn" id="13_g0dpi"]
+[ext_resource type="PackedScene" uid="uid://v55nyikrr6u6" path="res://scenes/runes/scatter_shot/scatter_shot.tscn" id="15_2rxl3"]
 [ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="19_j6yop"]
 [ext_resource type="PackedScene" uid="uid://dyxjrdhdnrs2b" path="res://scenes/game_camera.tscn" id="20_q2ocl"]
 
@@ -60,6 +61,10 @@ script = ExtResource("12_pu1ml")
 [node name="HealthUp2" parent="RunePool" instance=ExtResource("6_xrlci")]
 
 [node name="HealthUp3" parent="RunePool" instance=ExtResource("6_xrlci")]
+
+[node name="ScatterShot" parent="RunePool" instance=ExtResource("15_2rxl3")]
+
+[node name="ScatterShot2" parent="RunePool" instance=ExtResource("15_2rxl3")]
 
 [node name="GameplayOverlayCanvasLayer" type="CanvasLayer" parent="."]
 
@@ -124,9 +129,9 @@ text = "Quit
 "
 
 [node name="HandCanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
-[node name="Hand" parent="HandCanvasLayer" instance=ExtResource("19_j6yop")]
+[node name="Hand" parent="HandCanvasLayer" node_paths=PackedStringArray("capacity_label") instance=ExtResource("19_j6yop")]
+capacity_label = NodePath("../MarginContainer/VBoxContainer/CapacityLabel")
 
 [node name="MarginContainer" type="MarginContainer" parent="HandCanvasLayer"]
 anchors_preset = 15
@@ -136,7 +141,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_bottom = 48
 
-[node name="PlayButton" type="Button" parent="HandCanvasLayer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HandCanvasLayer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="CapacityLabel" type="Label" parent="HandCanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "4 / 4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayButton" type="Button" parent="HandCanvasLayer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -164,5 +183,5 @@ script = ExtResource("11_yos21")
 [connection signal="was_killed" from="Player" to="." method="_on_player_was_killed"]
 [connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/NewRunButton" to="." method="_on_new_run_button_pressed"]
 [connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
-[connection signal="pressed" from="HandCanvasLayer/MarginContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="HandCanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

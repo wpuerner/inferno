@@ -2,9 +2,12 @@ extends Node2D
 
 signal was_closed
 
+@export var capacity_label: Label
+
 @onready var deck_global_position: Vector2 = Vector2(get_viewport_rect().size.x / 2, get_viewport_rect().size.y + 200)
 
 const SEPARATION: int = 200
+const MAX_CAPACITY: int = 4
 
 var selected_cards: Array[RuneCard] = []
 
@@ -13,6 +16,7 @@ func activate():
 		card.rune.activate()
 
 func open_with_runes(runes: Array[Rune]):
+	_update_capacity_label()
 	for rune in runes:
 		add_rune(rune)
 		await get_tree().create_timer(0.2).timeout
@@ -55,9 +59,19 @@ func _rune_card_was_selected(rune_card: Node2D):
 	var y_pos: int = 0
 	if selected_cards.has(rune_card):
 		selected_cards.erase(rune_card)
-	else:
+	elif _hand_cost() + rune_card.rune.cost <= MAX_CAPACITY:
 		selected_cards.append(rune_card)
 		y_pos = -100
 	var tween: Tween = get_tree().create_tween()
 	tween.tween_property(rune_card, "position", Vector2(rune_card.position.x, y_pos), 0.1)
+	_update_capacity_label()
 		
+func _hand_cost() -> int:
+	if selected_cards.is_empty(): return 0
+	var sum: int = 0
+	for card in selected_cards:
+		sum += card.rune.cost
+	return sum
+
+func _update_capacity_label():
+	capacity_label.text = str(_hand_cost(), " / ", MAX_CAPACITY)

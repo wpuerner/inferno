@@ -11,3 +11,4 @@ player_health_attribute = ExtResource("3_x4lh7")
 display_name = "HEALTH UP"
 icon = ExtResource("4_ispdr")
 effect_description = "Increases health by 1"
+cost = 1

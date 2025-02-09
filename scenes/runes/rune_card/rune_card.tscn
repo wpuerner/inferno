@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7ivjbpb6yng8"]
+[gd_scene load_steps=7 format=3 uid="uid://b7ivjbpb6yng8"]
 
 [ext_resource type="Script" path="res://scenes/runes/rune_card/rune_card.gd" id="1_45ddr"]
 [ext_resource type="Texture2D" uid="uid://cqx4v3t17pivr" path="res://scenes/runes/worms/worms.png" id="2_5786a"]
@@ -16,6 +16,18 @@ corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4u1pi"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.158472, 0.158472, 0.158472, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6rnb1"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -61,6 +73,20 @@ grow_vertical = 2
 texture = ExtResource("2_5786a")
 expand_mode = 4
 stretch_mode = 5
+
+[node name="CostLabel" type="Label" parent="Panel"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 0
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 36.0
+offset_bottom = 36.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_4u1pi")
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="InfoPanel" type="PanelContainer" parent="."]
 visible = false

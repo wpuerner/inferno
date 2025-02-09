@@ -5,6 +5,7 @@ class_name Rune extends Node
 @export var rarity: Rarity
 @export var effect_description: String
 @export var stack_description: String
+@export var cost: int
 
 var is_in_deck: bool = false
 
