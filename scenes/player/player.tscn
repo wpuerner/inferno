@@ -1,7 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://pdahs317ljur"]
+[gd_scene load_steps=18 format=3 uid="uid://pdahs317ljur"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_31rwy"]
+[ext_resource type="Resource" uid="uid://bt2vdbxh8y806" path="res://scenes/attributes/player_health/player_health_attribute.tres" id="2_bu744"]
 [ext_resource type="Texture2D" uid="uid://cbwxnbffwjka2" path="res://scenes/effects/explosion/explosion.png" id="2_jeknd"]
+[ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate_multiplier/fire_rate_multiplier_attribute.tres" id="2_qm6qa"]
+[ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/number_projectiles_attribute/number_projectiles_attribute.tres" id="4_ixpo1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq5s8"]
 radius = 18.0
@@ -90,12 +93,14 @@ scale = Vector2(0.25, 0.25)
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_31rwy")
+player_health_attribute = ExtResource("2_bu744")
+fire_rate_multiplier_attribute = ExtResource("2_qm6qa")
+number_projectiles_attribute = ExtResource("4_ixpo1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_mq5s8")
 
 [node name="FireTimer" type="Timer" parent="."]
-wait_time = 0.2
 one_shot = true
 
 [node name="OnDeathAnimation" type="AnimatedSprite2D" parent="."]

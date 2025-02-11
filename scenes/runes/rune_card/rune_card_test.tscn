@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b7ivjbpb6yng8" path="res://scenes/runes/rune_card/rune_card.tscn" id="1_skb0v"]
 [ext_resource type="Script" path="res://scenes/runes/rune_card/rune_card_test.gd" id="1_tyg75"]
 [ext_resource type="Script" path="res://scenes/runes/rune.gd" id="3_x0und"]
-[ext_resource type="Texture2D" uid="uid://dxanw34iblju1" path="res://scenes/runes/rapid_fire/rapid_fire.png" id="4_q14ll"]
+[ext_resource type="Texture2D" uid="uid://dxanw34iblju1" path="res://scenes/runes/fire_rate_up/rapid_fire.png" id="4_q14ll"]
 
 [node name="RuneCardTest" type="Node2D"]
 script = ExtResource("1_tyg75")

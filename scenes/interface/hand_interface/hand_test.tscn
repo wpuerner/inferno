@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/interface/hand_interface/hand_test.gd" id="1_8c0p0"]
 [ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="2_oka8p"]
-[ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/rapid_fire/rapid_fire.tscn" id="3_ovoq5"]
+[ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/fire_rate_up/fire_rate_up.tscn" id="3_ovoq5"]
 
 [node name="HandTest" type="Node2D"]
 script = ExtResource("1_8c0p0")

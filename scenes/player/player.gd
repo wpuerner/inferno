@@ -3,9 +3,12 @@ extends CharacterBody2D
 signal was_killed
 
 @export var player_health_attribute: Attribute
+@export var fire_rate_multiplier_attribute: Attribute
+@export var number_projectiles_attribute: Attribute
 
 var can_fire: bool = true
 
+const BASE_FIRE_RATE: float = 2  #  Per second
 const MAX_SPEED: float = 100
 const ACCELERATION: float = 500
 const DECELERATION: float = 700
@@ -44,12 +47,16 @@ func _draw():
 		draw_polyline([Vector2(-20, -20), Vector2(0, 0), Vector2(-20, 20)], Color.GREEN, 5, true)
 
 func _fire_bullet():
-	var bullet = preload("res://scenes/objects/bullet/bullet.tscn").instantiate()
-	bullet.global_rotation = global_rotation
-	bullet.global_position = global_position
-	add_sibling(bullet)
+	var num: int = number_projectiles_attribute.get_value()
+	var spread: float = (PI / 4) / float(num)
+	var rot: float = ((float(num) - 1) / 2) * spread
+	for n in range(0, num):
+		var bullet = preload("res://scenes/objects/bullet/bullet.tscn").instantiate()
+		bullet.global_rotation = global_rotation + rot - n * spread
+		bullet.global_position = global_position
+		add_sibling(bullet)
 	can_fire = false
-	$FireTimer.start(0.2)
+	$FireTimer.start(1 / (BASE_FIRE_RATE * fire_rate_multiplier_attribute.get_value()))
 
 func _on_fire_timer_timeout():
 	can_fire = true

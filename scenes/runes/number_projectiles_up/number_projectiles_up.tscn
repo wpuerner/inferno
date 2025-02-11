@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://v55nyikrr6u6"]
+
+[ext_resource type="Script" path="res://scenes/runes/number_projectiles_up/number_projectiles_up.gd" id="1_2m5uk"]
+[ext_resource type="Texture2D" uid="uid://dq60mih5gtp40" path="res://scenes/runes/number_projectiles_up/scatter_shot.png" id="1_r3fvv"]
+[ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/number_projectiles_attribute/number_projectiles_attribute.tres" id="2_uw7t0"]
+
+[node name="NumberProjectilesUp" type="Node"]
+script = ExtResource("1_2m5uk")
+number_projectiles_attribute = ExtResource("2_uw7t0")
+display_name = "NUMBER PROJECTILES UP"
+icon = ExtResource("1_r3fvv")
+effect_description = "Fires +1 projectiles"
+cost = 2

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="IntAttribute" load_steps=2 format=3 uid="uid://cy6fljp2cby66"]
+
+[ext_resource type="Script" path="res://scenes/attributes/attribute/int_attribute.gd" id="1_jv161"]
+
+[resource]
+script = ExtResource("1_jv161")
+value = 1

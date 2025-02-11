@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dq60mih5gtp40"
-path="res://.godot/imported/scatter_shot.png-ed718b405b3a6ab51875604bc4c53d00.ctex"
+path="res://.godot/imported/scatter_shot.png-483346ee32f13b87a379f9f2f3eb9226.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/runes/scatter_shot/scatter_shot.png"
-dest_files=["res://.godot/imported/scatter_shot.png-ed718b405b3a6ab51875604bc4c53d00.ctex"]
+source_file="res://scenes/runes/number_projectiles_up/scatter_shot.png"
+dest_files=["res://.godot/imported/scatter_shot.png-483346ee32f13b87a379f9f2f3eb9226.ctex"]
 
 [params]
 

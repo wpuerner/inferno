@@ -1,6 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bix8qjuidtodm"]
-
-[ext_resource type="Script" path="res://scenes/attributes/attribute/attribute.gd" id="1_dn6g8"]
-
-[resource]
-script = ExtResource("1_dn6g8")

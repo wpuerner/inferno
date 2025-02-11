@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://drn72cu2ncene"]
+
+[ext_resource type="Script" path="res://scenes/runes/fire_rate_up/fire_rate_up.gd" id="1_otpus"]
+[ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate_multiplier/fire_rate_multiplier_attribute.tres" id="2_vj31e"]
+[ext_resource type="Texture2D" uid="uid://dxanw34iblju1" path="res://scenes/runes/fire_rate_up/rapid_fire.png" id="2_wsh0s"]
+
+[node name="FireRateUp" type="Node"]
+script = ExtResource("1_otpus")
+fire_rate_multipler_attribute = ExtResource("2_vj31e")
+display_name = "FIRE RATE UP"
+icon = ExtResource("2_wsh0s")
+effect_description = "Increases fire rate by 50%"
+cost = 1

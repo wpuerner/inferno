@@ -1,6 +1,6 @@
 extends Node
 
-var label: Label
+@onready var label: Label = get_node_or_null("/root/DebugOverlay/DebugDisplay")
 var data = {}
 
 func print(key: String, value):

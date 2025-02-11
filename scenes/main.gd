@@ -15,6 +15,7 @@ var active_enemies: Array[Node2D] = []
 func _ready():
 	player_health_attribute.was_changed.connect(_on_player_health_attribute_was_changed)
 	$HandCanvasLayer.find_child("Hand").position = get_viewport_rect().size / 2
+	$AttributeHandler.reset()
 	_open_hand()
 
 func _on_play_button_pressed():
@@ -70,14 +71,15 @@ func _on_quit_button_pressed():
 func _on_player_was_killed():
 	$GameplayMenuCanvasLayer.find_child("GameOverMenu").visible = true
 
-
 func _on_prize_overlay_was_completed():
 	$LevelCompleteCanvasLayer/PrizeOverlay.close()
 	$LevelCompleteCanvasLayer.visible = false
+	$AttributeHandler.reset()
 	_open_hand()
 
 func _on_prize_overlay_was_completed_with_rune(rune: Rune):
 	$RunePool.add_rune(rune)
 	$LevelCompleteCanvasLayer/PrizeOverlay.close()
 	$LevelCompleteCanvasLayer.visible = false
+	$AttributeHandler.reset()
 	_open_hand()

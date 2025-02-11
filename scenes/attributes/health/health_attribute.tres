@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="HealthAttribute" load_steps=2 format=3 uid="uid://d0faysq8skc1l"]
-
-[ext_resource type="Script" path="res://scenes/attributes/health/health_attribute.gd" id="1_6lchc"]
-
-[resource]
-resource_local_to_scene = true
-script = ExtResource("1_6lchc")
-health = 100

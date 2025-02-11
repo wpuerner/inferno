@@ -3,7 +3,7 @@ class_name Attribute extends Resource
 signal was_changed(new_value)
 
 var _value
-	
+
 func set_value(new_value):
 	_value = new_value
 	was_changed.emit(_value)

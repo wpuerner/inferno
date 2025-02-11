@@ -5,10 +5,10 @@ extends CharacterBody2D
 var health: int = 1
 var close_peers: Array[Node2D] = []
 
-const STEERING_FORCE: float = 3.0
+const STEERING_FORCE: float = 3.5
 const SEPARATION_FACTOR: float = 50.0
 const VIEW_ANGLE: float = 0.50 * PI  # The angle on either side of the forward axis where neighbors are visible
-const MOVE_SPEED: float = 80.0
+const MOVE_SPEED: float = 120.0
 
 func apply_damage(amount: int):
 	health -= amount
@@ -64,4 +64,4 @@ func _get_correction_angle(from_angle: float, to_angle: float):
 	return to_angle - from_angle
 
 func _draw():
-	draw_circle(Vector2.ZERO, 20, Color.RED, false, 5)
+	draw_circle(Vector2.ZERO, 10, Color.RED, false, 5)
