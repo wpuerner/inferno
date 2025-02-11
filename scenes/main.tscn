@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=16 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_vyh3l"]
 [ext_resource type="Resource" uid="uid://bt2vdbxh8y806" path="res://scenes/attributes/player_health/player_health_attribute.tres" id="2_fudvi"]
 [ext_resource type="PackedScene" uid="uid://box2am0ofumyl" path="res://scenes/runes/health_up/health_up.tscn" id="6_xrlci"]
+[ext_resource type="PackedScene" uid="uid://civ2xg8s4n6fc" path="res://scenes/prizes/prize_overlay.tscn" id="9_hd1gy"]
 [ext_resource type="Script" path="res://scenes/debug_display.gd" id="11_yos21"]
 [ext_resource type="Script" path="res://scenes/handlers/rune_pool.gd" id="12_pu1ml"]
 [ext_resource type="PackedScene" uid="uid://drn72cu2ncene" path="res://scenes/runes/rapid_fire/rapid_fire.tscn" id="13_g0dpi"]
@@ -162,6 +163,18 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "PLAY"
 
+[node name="LevelCompleteCanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="PrizeOverlay" parent="LevelCompleteCanvasLayer" instance=ExtResource("9_hd1gy")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="GameCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("20_q2ocl")]
 player = NodePath("../Player")
 
@@ -184,4 +197,6 @@ script = ExtResource("11_yos21")
 [connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/NewRunButton" to="." method="_on_new_run_button_pressed"]
 [connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="HandCanvasLayer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="was_completed" from="LevelCompleteCanvasLayer/PrizeOverlay" to="." method="_on_prize_overlay_was_completed"]
+[connection signal="was_completed_with_rune" from="LevelCompleteCanvasLayer/PrizeOverlay" to="." method="_on_prize_overlay_was_completed_with_rune"]
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

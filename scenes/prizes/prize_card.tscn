@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://dd044juhx3sf6"]
+
+[ext_resource type="Script" path="res://scenes/prizes/prize_card.gd" id="1_io3q4"]
+[ext_resource type="Texture2D" uid="uid://b6biwhun3xsxg" path="res://icon.svg" id="2_flc60"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_igxy0"]
+bg_color = Color(0.800491, 0.800491, 0.800491, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.308161, 0.95344, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="PrizeCard" type="Button"]
+custom_minimum_size = Vector2(240, 400)
+offset_right = 240.0
+offset_bottom = 400.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_igxy0")
+script = ExtResource("1_io3q4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.152941, 0.807843, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "PRIZE TITLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_flc60")
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.152941, 0.807843, 0, 1)
+text = "DESCRIPTION TEXT"
+horizontal_alignment = 1
+autowrap_mode = 3

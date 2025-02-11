@@ -51,7 +51,8 @@ func _handle_destroyed_enemy(enemy: Node2D):
 
 func _finish_level():
 	$Player.process_mode = Node.PROCESS_MODE_DISABLED
-	_open_hand()
+	$LevelCompleteCanvasLayer.visible = true
+	$LevelCompleteCanvasLayer/PrizeOverlay.open()
 
 func _open_hand():
 	$HandCanvasLayer.visible = true
@@ -68,3 +69,15 @@ func _on_quit_button_pressed():
 
 func _on_player_was_killed():
 	$GameplayMenuCanvasLayer.find_child("GameOverMenu").visible = true
+
+
+func _on_prize_overlay_was_completed():
+	$LevelCompleteCanvasLayer/PrizeOverlay.close()
+	$LevelCompleteCanvasLayer.visible = false
+	_open_hand()
+
+func _on_prize_overlay_was_completed_with_rune(rune: Rune):
+	$RunePool.add_rune(rune)
+	$LevelCompleteCanvasLayer/PrizeOverlay.close()
+	$LevelCompleteCanvasLayer.visible = false
+	_open_hand()

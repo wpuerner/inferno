@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://civ2xg8s4n6fc"]
+
+[ext_resource type="Script" path="res://scenes/prizes/prize_overlay.gd" id="1_fcex0"]
+
+[node name="PrizeOverlay" type="CenterContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_fcex0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12

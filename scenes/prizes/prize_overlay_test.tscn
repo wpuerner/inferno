@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://pfahfwx7mi50"]
+
+[ext_resource type="Script" path="res://scenes/prizes/prize_overlay_test.gd" id="1_bh4f3"]
+[ext_resource type="PackedScene" uid="uid://civ2xg8s4n6fc" path="res://scenes/prizes/prize_overlay.tscn" id="2_2rvtp"]
+
+[node name="PrizeOverlayTest" type="Container"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bh4f3")
+
+[node name="PrizeOverlay" parent="." instance=ExtResource("2_2rvtp")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
