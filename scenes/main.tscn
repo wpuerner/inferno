@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://bl5h7px3w3u8b"]
+[gd_scene load_steps=21 format=3 uid="uid://bl5h7px3w3u8b"]
 
 [ext_resource type="PackedScene" uid="uid://pdahs317ljur" path="res://scenes/player/player.tscn" id="1_tjb1v"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_vyh3l"]
 [ext_resource type="Resource" uid="uid://bt2vdbxh8y806" path="res://scenes/attributes/player_health/player_health_attribute.tres" id="2_fudvi"]
+[ext_resource type="PackedScene" uid="uid://d18sfh71rhqin" path="res://scenes/runes/chain_lightning/chain_lightning.tscn" id="5_xlueb"]
 [ext_resource type="PackedScene" uid="uid://box2am0ofumyl" path="res://scenes/runes/health_up/health_up.tscn" id="6_xrlci"]
 [ext_resource type="PackedScene" uid="uid://civ2xg8s4n6fc" path="res://scenes/prizes/prize_overlay.tscn" id="9_hd1gy"]
 [ext_resource type="Script" path="res://scenes/handlers/attribute_handler.gd" id="11_iv0nd"]
@@ -12,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://bbpwmmq75kbng" path="res://scenes/attributes/fire_rate_multiplier/fire_rate_multiplier_attribute.tres" id="13_tntb4"]
 [ext_resource type="Resource" uid="uid://cy6fljp2cby66" path="res://scenes/attributes/number_projectiles_attribute/number_projectiles_attribute.tres" id="14_hff7d"]
 [ext_resource type="PackedScene" uid="uid://v55nyikrr6u6" path="res://scenes/runes/number_projectiles_up/number_projectiles_up.tscn" id="15_2rxl3"]
+[ext_resource type="Resource" uid="uid://x35ji78kslr2" path="res://scenes/attributes/bullet_spawn/bullet_spawn_attribute.tres" id="16_7irv4"]
 [ext_resource type="PackedScene" uid="uid://bol8r1078ljn6" path="res://scenes/interface/hand_interface/hand.tscn" id="19_j6yop"]
 [ext_resource type="PackedScene" uid="uid://dyxjrdhdnrs2b" path="res://scenes/game_camera.tscn" id="20_q2ocl"]
 
@@ -50,6 +52,8 @@ process_mode = 4
 
 [node name="RunePool" type="Node" parent="."]
 script = ExtResource("12_pu1ml")
+
+[node name="ChainLightning" parent="RunePool" instance=ExtResource("5_xlueb")]
 
 [node name="FireRateUp" parent="RunePool" instance=ExtResource("13_g0dpi")]
 
@@ -198,7 +202,7 @@ grow_vertical = 0
 
 [node name="AttributeHandler" type="Node" parent="."]
 script = ExtResource("11_iv0nd")
-attributes = Array[ExtResource("12_ngoiw")]([ExtResource("2_fudvi"), ExtResource("13_tntb4"), ExtResource("14_hff7d")])
+attributes = Array[ExtResource("12_ngoiw")]([ExtResource("2_fudvi"), ExtResource("13_tntb4"), ExtResource("14_hff7d"), ExtResource("16_7irv4")])
 
 [connection signal="was_killed" from="Player" to="." method="_on_player_was_killed"]
 [connection signal="pressed" from="GameplayMenuCanvasLayer/GameOverMenu/MarginContainer/HBoxContainer/NewRunButton" to="." method="_on_new_run_button_pressed"]

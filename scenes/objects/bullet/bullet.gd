@@ -16,14 +16,14 @@ func _physics_process(delta: float):
 	if !results.is_empty():
 		body = results[0].collider
 		if body:
-			if bullet_spawn_attribute.get_value() != null:
-				var spawn = load(bullet_spawn_attribute.get_value()).instantiate()
-				spawn.global_position = global_position
-				add_sibling.call_deferred(spawn)
-			elif body.has_method("apply_damage"):
+			if body.has_method("apply_damage"):
 				body.apply_damage(1)
+			if bullet_spawn_attribute.get_value() != null:
+				for res in bullet_spawn_attribute.get_value():
+					var spawn = res.instantiate()
+					spawn.global_position = global_position
+					add_sibling.call_deferred(spawn)
 		queue_free()
-
 
 func _draw():
 	draw_circle(Vector2.ZERO, 1, Color.GREEN, true)

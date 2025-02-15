@@ -6,7 +6,8 @@ signal was_completed_with_rune(rune: Rune)
 const RUNES = \
 [preload("res://scenes/runes/health_up/health_up.tscn"), \
 preload("res://scenes/runes/fire_rate_up/fire_rate_up.tscn"), \
-preload("res://scenes/runes/number_projectiles_up/number_projectiles_up.tscn")]
+preload("res://scenes/runes/number_projectiles_up/number_projectiles_up.tscn"), \
+preload("res://scenes/runes/chain_lightning/chain_lightning.tscn")]
 const PRIZE_SIZE: int = 3
 
 func open():

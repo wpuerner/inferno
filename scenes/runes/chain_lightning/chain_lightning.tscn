@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://d18sfh71rhqin"]
+
+[ext_resource type="PackedScene" uid="uid://cn4mq7b3ab4pw" path="res://scenes/runes/rune.tscn" id="1_3mqqs"]
+[ext_resource type="Script" path="res://scenes/runes/chain_lightning/chain_lightning.gd" id="2_tnclh"]
+[ext_resource type="Texture2D" uid="uid://cdsmy3u62w43v" path="res://scenes/runes/chain_lightning/lightning-bolt-icon-lightning-bolt-or-clipart-vector.jpg" id="3_j5unv"]
+
+[node name="ChainLightning" instance=ExtResource("1_3mqqs")]
+script = ExtResource("2_tnclh")
+display_name = "CHAIN LIGHTNING"
+icon = ExtResource("3_j5unv")
+rarity = 1
+effect_description = "Chance to chain damaging lightning between mobs"
+cost = 2
