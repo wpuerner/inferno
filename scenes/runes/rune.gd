@@ -2,7 +2,6 @@ class_name Rune extends Node
 
 @export var display_name: String
 @export var icon: Texture
-@export var rarity: Rarity
 @export var effect_description: String
 @export var stack_description: String
 @export var cost: int

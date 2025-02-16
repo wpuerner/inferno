@@ -16,9 +16,10 @@ var active_enemies: Array[Node2D] = []
 
 func _ready():
 	player_health_attribute.was_changed.connect(_on_player_health_attribute_was_changed)
-	num_waves = 4
+	num_waves = 2
 	$HandCanvasLayer.find_child("Hand").position = get_viewport_rect().size / 2
-	$AttributeHandler.reset()
+	$LevelCompleteCanvasLayer/PrizeOverlay.bind_database($Database)
+	_reset_attributes()
 	_open_hand()
 
 func _on_play_button_pressed():
@@ -55,7 +56,7 @@ func _handle_destroyed_enemy(enemy: Node2D):
 
 func _finish_level():
 	$Player.process_mode = Node.PROCESS_MODE_DISABLED
-	if num_waves > 0:
+	if num_waves > 1:
 		num_waves -= 1
 		_open_hand()
 	else:
@@ -63,7 +64,7 @@ func _finish_level():
 		$LevelCompleteCanvasLayer/PrizeOverlay.open()
 
 func _open_hand():
-	$AttributeHandler.reset()
+	_reset_attributes()
 	$HandCanvasLayer.visible = true
 	hand.open_with_runes($RunePool.get_hand())
 
@@ -82,12 +83,16 @@ func _on_player_was_killed():
 func _on_prize_overlay_was_completed():
 	$LevelCompleteCanvasLayer/PrizeOverlay.close()
 	$LevelCompleteCanvasLayer.visible = false
-	num_waves = 4
+	num_waves = 2
 	_open_hand()
 
 func _on_prize_overlay_was_completed_with_rune(rune: Rune):
 	$RunePool.add_rune(rune)
 	$LevelCompleteCanvasLayer/PrizeOverlay.close()
 	$LevelCompleteCanvasLayer.visible = false
-	num_waves = 4
+	num_waves = 2
 	_open_hand()
+
+func _reset_attributes():
+	for attribute in $Database.get_all_attribute_resources():
+		attribute.reset()

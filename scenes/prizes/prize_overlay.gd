@@ -3,12 +3,9 @@ extends CenterContainer
 signal was_completed
 signal was_completed_with_rune(rune: Rune)
 
-const RUNES = \
-[preload("res://scenes/runes/health_up/health_up.tscn"), \
-preload("res://scenes/runes/fire_rate_up/fire_rate_up.tscn"), \
-preload("res://scenes/runes/number_projectiles_up/number_projectiles_up.tscn"), \
-preload("res://scenes/runes/chain_lightning/chain_lightning.tscn")]
-const PRIZE_SIZE: int = 3
+const PRIZE_SIZE: int = 2
+
+var database: Node
 
 func open():
 	for n in range(0, PRIZE_SIZE):
@@ -46,12 +43,15 @@ func _create_money_prize() -> Prize:
 func _create_rune_prize() -> Prize:
 	var prize = Prize.new()
 	prize.type = Prize.PrizeType.ADD_RUNE
-	var rune: Rune = RUNES.pick_random().instantiate()
+	var rune: Rune = database.get_rune_resource(database.get_rune_by_rarity()).instantiate()
 	prize.title = "ADD RUNE"
 	prize.image_resource = rune.icon
 	prize.description = str("Adds ", rune.display_name, " rune to the deck")
 	prize.rune = rune
 	return prize
+	
+func bind_database(db: Node):
+	database = db
 
 class Prize:
 	var title: String

@@ -17,7 +17,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-EventBus="*res://event_bus.gd"
 MenuHandler="*res://scenes/handlers/menu_handler.gd"
 DebugOverlay="*res://debug_overlay.gd"
 
