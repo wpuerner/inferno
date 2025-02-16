@@ -1,11 +1,9 @@
 class_name ArrayAttribute extends Attribute
 
-@export var value: Array
-
 func add(value):
-	var array = get_value()
-	array.append(value)
-	set_value(array)
+	get_value().append(value)
 
-func get_default_value():
-	return value
+func reset():
+	if get_value() == null:
+		set_value([])
+	else: get_value().clear()

@@ -5,15 +5,18 @@ extends Node2D
 @onready var hand: Node2D = find_child("Hand")
 @onready var debug_overlay = get_node("/root/DebugOverlay")
 @onready var health_bar: ProgressBar = $GameplayOverlayCanvasLayer.find_child("HealthBar")
+@onready var wave_label: Label = $GameplayOverlayCanvasLayer.find_child("WaveLabel")
 
-var num_spawns: int = 2:
+var num_spawns: int = 3
+var num_waves: int = 4:
 	set(value):
-		num_spawns = value
-		debug_overlay.print("Number spawns remaining", num_spawns)
+		num_waves = value
+		wave_label.text = str("Waves Remaining: ", num_waves)
 var active_enemies: Array[Node2D] = []
 
 func _ready():
 	player_health_attribute.was_changed.connect(_on_player_health_attribute_was_changed)
+	num_waves = 4
 	$HandCanvasLayer.find_child("Hand").position = get_viewport_rect().size / 2
 	$AttributeHandler.reset()
 	_open_hand()
@@ -52,10 +55,15 @@ func _handle_destroyed_enemy(enemy: Node2D):
 
 func _finish_level():
 	$Player.process_mode = Node.PROCESS_MODE_DISABLED
-	$LevelCompleteCanvasLayer.visible = true
-	$LevelCompleteCanvasLayer/PrizeOverlay.open()
+	if num_waves > 0:
+		num_waves -= 1
+		_open_hand()
+	else:
+		$LevelCompleteCanvasLayer.visible = true
+		$LevelCompleteCanvasLayer/PrizeOverlay.open()
 
 func _open_hand():
+	$AttributeHandler.reset()
 	$HandCanvasLayer.visible = true
 	hand.open_with_runes($RunePool.get_hand())
 
@@ -74,12 +82,12 @@ func _on_player_was_killed():
 func _on_prize_overlay_was_completed():
 	$LevelCompleteCanvasLayer/PrizeOverlay.close()
 	$LevelCompleteCanvasLayer.visible = false
-	$AttributeHandler.reset()
+	num_waves = 4
 	_open_hand()
 
 func _on_prize_overlay_was_completed_with_rune(rune: Rune):
 	$RunePool.add_rune(rune)
 	$LevelCompleteCanvasLayer/PrizeOverlay.close()
 	$LevelCompleteCanvasLayer.visible = false
-	$AttributeHandler.reset()
+	num_waves = 4
 	_open_hand()
